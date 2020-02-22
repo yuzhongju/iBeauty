@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	android:padding="20dp">
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="选择操作"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:layout_gravity="center"
+		android:textColor="#FF000000"/>
+
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="Small Text"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		android:gravity="center"
+		android:layout_margin="4dp"
+		android:id="@+id/packed_txt"
+		android:ellipsize="marquee"
+		android:marqueeRepeatLimit="marquee_forever"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+		android:singleLine="true"/>
+
+	<LinearLayout
+		android:orientation="horizontal"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+
+		<Button
+			android:layout_width="wrap_content"
+			style="?android:attr/buttonStyleSmall"
+			android:layout_height="wrap_content"
+			android:text="分享"
+			android:layout_weight="1.0"
+			android:textColor="#FFFFFFFF"
+			android:id="@+id/packed_share"/>
+
+		<Button
+			android:layout_width="wrap_content"
+			style="?android:attr/buttonStyleSmall"
+			android:layout_height="wrap_content"
+			android:text="删除"
+			android:layout_weight="1.0"
+			android:textColor="#FFFFFFFF"
+			android:id="@+id/packed_delete"/>
+
+	</LinearLayout>
+
+</LinearLayout>
+

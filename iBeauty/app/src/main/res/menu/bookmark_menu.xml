@@ -1,0 +1,25 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/mark_note"
+        android:title="书签使用"
+        android:icon="@drawable/ic_mark_note"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/mark_refresh"
+        android:title="刷新书签"
+        android:icon="@drawable/ic_mark_refresh"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/mark_edit"
+        android:title="编辑书签"
+        android:icon="@drawable/ic_mark_edit"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/mark_reset"
+        android:title="恢复默认"
+        android:icon="@drawable/ic_mark_reset"
+        app:showAsAction="never"/>
+</menu>

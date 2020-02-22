@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="#ffffff"
+	android:orientation="vertical">
+
+	<android.support.design.widget.AppBarLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+		<android.support.v7.widget.Toolbar
+			android:id="@+id/toolbar"
+			android:layout_width="match_parent"
+			android:layout_height="?attr/actionBarSize"
+			app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+	</android.support.design.widget.AppBarLayout>
+
+	<EditText
+		android:id="@+id/original"
+		android:layout_width="match_parent"
+		android:layout_height="150dp"
+		android:layout_margin="8dp"
+		android:gravity="left"
+		android:padding="4dp"
+		android:textSize="14sp"
+		android:hint="输入需要加密的内容"/>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+
+		<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1.0"
+			android:gravity="center">
+
+			<Button
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="加密"
+				android:textColor="#ffffff"
+				android:id="@+id/encrypt"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1.0"
+			android:gravity="center">
+
+			<Button
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="解密"
+				android:textColor="#ffffff"
+				android:id="@+id/decode"/>
+
+		</LinearLayout>
+
+	</LinearLayout>
+
+	<EditText
+		android:id="@+id/result"
+		android:layout_width="match_parent"
+		android:layout_height="150dp"
+		android:layout_margin="8dp"
+		android:gravity="left"
+		android:padding="4dp"
+		android:textSize="14sp"
+		android:hint="加密结果"/>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+
+		<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1.0"
+			android:gravity="center">
+
+			<Button
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="复制"
+				android:textColor="#ffffff"
+				android:id="@+id/copy"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1.0"
+			android:gravity="center">
+
+			<Button
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="清空"
+				android:textColor="#ffffff"
+				android:id="@+id/clear"/>
+
+		</LinearLayout>
+
+	</LinearLayout>
+
+</LinearLayout>
+

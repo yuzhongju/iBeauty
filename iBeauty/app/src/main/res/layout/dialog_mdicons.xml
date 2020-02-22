@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical">
+
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="导出"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:textColor="#FF000000"
+		android:gravity="center"
+		android:layout_gravity="center_horizontal"
+		android:padding="8dp"
+		android:textStyle="bold"/>
+
+	<RelativeLayout
+		android:layout_height="1dp"
+		android:layout_width="match_parent"
+		android:background="#20000000"/>
+
+	<RelativeLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:id="@+id/mdicon_bg_img"
+		android:layout_gravity="center"
+		android:layout_margin="12dp">
+
+		<ImageView
+			android:src="@android:drawable/ic_delete"
+			android:layout_width="36dp"
+			android:layout_height="36dp"
+			android:layout_margin="4dp"
+			android:id="@+id/mdicon_img"/>
+
+	</RelativeLayout>
+
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:paddingLeft="20dp"
+		android:paddingRight="20dp"
+		android:paddingBottom="20dp">
+
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="iApp"
+				android:layout_weight="1.0"
+				android:gravity="center"
+				android:textColor="#FF000000"
+				android:padding="12dp"
+				android:id="@+id/mdicon_export_iapp"/>
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="其他"
+				android:layout_weight="1.0"
+				android:gravity="center"
+				android:textColor="#FF000000"
+				android:padding="12dp"
+				android:id="@+id/mdicon_export_other"/>
+
+		</LinearLayout>
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="iApp: /storage/emulated/0/iApp/Userimg/\n其他: /storage/emulated/0/Download/"
+			android:textColor="#FFD50000"
+			android:textSize="12sp"
+			android:layout_marginTop="4dp"/>
+
+	</LinearLayout>
+
+</LinearLayout>
+

@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	android:padding="20dp">
+
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+
+		<ImageView
+			android:src="@android:drawable/ic_delete"
+			android:layout_width="36dp"
+			android:layout_height="36dp"
+			android:id="@+id/appicon"
+			android:layout_marginRight="8dp"/>
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Medium Text"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:layout_toRightOf="@id/appicon"
+			android:layout_centerVertical="true"
+			android:textColor="#FF000000"
+			android:id="@+id/appname"/>
+
+		<ImageView
+			android:src="@drawable/ic_share"
+			android:layout_width="36dp"
+			android:layout_height="36dp"
+			android:layout_alignParentRight="true"
+			android:background="?android:attr/selectableItemBackground"
+			android:id="@+id/appshare"/>
+
+	</RelativeLayout>
+
+	<TableLayout
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:shrinkColumns="1"
+		android:stretchColumns="1">
+
+		<TableRow>
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="包名"
+				android:padding="4dp"/>
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:id="@+id/appbm"
+				android:padding="4dp"
+				android:background="?android:attr/selectableItemBackground"/>
+
+		</TableRow>
+
+		<TableRow>
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:padding="4dp"
+				android:text="启动类"/>
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:padding="4dp"
+				android:id="@+id/appqdl"
+				android:background="?android:attr/selectableItemBackground"/>
+
+		</TableRow>
+
+		<TableRow>
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:padding="4dp"
+				android:text="版本"/>
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:padding="4dp"
+				android:id="@+id/appbb"/>
+
+		</TableRow>
+
+		<TableRow>
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:padding="4dp"
+				android:text="版本号"/>
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:padding="4dp"
+				android:id="@+id/appbbh"/>
+
+		</TableRow>
+
+		<TableRow>
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:padding="4dp"
+				android:text="UID"/>
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:padding="4dp"
+				android:id="@+id/appuid"
+				android:background="?android:attr/selectableItemBackground"/>
+
+		</TableRow>
+
+		<TableRow>
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:padding="4dp"
+				android:text="Flags"/>
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:padding="4dp"
+				android:id="@+id/appflags"
+				android:background="?android:attr/selectableItemBackground"/>
+
+		</TableRow>
+
+		<TableRow>
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:padding="4dp"
+				android:text="首次安装时间"/>
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:padding="4dp"
+				android:id="@+id/appfid"/>
+
+		</TableRow>
+
+		<TableRow>
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:padding="4dp"
+				android:text="最后更新时间"/>
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:padding="4dp"
+				android:id="@+id/applud"/>
+
+		</TableRow>
+
+		<TableRow>
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:padding="4dp"
+				android:text="数据目录"/>
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:padding="4dp"
+				android:id="@+id/appdatadir"/>
+
+		</TableRow>
+
+		<TableRow>
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="源文件目录"
+				android:padding="4dp"/>
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:id="@+id/appsourcedir"
+				android:padding="4dp"/>
+
+		</TableRow>
+
+	</TableLayout>
+
+	<Button
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="提取安装包"
+		android:textColor="#ffffff"
+		android:id="@+id/appqc"
+		android:layout_marginTop="4dp"/>
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="包名 启动类 UID Flags 可复制"
+		android:textSize="12sp"
+		android:textColor="#FFD50000"
+		android:layout_marginTop="4dp"/>
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="已提取App存储于：\n/storage/emulated/0/iBeauty/apks"
+		android:textSize="12sp"
+		android:textColor="#FFD50000"/>
+
+</LinearLayout>
+

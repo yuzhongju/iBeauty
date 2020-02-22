@@ -1,0 +1,17 @@
+{
+	"data":[
+		{"name":"iApp手册", "intro":"iApp官方手册，了解基础知识，快速查询", "py":"iappsc"},
+		{"name":"MD配色", "intro":"", "py":"mdps"},
+		{"name":"MD图标", "intro":"", "py":"mdtb"},
+		{"name":"iApp源码管理", "intro":"打包iapp源码，方便分享", "py":"iappymgl"},
+		{"name":"获取网页源码", "intro":"支持GET, POST", "py":"hqwyym"},
+		{"name":"我的书签", "intro":"常用网址，快速访问，采用码云作为后台", "py":"wdsq"},
+		{"name":"百度网盘提取码", "intro":"查询百度网盘提取码", "py":"bdwptqm"},
+		{"name":"Base64加密", "intro":"", "py":"base64"},
+		{"name":"短链接", "intro":"包括新浪，腾讯", "py":"shorturl"},
+		{"name":"实名信息", "intro":"QQ实名信息认证", "py":"smxx"},
+		{"name":"雨云主机", "intro":"一家较好的主机商，祥见官网，这里只提供签到", "py":"yyzj"},
+		{"name":"应用管理", "intro":"", "py":"yygl"},
+		{"name":"垃圾分类", "intro":"你是什么垃圾", "py":"ljfl"}
+	]
+}
