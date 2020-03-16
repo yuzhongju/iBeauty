@@ -17,13 +17,13 @@ import android.widget.TextView;
 import com.jueze.ibeauty.R;
 import com.jueze.ibeauty.bean.AppDataBean;
 import com.jueze.ibeauty.dialog.MyProgressDialog;
-import com.jueze.ibeauty.util.FileHelper;
-import com.jueze.ibeauty.util.MyClipBoard;
-import com.jueze.ibeauty.util.MyShape;
-import com.jueze.ibeauty.util.MyShare;
-import com.jueze.ibeauty.util.MyToast;
+import com.jueze.ibeauty.util.FileUtil;
+import com.jueze.ibeauty.util.ClipBoardUtil;
+import com.jueze.ibeauty.util.ShapeUtil;
+import com.jueze.ibeauty.util.ShareUtil;
+import com.jueze.ibeauty.util.ToastUtil;
 import java.util.List;
-import com.jueze.ibeauty.util.Mylog;
+import com.jueze.ibeauty.util.LogUtil;
 
 public class AppManagerAdapter extends RecyclerView.Adapter<AppManagerAdapter.ViewHolder> {
 
@@ -68,9 +68,9 @@ public class AppManagerAdapter extends RecyclerView.Adapter<AppManagerAdapter.Vi
                     mPd.dismiss();
                     boolean z = msg.obj;
                     if(z){
-                        MyToast.ts("提取成功");
+                        ToastUtil.show("提取成功");
                     }else{
-                        MyToast.ts("提取失败");
+                        ToastUtil.show("提取失败");
                     }
                     break;
                 case 2:
@@ -79,7 +79,7 @@ public class AppManagerAdapter extends RecyclerView.Adapter<AppManagerAdapter.Vi
                     boolean z2 = sz[0];
                     String toFile = (String) sz[1];
                     if(z2){
-                        MyShare.share(mContext,toFile);
+                        ShareUtil.share(mContext,toFile);
                     }
                     break;
                 default:
@@ -180,8 +180,8 @@ public class AppManagerAdapter extends RecyclerView.Adapter<AppManagerAdapter.Vi
         mAppywjml = dialogView.findViewById(R.id.appsourcedir);
         mAppqc = dialogView.findViewById(R.id.appqc);
 
-        MyShape.set(dialogView,15,15,0,0,"#ffffff");
-        MyShape.set(mAppqc.getBackground(),mContext.getString(R.color.colorPrimary));
+        ShapeUtil.set(dialogView,15,15,0,0,"#ffffff");
+        ShapeUtil.set(mAppqc.getBackground(),mContext.getString(R.color.colorPrimary));
         mAppicon.setImageDrawable(appIcon);
         mAppname.setText(appName);
         mAppbm.setText(packageName);
@@ -211,7 +211,7 @@ public class AppManagerAdapter extends RecyclerView.Adapter<AppManagerAdapter.Vi
                             @Override
                             public void run() {
                                 String toFile = mContext.getExternalCacheDir()+"/apks/"+appName+"_"+versionName+".apk";
-                                boolean z = FileHelper.copyFile(sourceDir, toFile);
+                                boolean z = FileUtil.copyFile(sourceDir, toFile);
                                 Message msg = mHandler.obtainMessage();
                                 msg.what = 2;
                                 msg.obj = new Object[]{z,toFile};
@@ -234,7 +234,7 @@ public class AppManagerAdapter extends RecyclerView.Adapter<AppManagerAdapter.Vi
                             @Override
                             public void run() {
                                 String toFile = Environment.getExternalStorageDirectory()+"/iBeauty/apks/"+appName+"_"+versionName+".apk";
-                                boolean z = FileHelper.copyFile(sourceDir, toFile);
+                                boolean z = FileUtil.copyFile(sourceDir, toFile);
                                 Message msg = mHandler.obtainMessage();
                                 msg.what = 1;
                                 msg.obj = z;
@@ -249,32 +249,32 @@ public class AppManagerAdapter extends RecyclerView.Adapter<AppManagerAdapter.Vi
 
                 @Override
                 public void onClick(View p1) {
-                    MyClipBoard.write(packageName);
-                    MyToast.ts("已写入剪切板");
+                    ClipBoardUtil.write(packageName);
+                    ToastUtil.show("已写入剪切板");
                 }
         });
         mAppqdl.setOnClickListener(new View.OnClickListener(){
 
                 @Override
                 public void onClick(View p1) {
-                    MyClipBoard.write(mainActivity);
-                    MyToast.ts("已写入剪切板");
+                    ClipBoardUtil.write(mainActivity);
+                    ToastUtil.show("已写入剪切板");
                 }
             });
         mAppuid.setOnClickListener(new View.OnClickListener(){
 
                 @Override
                 public void onClick(View p1) {
-                    MyClipBoard.write(uid+"");
-                    MyToast.ts("已写入剪切板");
+                    ClipBoardUtil.write(uid+"");
+                    ToastUtil.show("已写入剪切板");
                 }
             });
         mAppflags.setOnClickListener(new View.OnClickListener(){
 
                 @Override
                 public void onClick(View p1) {
-                    MyClipBoard.write(flags+"");
-                    MyToast.ts("已写入剪切板");
+                    ClipBoardUtil.write(flags+"");
+                    ToastUtil.show("已写入剪切板");
                 }
             });
     }

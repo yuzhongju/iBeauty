@@ -44,9 +44,10 @@
         <activity android:name=".RainyunAppActivity"/>
         <activity android:name=".AppManagerActivity"/>
         <activity android:name=".WebSourceActivity"/>
-        <activity android:name=".MdIconsActivity"/>
+        <activity android:name=".MdIconActivity"/>
         <activity android:name=".BookMarkActivity"/>
         <activity android:name=".OpenSourceActivity"/>
+        <activity android:name=".BrowserActivity"/>
 
         <meta-data
             android:name="android.max_aspect"

@@ -25,9 +25,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import android.widget.LinearLayout;
-import com.jueze.ibeauty.util.CacheClean;
+import com.jueze.ibeauty.util.CacheUtil;
 
 public class AppManagerActivity extends BaseActivity {
+
+
 
     private Toolbar mToolbar;
     private RecyclerView mRv;
@@ -86,11 +88,20 @@ public class AppManagerActivity extends BaseActivity {
 
     @Override
     public void bindViews() {
-        super.bindViews();
         mParent = findViewById(R.id.parent);
         mToolbar = findViewById(R.id.toolbar);
         mRv = findViewById(R.id.recycler_view);
     }
+	@Override
+	public void initData() {
+	}
+
+	@Override
+	public void initEvent() {
+	}
+
+	
+	
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -225,7 +236,7 @@ public class AppManagerActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        CacheClean.clear("apks");
+        CacheUtil.delete("apks");
     }
     
 

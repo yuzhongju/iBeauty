@@ -11,17 +11,20 @@ import com.jueze.ibeauty.bean.PostDataBean;
 import com.jueze.ibeauty.dialog.MyProgressDialog;
 import com.jueze.ibeauty.network.CookieJarImpl;
 import com.jueze.ibeauty.network.PersistentCookieStore;
-import com.jueze.ibeauty.util.MyClipBoard;
-import com.jueze.ibeauty.util.MyNetWorkInfo;
-import com.jueze.ibeauty.util.MyShape;
-import com.jueze.ibeauty.util.MySystem;
-import com.jueze.ibeauty.util.MyToast;
+import com.jueze.ibeauty.util.ClipBoardUtil;
+import com.jueze.ibeauty.util.NetworkUtil;
+import com.jueze.ibeauty.util.ShapeUtil;
+import com.jueze.ibeauty.util.SystemUtil;
+import com.jueze.ibeauty.util.ToastUtil;
 import java.util.ArrayList;
 import java.util.List;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import com.jueze.ibeauty.network.SSLSocketClient;
+import okhttp3.Cookie;
+import com.jueze.ibeauty.util.LogUtil;
 
 public class WebSourceActivity extends BaseActivity implements View.OnClickListener {
 
@@ -55,7 +58,7 @@ public class WebSourceActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     public void bindViews() {
-        super.bindViews();
+        
         mToolbar = findViewById(R.id.toolbar);
 
         mParent = findViewById(R.id.web_src_response);
@@ -70,11 +73,22 @@ public class WebSourceActivity extends BaseActivity implements View.OnClickListe
         mResult = findViewById(R.id.web_src_result);
         
         String color = getString(R.color.colorPrimary);
-        MyShape.set(mGet.getBackground(), getString(R.color.colorPrimary));
-        MyShape.set(mPost.getBackground(), getString(R.color.colorPrimary));
-        MyShape.set(mCopy.getBackground(), color);
+        ShapeUtil.set(mGet.getBackground(), getString(R.color.colorPrimary));
+        ShapeUtil.set(mPost.getBackground(), getString(R.color.colorPrimary));
+        ShapeUtil.set(mCopy.getBackground(), color);
     }
 
+	@Override
+	public void initData() {
+	}
+
+	@Override
+	public void initEvent() {
+	}
+
+
+
+	
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -84,15 +98,15 @@ public class WebSourceActivity extends BaseActivity implements View.OnClickListe
                 String cookie = mCookie.getText().toString();
                 String ua = mUserAgent.getText().toString();
 
-                if (MyNetWorkInfo.get() == 0) {
-                    MyToast.ts("无网络连接");
+                if (NetworkUtil.state() == 0) {
+                    ToastUtil.show("无网络连接");
                 } else {
                     if (url == null || url.equals("")) {
-                        MyToast.ts("请输入链接");
+                        ToastUtil.show("请输入链接");
                     } else {
                         try {
                             sendOkHttp(url, postData, cookie, ua);
-                            MySystem.hideSystemSoftKeyboard(this);
+                            SystemUtil.hideSystemSoftKeyboard(this);
                         } catch (Exception e) {}
                     }
                 }
@@ -105,15 +119,15 @@ public class WebSourceActivity extends BaseActivity implements View.OnClickListe
                 cookie = mCookie.getText().toString();
                 ua = mUserAgent.getText().toString();
 
-                if (MyNetWorkInfo.get() == 0) {
-                    MyToast.ts("无网络连接");
+                if (NetworkUtil.state() == 0) {
+                    ToastUtil.show("无网络连接");
                 } else {
                     if (url == null || url.equals("")) {
-                        MyToast.ts("请输入链接");
+                        ToastUtil.show("请输入链接");
                     } else {
                         try {
                             sendOkHttp(url, postData, cookie, ua);
-                            MySystem.hideSoftKeyboard(this);
+                            SystemUtil.hideSoftKeyboard(this);
                         } catch (Exception e) {}
                     }
                 }
@@ -122,10 +136,10 @@ public class WebSourceActivity extends BaseActivity implements View.OnClickListe
             case R.id.web_src_copy:
                 String res = mResult.getText().toString();
                 if(res==null || res.equals("")){
-                    MyToast.ts("没有数据");
+                    ToastUtil.show("没有数据");
                 }else{
-                    MyClipBoard.write(res);
-                    MyToast.ts("已写入剪切板");
+                    ClipBoardUtil.write(res);
+                    ToastUtil.show("已写入剪切板");
                 }
                 break;
             default:
@@ -144,15 +158,17 @@ public class WebSourceActivity extends BaseActivity implements View.OnClickListe
                 public void run() {
 
                     try {
-                        Response resp = wl.hq(url, strPostData, cookie, ua);
-
-                        if (resp.isSuccessful()) {
+                        Response resp = wl.hq(url, strPostData, cookie, ua, false);
+						if(resp==null){
+							resp = wl.hq(url, strPostData, cookie, ua, true);
+						}
+						if (resp!=null && resp.isSuccessful()) {
                             String headers = resp.headers().toString();
                             String body = resp.body().string();
                             setWebData(headers, body);
                         } else {
                             mPd.dismiss();
-                            MyToast.ts("获取失败");
+                            ToastUtil.show("获取失败");
                         }
                     } catch (Exception e) {}
                     
@@ -179,13 +195,18 @@ public class WebSourceActivity extends BaseActivity implements View.OnClickListe
 
 
     static class wl {
-        public static Response hq(String url, String strPostData, String cookie, String ua) {
+        public static Response hq(String url, String strPostData, String cookie, String ua, boolean ignoreSLL) {
             Response response = null;
             try {
-                CookieJarImpl cookieJar = new CookieJarImpl(new PersistentCookieStore(mContext));
+				PersistentCookieStore cookieStore = new PersistentCookieStore(mContext);
+                CookieJarImpl cookieJar = new CookieJarImpl(cookieStore);
                 OkHttpClient.Builder builder = new OkHttpClient.Builder();
                 builder.cookieJar(cookieJar);
-
+				if(ignoreSLL){
+					builder.sslSocketFactory(SSLSocketClient.getSSLSocketFactory());
+					builder.hostnameVerifier(SSLSocketClient.getHostnameVerifier());
+				}
+				
                 OkHttpClient client = builder.build();
 
                 Request.Builder requestBuilder = new Request.Builder();

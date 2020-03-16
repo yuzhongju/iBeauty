@@ -10,11 +10,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.jueze.ibeauty.R;
 import com.jueze.ibeauty.bean.PackSourceBean;
-import com.jueze.ibeauty.util.FileHelper;
-import com.jueze.ibeauty.util.MyShape;
-import com.jueze.ibeauty.util.MyShare;
-import com.jueze.ibeauty.util.MyToast;
-import com.jueze.ibeauty.util.dip2px;
+import com.jueze.ibeauty.util.FileUtil;
+import com.jueze.ibeauty.util.ShapeUtil;
+import com.jueze.ibeauty.util.ShareUtil;
+import com.jueze.ibeauty.util.ToastUtil;
+import com.jueze.ibeauty.util.DisplayUtil;
 import java.util.List;
 
 public class PackedAdapter extends RecyclerView.Adapter<PackedAdapter.ViewHolder> {
@@ -95,21 +95,21 @@ public class PackedAdapter extends RecyclerView.Adapter<PackedAdapter.ViewHolder
         Button delBtn = view.findViewById(R.id.packed_delete);
 
         String color = mContext.getString(R.color.colorPrimary);
-        MyShape.set(shareBtn.getBackground(), color);
-        MyShape.set(delBtn.getBackground(), color);
+        ShapeUtil.set(shareBtn.getBackground(), color);
+        ShapeUtil.set(delBtn.getBackground(), color);
         packedTxt.setText(zipFileName);
 
         builder = new AlertDialog.Builder(mContext);
         builder.setView(view);
         alertDialog = builder.create();
         alertDialog.show();
-        alertDialog.getWindow().setLayout(dip2px.to(240), ViewGroup.LayoutParams.WRAP_CONTENT);
+        alertDialog.getWindow().setLayout(DisplayUtil.dip2px(240), ViewGroup.LayoutParams.WRAP_CONTENT);
 
         shareBtn.setOnClickListener(new View.OnClickListener(){
 
                 @Override
                 public void onClick(View v) {
-                    MyShare.share(mContext, zipFilePath);
+                    ShareUtil.share(mContext, zipFilePath);
                 }
             });
         delBtn.setOnClickListener(new View.OnClickListener(){
@@ -117,11 +117,11 @@ public class PackedAdapter extends RecyclerView.Adapter<PackedAdapter.ViewHolder
                 @Override
                 public void onClick(View v) {
                     alertDialog.dismiss();
-                    if (FileHelper.deleteFile(zipFilePath)) {
+                    if (FileUtil.deleteFile(zipFilePath)) {
                         remove(position);
-                        MyToast.ts("删除成功");
+                        ToastUtil.show("删除成功");
                     } else {
-                        MyToast.ts("删除失败");
+                        ToastUtil.show("删除失败");
                     }
                 }
             });

@@ -13,9 +13,9 @@ import android.widget.TextView;
 import com.jueze.ibeauty.bean.PostDataBean;
 import com.jueze.ibeauty.dialog.MyProgressDialog;
 import com.jueze.ibeauty.network.MyOkHttp;
-import com.jueze.ibeauty.util.MyNetWorkInfo;
-import com.jueze.ibeauty.util.MyShape;
-import com.jueze.ibeauty.util.MyToast;
+import com.jueze.ibeauty.util.NetworkUtil;
+import com.jueze.ibeauty.util.ShapeUtil;
+import com.jueze.ibeauty.util.ToastUtil;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,8 +51,8 @@ public class RainyunAppActivity extends BaseActivity {
 
                 @Override
                 public void onClick(View p1) {
-                    if(MyNetWorkInfo.get() == 0){
-                        MyToast.ts("无网络连接");
+                    if(NetworkUtil.state() == 0){
+                        ToastUtil.show("无网络连接");
                     }else{
                         signin();
                     }
@@ -84,21 +84,29 @@ public class RainyunAppActivity extends BaseActivity {
     
     @Override
     public void bindViews() {
-        super.bindViews();
+        
         mParent = findViewById(R.id.yy_parent);
         mToolbar = findViewById(R.id.toolbar);
         mScore = findViewById(R.id.yy_score);
         mSignin = findViewById(R.id.yy_signin);
     }
-    
-    private void initUI(){
-        MyShape.set(mSignin.getBackground(),getString(R.color.colorPrimary));
-        MyShape.set(mParent,10,10,10,10,"#f0f0ff");
-    }
-    
+
+	@Override
     public void initData(){
         http = new MyOkHttp();
     }
+
+	@Override
+	public void initEvent() {
+	}
+
+    
+
+    private void initUI(){
+        ShapeUtil.set(mSignin.getBackground(),getString(R.color.colorPrimary));
+        ShapeUtil.set(mParent,10,10,10,10,"#f0f0ff");
+    }
+    
     
     private void firstLoad(){
         new Thread(new Runnable(){
@@ -162,13 +170,15 @@ public class RainyunAppActivity extends BaseActivity {
                     try {
                         String body = response.body().string();
                         if(body.equals("1")){
-                            MyToast.ts("签到成功");
+                            ToastUtil.show("签到成功");
                             firstLoad();
                         }else{
-                            MyToast.ts("签到失败");
+                            ToastUtil.show("签到失败");
                         }
                     } catch (IOException e) {}
                 }
         });
     }
+
+	
 }

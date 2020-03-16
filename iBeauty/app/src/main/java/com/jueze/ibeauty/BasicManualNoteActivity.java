@@ -20,11 +20,22 @@ public class BasicManualNoteActivity extends BaseActivity {
 
     @Override
     public void bindViews() {
-        super.bindViews();
+        
         mToolbar = findViewById(R.id.toolbar);
         mEdittext = findViewById(R.id.content);
     }
 
+	@Override
+	public void initData() {
+	}
+
+	@Override
+	public void initEvent() {
+	}
+
+
+
+	
     @Override
     public void setStatusBar() {
         super.setStatusBar();

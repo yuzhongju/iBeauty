@@ -32,7 +32,7 @@
     </group>
 
     <group android:checkableBehavior="single">
-        <item android:title="Open Source">
+        <item android:title="Other">
             <menu>
                 <item
                     android:id="@+id/nav_open_source"

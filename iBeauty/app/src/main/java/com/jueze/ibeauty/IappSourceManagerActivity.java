@@ -1,27 +1,26 @@
 package com.jueze.ibeauty;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import com.ashokvarma.bottomnavigation.BottomNavigationBar;
-import com.ashokvarma.bottomnavigation.BottomNavigationItem;
-import com.jueze.ibeauty.adapter.PackSrcFragmentAdapter;
 import com.jueze.ibeauty.fragment.PackedFragment;
 import com.jueze.ibeauty.fragment.ProjectFragment;
 import java.util.ArrayList;
 import java.util.List;
-import com.jueze.ibeauty.util.Mylog;
 
 public class IappSourceManagerActivity extends BaseActivity {
 
     //widget
     private Toolbar mToolbar;
     private ViewPager mVp;
-    private BottomNavigationBar mBnb;
+	private TabLayout mTab;
 
     //data
-    private List<Fragment> mFragmentList = mFragmentList = new ArrayList<>();
+    private List<Fragment> mFragmentList = new ArrayList<>();
+	private List<String> mTabTitleList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,35 +34,13 @@ public class IappSourceManagerActivity extends BaseActivity {
 
     @Override
     public void bindViews() {
-        super.bindViews();
         mToolbar = findViewById(R.id.toolbar);
         mVp = findViewById(R.id.view_pager);
-        mBnb = findViewById(R.id.bnb);
+		mTab = findViewById(R.id.tab_layout);
     }
 
-    private void handleViewPager() {
-        mBnb.setMode(BottomNavigationBar.MODE_SHIFTING);
-        mBnb.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_RIPPLE);
-        mBnb.addItem(new BottomNavigationItem(R.drawable.ic_manage, "Project"))
-            .addItem(new BottomNavigationItem(R.drawable.ic_pack, "iApp"))
-            .addItem(new BottomNavigationItem(R.drawable.ic_pack, "Zip"))
-            .initialise();
-        mBnb.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener(){
-
-                @Override
-                public void onTabSelected(int position) {
-                    mVp.setCurrentItem(position);
-                }
-
-                @Override
-                public void onTabUnselected(int p1) {
-                }
-
-                @Override
-                public void onTabReselected(int p1) {
-                }
-            });
-
+	@Override
+	public void initData() {
         List<String> backupsPath = new ArrayList<>();
         backupsPath.add(Environment.getExternalStorageDirectory()+"/iBeauty/backups/iapp");
         backupsPath.add(Environment.getExternalStorageDirectory()+"/iBeauty/backups/zip");
@@ -71,25 +48,42 @@ public class IappSourceManagerActivity extends BaseActivity {
         mFragmentList.add(new ProjectFragment());
         mFragmentList.add(new PackedFragment(backupsPath.get(0)));
         mFragmentList.add(new PackedFragment(backupsPath.get(1)));
-        
+        mTabTitleList.add("项目");
+		mTabTitleList.add("iApp");
+		mTabTitleList.add("zip");
+	}
+
+	@Override
+	public void initEvent() {
+	}
+
+
+
+	
+    private void handleViewPager() {
+		
+		
         mVp.setOffscreenPageLimit(mFragmentList.size());
-        mVp.setOnPageChangeListener(new ViewPager.OnPageChangeListener(){
+        //mVp.setAdapter(new PackSrcFragmentAdapter(getSupportFragmentManager(), mTabTitleList,mFragmentList));
+		mVp.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()){
 
-                @Override
-                public void onPageScrolled(int p1, float p2, int p3) {
-                }
+				@Override
+				public int getCount() {
+					return mFragmentList.size();
+				}
 
-                @Override
-                public void onPageSelected(int position) {
-                    mBnb.selectTab(position);
-                }
-
-                @Override
-                public void onPageScrollStateChanged(int p1) {
-                }
-            });
-        mVp.setAdapter(new PackSrcFragmentAdapter(getSupportFragmentManager(), mFragmentList));
-
+				@Override
+				public Fragment getItem(int p1) {
+					return mFragmentList.get(p1);
+				}
+				
+				public CharSequence getPageTitle(int position){
+					return mTabTitleList.get(position);
+				}
+			
+			
+		});
+		mTab.setupWithViewPager(mVp);
 
     }
 

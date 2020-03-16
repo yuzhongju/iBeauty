@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import com.jueze.ibeauty.R;
 import com.jueze.ibeauty.adapter.IappProjectAdapter;
 import com.jueze.ibeauty.bean.IappProjectBean;
-import com.jueze.ibeauty.util.FileHelper;
+import com.jueze.ibeauty.util.FileUtil;
 import java.io.File;
 import java.text.Collator;
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class ProjectFragment extends Fragment {
         handleData();
         return mView;
     }
-    
+
     private void handleData() {
         if (adapter != null) adapter.removeAll();
         String dir = "/storage/emulated/0/iApp/ProjectApp";
@@ -51,7 +51,7 @@ public class ProjectFragment extends Fragment {
 
             for (File f : fileList) {
                 String manifestPath = f + "/AndroidManifest.xml";
-                String manifestTxt = FileHelper.readTxtFromSD(manifestPath);
+                String manifestTxt = FileUtil.readTxtFromSD(manifestPath);
 
                 Document doc = Jsoup.parse(manifestTxt);
                 Elements etitle = doc.getElementsByTag("title");
@@ -66,23 +66,23 @@ public class ProjectFragment extends Fragment {
                 String path = f.getPath();
                 mDataList.add(new IappProjectBean(title, yuv, bm, remark, icon, path));
             }
-            
+
             Collections.sort(mDataList, new Comparator<IappProjectBean>(){
 
                     @Override
                     public int compare(IappProjectBean p1, IappProjectBean p2) {
                         Comparator<Object> com = Collator.getInstance(Locale.CHINA);
-                        
+
                         return com.compare(p1.getTitle(), p2.getTitle());
                     }
-                    
-                
-            });
+
+
+				});
             LinearLayoutManager lm = new LinearLayoutManager(mContext);
             mRv.setLayoutManager(lm);
 
-                adapter = new IappProjectAdapter(mDataList);
-            
+			adapter = new IappProjectAdapter(mDataList);
+
             mRv.setAdapter(adapter);
 
         } catch (Exception e) {}

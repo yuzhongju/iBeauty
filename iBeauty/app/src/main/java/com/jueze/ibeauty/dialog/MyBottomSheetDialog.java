@@ -7,10 +7,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.jueze.ibeauty.R;
-import com.jueze.ibeauty.util.MyShape; //此处导入具体看自己的shape类位置
+import com.jueze.ibeauty.util.ShapeUtil; //此处导入具体看自己的shape类位置
 
 public class MyBottomSheetDialog {
 
+	private OnBsdClickListener listener;
     private Context mContext;
     private BottomSheetDialog bsd;
     private View mView;
@@ -46,8 +47,8 @@ public class MyBottomSheetDialog {
         mEditText = mView.findViewById(R.id.bsd_bjk);
         mButton = mView.findViewById(R.id.bsd_btn);
 
-        MyShape.set(mView, 15, 15, 0, 0, "#ffffff");
-        MyShape.set(mButton.getBackground(), mContext.getString(R.color.colorPrimary));
+        ShapeUtil.set(mView, 15, 15, 0, 0, "#ffffff");
+        ShapeUtil.set(mButton.getBackground(), mContext.getString(R.color.colorPrimary));
 
         if (mTitle != null) {
             mTextview.setText(mTitle);
@@ -60,7 +61,17 @@ public class MyBottomSheetDialog {
         }
         bsd = new BottomSheetDialog(mContext, R.style.BottomSheetStyle);
         bsd.setContentView(mView);
+		
+		mButton.setOnClickListener(new View.OnClickListener(){
 
+				@Override
+				public void onClick(View p1) {
+					if(listener!=null){
+						listener.onBsdClick(mEditText.getText().toString());
+					}
+				}
+				
+		});
     }
 
     public void show() {
@@ -93,5 +104,13 @@ public class MyBottomSheetDialog {
     public void setHint(String hint) {
         this.mEditText.setHint(hint);
     }
+	
+	public interface OnBsdClickListener{
+		public void onBsdClick(String key);
+	}
+	
+	public void setOnBsdClickListener(OnBsdClickListener listener){
+		this.listener = listener;
+	}
 }
 

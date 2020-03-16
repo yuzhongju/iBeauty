@@ -37,14 +37,14 @@ public class OpenSourceActivity extends BaseActivity {
 
     @Override
     public void bindViews() {
-        super.bindViews();
+       
         mToolbar = findViewById(R.id.toolbar);
         mListview  = findViewById(R.id.list_view);
     }
 
     @Override
     public void initData() {
-        super.initData();
+        
         list.add(new OpenSourceBean("gson-2.8.5","A Java serialization/deserialization library to convert Java Objects into JSON and back","https://github.com/google/gson"));
         list.add(new OpenSourceBean("okhttp-4.2.1","Square’s meticulous HTTP client for Java and Kotlin.","https://github.com/square/okhttp"));
         list.add(new OpenSourceBean("CircleImageView-2.1.0","A circular ImageView for Android","https://github.com/hdodenhof/CircleImageView"));
@@ -52,6 +52,12 @@ public class OpenSourceActivity extends BaseActivity {
         list.add(new OpenSourceBean("StatusBarUtil-1.4.0","A util for setting status bar style on Android App.","https://github.com/laobie/StatusBarUtil"));
         list.add(new OpenSourceBean("jsoup-1.12.1","Java HTML Parser, with best of DOM, CSS, and jquery","https://github.com/jhy/jsoup"));
     }
+
+	@Override
+	public void initEvent() {
+	}
+
     
+	
     
 }

@@ -3,11 +3,10 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.jaeger.library.StatusBarUtil;
 import com.jueze.ibeauty.adapter.BlendentAdapter;
 import com.jueze.ibeauty.bean.BlendentBean;
-import com.jueze.ibeauty.util.FileHelper;
+import com.jueze.ibeauty.util.FileUtil;
 import java.util.ArrayList;
 
 public class MdBlendentActivity extends BaseActivity {
@@ -15,7 +14,6 @@ public class MdBlendentActivity extends BaseActivity {
     //widget
     private Toolbar mToolbar;
     private RecyclerView mRv;
-    private BottomNavigationBar mBnb;
     private BlendentAdapter adapter;
 
     //data
@@ -32,12 +30,20 @@ public class MdBlendentActivity extends BaseActivity {
 
     @Override
     public void bindViews() {
-        super.bindViews();
         mToolbar = findViewById(R.id.toolbar);
         mRv = findViewById(R.id.recycler_view);
-        mBnb = findViewById(R.id.bnb);
     }
 
+	@Override
+	public void initData() {
+	}
+
+	@Override
+	public void initEvent() {
+	}
+
+
+	
     @Override
     public void setStatusBar() {
         super.setStatusBar();
@@ -47,7 +53,7 @@ public class MdBlendentActivity extends BaseActivity {
 
     private void handleDoc() {
         blendentList = new ArrayList<>();
-        String nr = FileHelper.readTxtFromAssets("md");
+        String nr = FileUtil.readTxtFromAssets("md");
         String[] docList = nr.split("\n");
         for (String doc : docList) {
             String name = doc.substring(0, doc.indexOf("["));

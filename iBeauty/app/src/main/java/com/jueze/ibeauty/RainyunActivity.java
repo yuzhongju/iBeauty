@@ -5,20 +5,21 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import com.jueze.ibeauty.RainyunAppActivity;
 import com.jueze.ibeauty.bean.PostDataBean;
 import com.jueze.ibeauty.dialog.MyProgressDialog;
 import com.jueze.ibeauty.network.CookieStore;
 import com.jueze.ibeauty.network.MyOkHttp;
-import com.jueze.ibeauty.util.MyIntent;
-import com.jueze.ibeauty.util.MyNetWorkInfo;
-import com.jueze.ibeauty.util.MyShape;
 import com.jueze.ibeauty.util.MyString;
-import com.jueze.ibeauty.util.MyToast;
+import com.jueze.ibeauty.util.NetworkUtil;
+import com.jueze.ibeauty.util.ShapeUtil;
+import com.jueze.ibeauty.util.ToastUtil;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,12 +30,13 @@ import okhttp3.Response;
 
 public class RainyunActivity extends BaseActivity {
 
+
     private Context mContext;
     //widget
     private Toolbar mToolbar;
     private EditText mUser, mPass;
     private Button mLogin;
-   
+
     private MyProgressDialog mPd;
     private SharedHelper sh;
     private MyOkHttp http;
@@ -42,8 +44,8 @@ public class RainyunActivity extends BaseActivity {
     private String username;
     private String password;
     private final String BASE_URL = "https://www.rainyun.com/";
-    private final String LOGIN = BASE_URL+"login";
-    
+    private final String LOGIN = BASE_URL + "login";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,27 +53,43 @@ public class RainyunActivity extends BaseActivity {
         mContext = this;
         setSupportActionBar(mToolbar);
         setBack("雨云主机");
-        
+
+    }
+
+	@Override
+    public void bindViews() {
+        mToolbar = findViewById(R.id.toolbar);
+        mUser = findViewById(R.id.username);
+        mPass = findViewById(R.id.password);
+        mLogin = findViewById(R.id.login);
+    }
+
+	@Override
+	public void initData() {
+        ShapeUtil.set(mLogin.getBackground(), getString(R.color.colorPrimary));
         sh = new SharedHelper();
-        MyShape.set(mLogin.getBackground(), getString(R.color.colorPrimary));
+	}
+
+	@Override
+	public void initEvent() {
         mLogin.setOnClickListener(new View.OnClickListener(){
 
                 @Override
                 public void onClick(View view) {
                     username = mUser.getText().toString().trim();
                     password = mPass.getText().toString().trim();
-                    if(MyNetWorkInfo.get() == 0){
-                        MyToast.ts("无网络连接");
-                    }else{
-                        if(username == null || username.length() == 0 || password == null || password.length() == 0){
-                            MyToast.ts("请填写完整信息");
-                        }else{
-                            login();
-                        }
+                    if (NetworkUtil.state() == 0) {
+                        ToastUtil.show("无网络连接");
+                    } else if (!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)) {
+						login();
+					} else {
+						ToastUtil.show("请填写完整信息");
                     }
                 }
-        });
-    }
+			});
+	}
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -81,7 +99,7 @@ public class RainyunActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 break;
@@ -94,10 +112,7 @@ public class RainyunActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    
-    
-
-    private void login(){
+    private void login() {
         mPd = new MyProgressDialog(mContext);
         mPd.setMessage("正在登录...");
         mPd.show();
@@ -105,126 +120,119 @@ public class RainyunActivity extends BaseActivity {
 
                 @Override
                 public void run() {
-                    
+
                     http = new MyOkHttp();
                     Response response = http.getBySync(LOGIN);
-                    
+					//清除缓存
                     CookieStore cookieStore = http.getCookieJar().getCookieStore();
                     List<Cookie> cookies = cookieStore.get(http.getHttpUrl());
-                    for(Cookie cookie : cookies){
+                    for (Cookie cookie : cookies) {
                         cookieStore.remove(http.getHttpUrl(), cookie);
                     }
-                    
+
                     try {
                         Thread.sleep(200);
                     } catch (InterruptedException e) {}
-                   
+
                     response = http.getBySync(LOGIN);
                     String token = getToken(response);
-                    username = mUser.getText().toString().trim();
-                    password = mPass.getText().toString().trim();
                     List<PostDataBean> postDataList = new ArrayList<>();
                     postDataList.add(new PostDataBean("_token", token));
                     postDataList.add(new PostDataBean("log_name", username));
                     postDataList.add(new PostDataBean("log_pass", password));
-                    
+
                     try {
                         Thread.sleep(200);
                     } catch (InterruptedException e) {}
                     response = http.postWithListBySync(LOGIN, postDataList);
                     handleLogin(response);
-                    
+
                 }
-        }).start();
+			}).start();
     }
-    
-    private void handleLogin(final Response response){
+
+    private void handleLogin(final Response response) {
         runOnUiThread(new Runnable(){
                 @Override
                 public void run() {
                     mPd.dismiss();
-                    if(!response.isSuccessful()){
-                        MyToast.ts("登录失败");
-                    }else{
+                    if (!response.isSuccessful()) {
+                        ToastUtil.show("登录失败");
+                    } else {
                         try {
                             String body = response.body().string();
-                            if(body.equals("0")){
-                                MyToast.ts("登录失败");
-                            }else if(body.equals("1")){
-                                MyToast.ts("登录成功");
+                            if (body.equals("0")) {
+                                ToastUtil.show("登录失败");
+                            } else if (body.equals("1")) {
+                                ToastUtil.show("登录成功");
                                 //登录成功保存用户信息
                                 sh.save(username, password);
-                                MyIntent.go(RainyunAppActivity.class);
+								mContext.startActivity(new Intent(mContext, RainyunAppActivity.class));
                                 finish();
                             }
                         } catch (IOException e) {}
                     }
 
                 }
-        });
+			});
     }
-    private String getToken(Response response){
+    private String getToken(Response response) {
         String token = "";
         try {
             String body = response.body().string();
             String regex = "token:\"(.*?)\"";
-            token = MyString.qc(body,regex);
+            token = MyString.qc(body, regex);
         } catch (IOException e) {}
-        
+
         return token;
 
     }
-    
+
     @Override
     protected void onStart() {
         super.onStart();
         Map<String, String> data = sh.read();
-        mUser.setText(data.get("username"));
-        mPass.setText(data.get("password"));
+		username = data.get("username");
+		password = data.get("password");
+		if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)){
+			mUser.setText(username);
+			mPass.setText(password);
+		}
     }
 
-    
-    @Override
-    public void bindViews() {
-        super.bindViews();
-        mToolbar = findViewById(R.id.toolbar);
-        mUser = findViewById(R.id.username);
-        mPass = findViewById(R.id.password);
-        mLogin = findViewById(R.id.login);
-    }
-    
-    class SharedHelper{
-        
-        private String filename;
-        
-        public SharedHelper(){
+
+
+
+
+    class SharedHelper {
+
+        public SharedHelper() {
         }
-        
-        public void save(String name, String pass){
+
+        public void save(String name, String pass) {
             SharedPreferences sp = mContext.getSharedPreferences("rainyun", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sp.edit();
             editor.putString("username", name);
             editor.putString("password", pass);
-            editor.commit();
+            editor.apply();
         }
-        
-        public Map<String, String> read(){
+
+        public Map<String, String> read() {
             Map<String, String> data = new HashMap<String, String>();
             SharedPreferences sp = mContext.getSharedPreferences("rainyun", Context.MODE_PRIVATE);
             data.put("username", sp.getString("username", ""));
             data.put("password", sp.getString("password", ""));
             return data;
         }
-        
-        public void clear(){
-            SharedPreferences sp = mContext.getSharedPreferences("rainyun", Context.MODE_PRIVATE);
 
+        public void clear() {
+            SharedPreferences sp = mContext.getSharedPreferences("rainyun", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sp.edit();
             editor.clear();
-            editor.commit();
-            
+            editor.apply();
+
         }
-        
+
     }
 
 }

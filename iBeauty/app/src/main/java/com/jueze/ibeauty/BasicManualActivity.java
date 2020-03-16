@@ -1,36 +1,37 @@
 package com.jueze.ibeauty;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import com.ashokvarma.bottomnavigation.BottomNavigationBar;
-import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.jaeger.library.StatusBarUtil;
 import com.jueze.ibeauty.adapter.ManualAdapter;
-import com.jueze.ibeauty.bean.ManualBean;
-import com.jueze.ibeauty.util.FileHelper;
+import com.jueze.ibeauty.fragment.ManualFragment;
 import java.util.ArrayList;
+import java.util.List;
 
 public class BasicManualActivity extends BaseActivity {
 
     //widget
     private Toolbar mToolbar;
-    private RecyclerView mRecyclerView;
-    private BottomNavigationBar mBnb;
     private ManualAdapter adapter;
     private LinearLayout mParent;
     private SearchView mSearchView;
-    
+    private ViewPager mViewPager;
+	private TabLayout mTab;
+	private ManualFragment fg, fg2, fg3, fg4, fg5;
     //data
-    private ArrayList<String> fileList;
-    private ArrayList<ManualBean> mDocList;
+	private List<Fragment> mFragments = new ArrayList<>();
+	private List<String> mTabTitles = new ArrayList<>();
+    private List<String> fileList = new ArrayList<>();
     private String rootDir;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,113 +39,74 @@ public class BasicManualActivity extends BaseActivity {
         setContentView(R.layout.activity_basic_manual);
         setSupportActionBar(mToolbar);
         setBack("iApp手册");
-        
-        initData();
-        
-        handleDoc(0);
-        handleBnb();
+		handleViewPager();
     }
 
-    
+
     @Override
     public void setStatusBar() {
         super.setStatusBar();
-        StatusBarUtil.setColorForSwipeBack(this,getResources().getColor(R.color.colorPrimary),0);
+        StatusBarUtil.setColorForSwipeBack(this, getResources().getColor(R.color.colorPrimary), 0);
     }
 
     @Override
     public void bindViews() {
-        super.bindViews();
         mToolbar = findViewById(R.id.toolbar);
-        mRecyclerView = findViewById(R.id.recycler_view);
-        mBnb = findViewById(R.id.bnb);
+		mViewPager = findViewById(R.id.view_pager);
+		mTab = findViewById(R.id.tab_layout);
         mParent = findViewById(R.id.parent);
     }
-    
-    public void initData(){
-        
+
+	@Override
+    public void initData() {
         rootDir = Environment.getExternalStorageDirectory().toString();
-        fileList = new ArrayList<>();
-        fileList.add(rootDir+"/iApp/iyu-helpV5.0.txt");
-        fileList.add(rootDir+"/iApp/iyu-helpV3.0.txt");
-        fileList.add(rootDir+"/iApp/ijs-helpV3.0.txt");
-        fileList.add(rootDir+"/iApp/ilua-helpV3.0.txt");
-        fileList.add(rootDir+"/iApp/ijava-helpV3.0.txt");
+		mFragments.add(fg = new ManualFragment(0, fileList));
+		mFragments.add(fg2 = new ManualFragment(1, fileList));
+		mFragments.add(fg3 = new ManualFragment(2, fileList));
+		mFragments.add(fg4 = new ManualFragment(3, fileList));
+		mFragments.add(fg5 = new ManualFragment(4, fileList));
+		mTabTitles.add("iyu5");
+		mTabTitles.add("iyu3");
+		mTabTitles.add("ijs3");
+		mTabTitles.add("ilua3");
+		mTabTitles.add("ijava3");
+        fileList.add(rootDir + "/iApp/iyu-helpV5.0.txt");
+        fileList.add(rootDir + "/iApp/iyu-helpV3.0.txt");
+        fileList.add(rootDir + "/iApp/ijs-helpV3.0.txt");
+        fileList.add(rootDir + "/iApp/ilua-helpV3.0.txt");
+        fileList.add(rootDir + "/iApp/ijava-helpV3.0.txt");
     }
-    private void handleBnb(){
-        mBnb.setMode(BottomNavigationBar.MODE_SHIFTING);
-        mBnb.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_RIPPLE);
-        mBnb.addItem(new BottomNavigationItem(R.drawable.ic_manual, "iyu5"))
-            .addItem(new BottomNavigationItem(R.drawable.ic_manual, "iyu3"))
-            .addItem(new BottomNavigationItem(R.drawable.ic_manual, "ijs3"))
-            .addItem(new BottomNavigationItem(R.drawable.ic_manual, "ilua3"))
-            .addItem(new BottomNavigationItem(R.drawable.ic_manual, "ijava3"))
-            .initialise();
-            
-        mBnb.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener(){
 
-                @Override
-                public void onTabSelected(int position) {
-                    handleDoc(position);
-                }
+	@Override
+	public void initEvent() {
+	}
 
-                @Override
-                public void onTabUnselected(int p1) {
-                }
+	private void handleViewPager() {
+		mViewPager.setOffscreenPageLimit(mFragments.size());
+		mViewPager.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()){
 
-                @Override
-                public void onTabReselected(int p1) {
-                }
-            });
-    }
-    
-    private void handleDoc(int z){
-        if(adapter != null){
-            adapter.removeAll();
-        }
-        mDocList = new ArrayList<>();
-        String nr = FileHelper.readTxtFromSD(fileList.get(z));
-        nr = nr.substring(nr.indexOf("【")+1);
-        String[] docList = nr.split("【");
-        for(String doc : docList){
-            String title = doc.substring(0,doc.indexOf("】")).trim();
-            String content = doc.substring(doc.indexOf("】")+1).trim();
-            mDocList.add(new ManualBean(title, content));
-        }
-        
-        StaggeredGridLayoutManager lm = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(lm);
-        adapter = new ManualAdapter(mDocList);
-        mRecyclerView.setAdapter(adapter);
-    }
-    
+				@Override
+				public int getCount() {
+					return mFragments.size();
+				}
 
-    private void searchDoc(int z, String key){
-        if(adapter != null){
-            adapter.removeAll();
-        }
-        mDocList = new ArrayList<>();
-        String nr = FileHelper.readTxtFromSD(fileList.get(z));
-        nr = nr.substring(nr.indexOf("【")+1);
-        String[] docList = nr.split("【");
-        for(String doc : docList){
-            String title = doc.substring(0,doc.indexOf("】")).trim();
-            String content = doc.substring(doc.indexOf("】")+1).trim();
-            if(title.toLowerCase().contains(key.toLowerCase()) || content.toLowerCase().contains(key.toLowerCase())){
-                mDocList.add(new ManualBean(title, content));
-            }
-        }
+				@Override
+				public Fragment getItem(int position) {
+					return mFragments.get(position);
+				}
 
-        StaggeredGridLayoutManager lm = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(lm);
-        adapter = new ManualAdapter(mDocList);
-        mRecyclerView.setAdapter(adapter);
-    }
+				public CharSequence getPageTitle(int position) {
+					return mTabTitles.get(position);
+				}
+			});
+		mTab.setupWithViewPager(mViewPager);
+	}
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_menu, menu);
-        
+
         MenuItem searchItem = menu.findItem(R.id.search);
         mSearchView = (SearchView)MenuItemCompat.getActionView(searchItem);
         mSearchView.setIconifiedByDefault(true);
@@ -152,7 +114,7 @@ public class BasicManualActivity extends BaseActivity {
         //焦点
         mSearchView.setFocusable(true);
         mSearchView.requestFocusFromTouch();
-        
+
         mSearchView.setQueryHint("输入关键字");
         EditText editText = mSearchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
         editText.setTextSize(14);
@@ -160,19 +122,53 @@ public class BasicManualActivity extends BaseActivity {
 
                 @Override
                 public boolean onQueryTextSubmit(String p1) {
-                    int z = mBnb.getCurrentSelectedPosition();
-                    searchDoc(z, p1);
+					int z = mViewPager.getCurrentItem();
+					switch (z) {
+						case 0:
+							fg.filter(p1);
+							break;
+						case 1:
+							fg2.filter(p1);
+							break;
+						case 2:
+							fg3.filter(p1);
+							break;
+						case 3:
+							fg4.filter(p1);
+							break;
+						case 4:
+							fg5.filter(p1);
+							break;
+						default:
+					}
                     return false;
                 }
 
                 @Override
                 public boolean onQueryTextChange(String p1) {
-                    int z = mBnb.getCurrentSelectedPosition();
-                    searchDoc(z, p1);
+                    int z = mViewPager.getCurrentItem();
+					switch (z) {
+						case 0:
+							fg.filter(p1);
+							break;
+						case 1:
+							fg2.filter(p1);
+							break;
+						case 2:
+							fg3.filter(p1);
+							break;
+						case 3:
+							fg4.filter(p1);
+							break;
+						case 4:
+							fg5.filter(p1);
+							break;
+						default:
+					}
                     return false;
                 }
-        });
-        
+			});
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -181,8 +177,8 @@ public class BasicManualActivity extends BaseActivity {
         super.onResume();
         clearFocus();
     }
-    
-    private void clearFocus(){
+
+    private void clearFocus() {
         if (mSearchView != null) {
             mSearchView.onActionViewCollapsed();
             mSearchView.clearFocus();
@@ -192,7 +188,7 @@ public class BasicManualActivity extends BaseActivity {
         mParent.requestFocus();
     }
 
-    
-    
-    
+
+
+
 }

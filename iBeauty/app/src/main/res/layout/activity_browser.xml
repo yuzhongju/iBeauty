@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical">
+
+	<LinearLayout
+		android:background="#ffffff"
+		android:elevation="2dp"
+		android:padding="10dp"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:gravity="center_vertical"
+		android:focusable="true"
+		android:focusableInTouchMode="true">
+
+		<ImageView
+			android:id="@+id/exit"
+			android:layout_width="18dp"
+			android:layout_height="18dp"
+			android:src="@drawable/browser_exit"
+			android:background="?android:attr/selectableItemBackground"/>
+
+		<MultiAutoCompleteTextView
+			android:id="@+id/browser_title"
+			android:layout_marginLeft="10dp"
+			android:layout_marginRight="10dp"
+			android:textSize="14sp"
+			android:selectAllOnFocus="true"
+			android:background="@null"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:singleLine="true"
+			android:completionThreshold="1"
+			android:dropDownHorizontalOffset="5dp"/>
+
+		<ImageView
+			android:id="@+id/rightEvent"
+			android:layout_width="18dp"
+			android:layout_height="18dp"
+			android:src="@drawable/browser_refresh"
+			android:background="?android:attr/selectableItemBackground"/>
+
+	</LinearLayout>
+
+	<com.tencent.smtt.sdk.WebView
+		android:id="@+id/webview"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_weight="1"/>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="#ffffff"
+		android:elevation="2dp"
+		android:orientation="horizontal">
+
+		<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:gravity="center"
+			android:layout_weight="1.0"
+			android:padding="8dp"
+			android:id="@+id/back"
+			android:background="?android:attr/selectableItemBackground">
+
+			<ImageView
+				android:src="@drawable/ic_left"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:gravity="center"
+			android:layout_weight="1.0"
+			android:padding="8dp"
+			android:id="@+id/forward"
+			android:background="?android:attr/selectableItemBackground">
+
+			<ImageView
+				android:src="@drawable/ic_right"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:gravity="center"
+			android:layout_weight="1.0"
+			android:padding="8dp"
+			android:id="@+id/home"
+			android:background="?android:attr/selectableItemBackground">
+
+			<ImageView
+				android:src="@drawable/ic_home"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:gravity="center"
+			android:layout_weight="1.0"
+			android:padding="8dp"
+			android:id="@+id/refresh"
+			android:background="?android:attr/selectableItemBackground">
+
+			<ImageView
+				android:src="@drawable/ic_refresh"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:gravity="center"
+			android:layout_weight="1.0"
+			android:padding="8dp"
+			android:id="@+id/link"
+			android:background="?android:attr/selectableItemBackground">
+
+			<ImageView
+				android:src="@drawable/ic_link"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+
+		</LinearLayout>
+
+	</LinearLayout>
+
+</LinearLayout>
+

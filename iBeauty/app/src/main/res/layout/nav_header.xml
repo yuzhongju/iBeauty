@@ -3,29 +3,28 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="180dp"
-    android:background="?attr/colorPrimary"
+	android:background="?attr/colorPrimary"
 	android:orientation="vertical"
 	android:padding="8dp">
 
 	<de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/header"
+		android:id="@+id/header"
 		android:layout_width="70dp"
 		android:layout_height="70dp"
+		android:src="@drawable/ic_user"
 		android:layout_centerVertical="true"/>
 
 	<TextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="xxxx@qq.com"
-        android:textColor="#ffffff"
+		android:textColor="#ffffff"
 		android:layout_alignParentBottom="true"
 		android:id="@+id/email"/>
 
 	<TextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="明日未期"
-        android:textColor="#ffffff"
+		android:textColor="#ffffff"
 		android:layout_above="@id/email"
 		android:id="@+id/nickname"/>
 

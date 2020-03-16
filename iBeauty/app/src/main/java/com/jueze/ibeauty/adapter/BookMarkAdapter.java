@@ -8,14 +8,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.jueze.ibeauty.R;
 import com.jueze.ibeauty.bean.BookMarkBean;
-import com.jueze.ibeauty.util.MyShape;
+import com.jueze.ibeauty.util.ShapeUtil;
 import java.util.List;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import com.jueze.ibeauty.util.MyClipBoard;
-import com.jueze.ibeauty.util.MyToast;
+import com.jueze.ibeauty.util.ClipBoardUtil;
+import com.jueze.ibeauty.util.ToastUtil;
 import android.content.Intent;
 import android.net.Uri;
+import com.jueze.ibeauty.BrowserActivity;
 
 public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHolder> {
 
@@ -42,56 +43,24 @@ public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHo
     
     @Override
     public BookMarkAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int position) {
+		mContext = parent.getContext();
         return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_bookmark, parent, false));
     }
 
     @Override
     public void onBindViewHolder(BookMarkAdapter.ViewHolder holder, int position) {
         BookMarkBean.BookMark data = mData.get(position);
-        final String name = data.getName();
+        final String title = data.getName();
         final String url = data.getUrl();
-        holder.mTitle.setText(name);
+        holder.mTitle.setText(title);
         holder.mUrl.setText(url);
         holder.mParent.setOnClickListener(new View.OnClickListener(){
 
                 @Override
                 public void onClick(View view) {
-                    mContext = view.getContext();
-                    showMark(name,url);
+					BrowserActivity.actionStart(mContext, url);
                 }
         });
-    }
-    
-    private void showMark(final String title, final String url){
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setTitle(title);
-        builder.setMessage(url);
-        builder.setPositiveButton("复制", new DialogInterface.OnClickListener(){
-
-                @Override
-                public void onClick(DialogInterface p1, int p2) {
-                    MyClipBoard.write(url);
-                    MyToast.ts("已写入剪切板");
-                }
-        });
-        builder.setNegativeButton("取消", new DialogInterface.OnClickListener(){
-
-                @Override
-                public void onClick(DialogInterface p1, int p2) {
-                }
-            });
-        builder.setNeutralButton("浏览器打开", new DialogInterface.OnClickListener(){
-
-                @Override
-                public void onClick(DialogInterface p1, int p2) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                    mContext.startActivity(intent);
-                }
-            });
-
-        final AlertDialog dialog = builder.create();
-        dialog.show();
-
     }
 
     @Override

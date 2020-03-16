@@ -42,9 +42,16 @@ public class BookMarkActivity extends BaseActivity {
         load();
     }
 
+
     @Override
+    public void bindViews() {
+        mToolbar = findViewById(R.id.toolbar);
+        mRv = findViewById(R.id.recycler_view);
+    }
+	
+	@Override
     public void initData() {
-        super.initData();
+
         for(File file : getFilesDir().getParentFile().listFiles()){
             if(file.getName().equals("shared_prefs")){
                 path = file+"/bookmark.xml";
@@ -53,14 +60,12 @@ public class BookMarkActivity extends BaseActivity {
         url = "https://gitee.com/jueze/iapp/raw/master/bookmark.json";
     }
 
-    
-    
-    @Override
-    public void bindViews() {
-        mToolbar = findViewById(R.id.toolbar);
-        mRv = findViewById(R.id.recycler_view);
-    }
+	@Override
+	public void initEvent() {
+	}
 
+
+	
 
     private void load(){
         if(adapter != null){

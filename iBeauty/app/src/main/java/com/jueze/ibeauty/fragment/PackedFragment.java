@@ -11,9 +11,9 @@ import com.jueze.ibeauty.bean.PackSourceBean;
 import java.io.File;
 import java.util.List;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import com.jueze.ibeauty.util.Mylog;
+import com.jueze.ibeauty.util.LogUtil;
 import java.util.ArrayList;
-import com.jueze.ibeauty.util.MyToast;
+import com.jueze.ibeauty.util.ToastUtil;
 import java.util.Collections;
 import java.util.Comparator;
 import java.text.Collator;
@@ -55,7 +55,7 @@ public class PackedFragment extends Fragment {
         File file = new File(filePath);
         try {
             for (File f : file.listFiles()) {
-                Mylog.d(f.getPath());
+                LogUtil.d(f.getPath());
                 String name = f.getName();
                 String size = decimal2(f.length());
                 mDataList.add(new PackSourceBean(name, size, f.getPath()));

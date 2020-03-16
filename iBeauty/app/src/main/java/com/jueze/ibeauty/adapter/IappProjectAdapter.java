@@ -17,11 +17,11 @@ import android.widget.TextView;
 import com.jueze.ibeauty.R;
 import com.jueze.ibeauty.bean.IappProjectBean;
 import com.jueze.ibeauty.dialog.MyProgressDialog;
-import com.jueze.ibeauty.util.FileHelper;
-import com.jueze.ibeauty.util.MyShape;
-import com.jueze.ibeauty.util.MyToast;
+import com.jueze.ibeauty.util.FileUtil;
+import com.jueze.ibeauty.util.ShapeUtil;
+import com.jueze.ibeauty.util.ToastUtil;
 import com.jueze.ibeauty.util.ZipUtil;
-import com.jueze.ibeauty.util.dip2px;
+import com.jueze.ibeauty.util.DisplayUtil;
 import java.io.File;
 import java.util.List;
 
@@ -95,8 +95,8 @@ public class IappProjectAdapter extends RecyclerView.Adapter<IappProjectAdapter.
                     Button btnB = view.findViewById(R.id.backup_zip);
 
                     String color = mContext.getString(R.color.colorPrimary);
-                    MyShape.set(btnA.getBackground(), color);
-                    MyShape.set(btnB.getBackground(), color);
+                    ShapeUtil.set(btnA.getBackground(), color);
+                    ShapeUtil.set(btnB.getBackground(), color);
                     titleView.setText(title + "_" + yuv);
                     pathView.setText(path);
 
@@ -104,7 +104,7 @@ public class IappProjectAdapter extends RecyclerView.Adapter<IappProjectAdapter.
                     builder.setView(view);
                     alertDialog = builder.create();
                     alertDialog.show();
-                    alertDialog.getWindow().setLayout(dip2px.to(240), ViewGroup.LayoutParams.WRAP_CONTENT);
+                    alertDialog.getWindow().setLayout(DisplayUtil.dip2px(240), ViewGroup.LayoutParams.WRAP_CONTENT);
                     btnA.setOnClickListener(new View.OnClickListener(){
 
                             @Override
@@ -129,19 +129,19 @@ public class IappProjectAdapter extends RecyclerView.Adapter<IappProjectAdapter.
                                             
                                             try{
 
-                                                FileHelper.copyDir(path,newFileName);
+                                                FileUtil.copyDir(path,newFileName);
                                                 for(File file : new File(newFileName).listFiles()){
                                                     if(yuv.equals("v3")){
                                                         if(file.getName().equals("bin")){
-                                                            FileHelper.deleteDir(file.getPath());
+                                                            FileUtil.deleteDir(file.getPath());
                                                         }
                                                         if(file.getName().equals("files")){
-                                                            FileHelper.deleteDir(file.getPath());
+                                                            FileUtil.deleteDir(file.getPath());
                                                         }
                                                     }
                                                     if(yuv.equals("v5")){
                                                         if(file.getName().equals("bin")){
-                                                            FileHelper.deleteDir(file.getPath());
+                                                            FileUtil.deleteDir(file.getPath());
                                                         }
                                                     }
                                                 }
@@ -185,19 +185,19 @@ public class IappProjectAdapter extends RecyclerView.Adapter<IappProjectAdapter.
 
                                             try{
 
-                                                FileHelper.copyDir(path,newFileName);
+                                                FileUtil.copyDir(path,newFileName);
                                                 for(File file : new File(newFileName).listFiles()){
                                                     if(yuv.equals("v3")){
                                                         if(file.getName().equals("bin")){
-                                                            FileHelper.deleteDir(file.getPath());
+                                                            FileUtil.deleteDir(file.getPath());
                                                         }
                                                         if(file.getName().equals("files")){
-                                                            FileHelper.deleteDir(file.getPath());
+                                                            FileUtil.deleteDir(file.getPath());
                                                         }
                                                     }
                                                     if(yuv.equals("v5")){
                                                         if(file.getName().equals("bin")){
-                                                            FileHelper.deleteDir(file.getPath());
+                                                            FileUtil.deleteDir(file.getPath());
                                                         }
                                                     }
                                                 }
@@ -245,9 +245,9 @@ public class IappProjectAdapter extends RecyclerView.Adapter<IappProjectAdapter.
                     boolean z = msg.obj;
                     mPd.dismiss();
                     if (z) {
-                        MyToast.ts("压缩完成");
+                        ToastUtil.show("压缩完成");
                     } else {
-                        MyToast.ts("压缩失败");
+                        ToastUtil.show("压缩失败");
                     }
                     break;
                 default:

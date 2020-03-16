@@ -6,9 +6,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import com.jaeger.library.StatusBarUtil;
-import com.jueze.ibeauty.util.MyClipBoard;
-import com.jueze.ibeauty.util.MyShape;
-import com.jueze.ibeauty.util.MyToast;
+import com.jueze.ibeauty.util.ClipBoardUtil;
+import com.jueze.ibeauty.util.ShapeUtil;
+import com.jueze.ibeauty.util.ToastUtil;
 
 public class Base64Activity extends BaseActivity implements View.OnClickListener {
 
@@ -33,7 +33,7 @@ public class Base64Activity extends BaseActivity implements View.OnClickListener
 
     @Override
     public void bindViews() {
-        super.bindViews();
+        
         mToolbar = findViewById(R.id.toolbar);
         mOrginal = findViewById(R.id.original);
         mResult = findViewById(R.id.result);
@@ -43,6 +43,17 @@ public class Base64Activity extends BaseActivity implements View.OnClickListener
         mClear = findViewById(R.id.clear);
     }
 
+	@Override
+	public void initData() {
+	}
+
+	@Override
+	public void initEvent() {
+	}
+
+
+	
+
     @Override
     public void setStatusBar() {
         super.setStatusBar();
@@ -51,12 +62,12 @@ public class Base64Activity extends BaseActivity implements View.OnClickListener
     
     
     private void handleViews(){
-        MyShape.set(mOrginal,10,10,10,10,"#f0f0ff");
-        MyShape.set(mResult,10,10,10,10,"#f0f0ff");
-        MyShape.set(mEncrypt.getBackground(),getString(R.color.colorPrimary));
-        MyShape.set(mDecode.getBackground(),getString(R.color.colorPrimary));
-        MyShape.set(mCopy.getBackground(),getString(R.color.colorPrimary));
-        MyShape.set(mClear.getBackground(),getString(R.color.colorPrimary));
+        ShapeUtil.set(mOrginal,10,10,10,10,"#f0f0ff");
+        ShapeUtil.set(mResult,10,10,10,10,"#f0f0ff");
+        ShapeUtil.set(mEncrypt.getBackground(),getString(R.color.colorPrimary));
+        ShapeUtil.set(mDecode.getBackground(),getString(R.color.colorPrimary));
+        ShapeUtil.set(mCopy.getBackground(),getString(R.color.colorPrimary));
+        ShapeUtil.set(mClear.getBackground(),getString(R.color.colorPrimary));
     }
     
     @Override
@@ -67,7 +78,7 @@ public class Base64Activity extends BaseActivity implements View.OnClickListener
             case R.id.encrypt:
                 original = mOrginal.getText().toString();
                 if(original.equals("")){
-                    MyToast.ts("输入不能为空");
+                    ToastUtil.show("输入不能为空");
                 }else{
                     result = Base64.encodeToString(original.getBytes(), Base64.DEFAULT);
                     mResult.setText(result.trim());
@@ -76,7 +87,7 @@ public class Base64Activity extends BaseActivity implements View.OnClickListener
             case R.id.decode:
                 original = mOrginal.getText().toString();
                 if(original.equals("")){
-                    MyToast.ts("输入不能为空");
+                    ToastUtil.show("输入不能为空");
                 }else{
                     result = new String(Base64.decode(original.getBytes(), Base64.DEFAULT));
                     mResult.setText(result.trim());
@@ -84,10 +95,10 @@ public class Base64Activity extends BaseActivity implements View.OnClickListener
                 break;
             case R.id.copy:
                 if(mResult.getText().toString().equals("")){
-                    MyToast.ts("没有内容可复制");
+                    ToastUtil.show("没有内容可复制");
                 }else{
-                    MyClipBoard.write(mResult.getText());
-                    MyToast.ts("已写入剪切板");
+                    ClipBoardUtil.write(mResult.getText());
+                    ToastUtil.show("已写入剪切板");
                 }
                 break;                                     
             case R.id.clear:

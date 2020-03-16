@@ -13,12 +13,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.jueze.ibeauty.R;
 import com.jueze.ibeauty.bean.MdIconBean;
-import com.jueze.ibeauty.util.MyShape;
+import com.jueze.ibeauty.util.ShapeUtil;
 import java.util.List;
 import java.io.File;
 import android.os.Environment;
-import com.jueze.ibeauty.util.FileHelper;
-import com.jueze.ibeauty.util.MyToast;
+import com.jueze.ibeauty.util.FileUtil;
+import com.jueze.ibeauty.util.ToastUtil;
 public class MdIconAdapter extends RecyclerView.Adapter<MdIconAdapter.ViewHolder> {
 
     private List<MdIconBean> mIconDataList;
@@ -72,10 +72,15 @@ public class MdIconAdapter extends RecyclerView.Adapter<MdIconAdapter.ViewHolder
         return mIconDataList.size();
     }
 
-    public void removeAll() {
+    public void clear() {
         mIconDataList.clear();
         notifyDataSetChanged();
     }
+	public void refresh(List<MdIconBean> data){
+		mIconDataList.clear();
+		this.mIconDataList = data;
+		notifyDataSetChanged();
+	}
 
     private void showDialog(String bgColor, final String iconPath) {
         View view = View.inflate(mContext, R.layout.dialog_mdicons, null);
@@ -84,10 +89,10 @@ public class MdIconAdapter extends RecyclerView.Adapter<MdIconAdapter.ViewHolder
         TextView toIapp = view.findViewById(R.id.mdicon_export_iapp);
         TextView toOther = view.findViewById(R.id.mdicon_export_other);
 
-        MyShape.set(view, 15, 15, 0, 0, "#ffffff");
-        MyShape.set(bg,10,10,10,10,bgColor);
-        MyShape.set(toIapp,10,0,0,10,1,"#ffffff","#22000000");
-        MyShape.set(toOther,0,10,10,0,1,"#ffffff","#22000000");
+        ShapeUtil.set(view, 15, 15, 0, 0, "#ffffff");
+        ShapeUtil.set(bg,10,10,10,10,bgColor);
+        ShapeUtil.set(toIapp,10,0,0,10,1,"#ffffff","#22000000");
+        ShapeUtil.set(toOther,0,10,10,0,1,"#ffffff","#22000000");
         img.setImageBitmap(BitmapFactory.decodeFile(iconPath));
 
         mBsd = new BottomSheetDialog(mContext, R.style.BottomSheetStyle);
@@ -100,10 +105,10 @@ public class MdIconAdapter extends RecyclerView.Adapter<MdIconAdapter.ViewHolder
                 public void onClick(View view) {
                     String filename = new File(iconPath).getName();
                     String dir = Environment.getExternalStorageDirectory()+"/iApp/Userimg/";
-                    if(FileHelper.copyFile(iconPath,dir+filename)){
-                        MyToast.ts("导出成功");
+                    if(FileUtil.copyFile(iconPath,dir+filename)){
+                        ToastUtil.show("导出成功");
                     }else{
-                        MyToast.ts("到处失败");
+                        ToastUtil.show("到处失败");
                     }
                 }
             });
@@ -113,10 +118,10 @@ public class MdIconAdapter extends RecyclerView.Adapter<MdIconAdapter.ViewHolder
                 public void onClick(View view) {
                     String filename = new File(iconPath).getName();
                     String dir = Environment.getExternalStorageDirectory()+"/Download/";
-                    if(FileHelper.copyFile(iconPath,dir+filename)){
-                        MyToast.ts("导出成功");
+                    if(FileUtil.copyFile(iconPath,dir+filename)){
+                        ToastUtil.show("导出成功");
                     }else{
-                        MyToast.ts("到处失败");
+                        ToastUtil.show("到处失败");
                     }
                 }
             });

@@ -3,7 +3,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import com.jaeger.library.StatusBarUtil;
 
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
     public static int mColor;
     public static int mAlpha;
@@ -12,16 +12,16 @@ public class BaseActivity extends AppCompatActivity {
         super.setContentView(layoutResID);
         mColor = getResources().getColor(R.color.colorPrimary);
         mAlpha = 0;
-        bindViews();
         setStatusBar();
+        bindViews();
         initData();
-        
+		initEvent();
     }
 
-    public void bindViews() {
-
-    }
-
+    public abstract void bindViews();
+	public abstract void initData();
+	public abstract void initEvent();
+	
     public void setBack() {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -46,11 +46,8 @@ public class BaseActivity extends AppCompatActivity {
 
 
     public void setStatusBar(){
-        StatusBarUtil.setColorForSwipeBack(this,mColor,mAlpha);
+		StatusBarUtil.setColor(this,mColor,mAlpha);
     }
     
-    public void initData(){
-        
-    }
     
 }

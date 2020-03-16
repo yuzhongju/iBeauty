@@ -12,12 +12,11 @@ import com.google.gson.Gson;
 import com.jueze.ibeauty.BasicManualNoteActivity;
 import com.jueze.ibeauty.R;
 import com.jueze.ibeauty.bean.ManualBean;
-import com.jueze.ibeauty.util.MyShape;
-import java.util.ArrayList;
+import java.util.List;
 
 public class ManualAdapter extends RecyclerView.Adapter<ManualAdapter.ViewHolder> {
 
-    private ArrayList<ManualBean> mList;
+    private List<ManualBean> mList;
     private Context mContext;
     
     static class ViewHolder extends RecyclerView.ViewHolder{
@@ -31,7 +30,7 @@ public class ManualAdapter extends RecyclerView.Adapter<ManualAdapter.ViewHolder
         }
     }
     
-    public ManualAdapter(ArrayList<ManualBean> list){
+    public ManualAdapter(List<ManualBean> list){
         this.mList = list;
     }
     
@@ -69,6 +68,11 @@ public class ManualAdapter extends RecyclerView.Adapter<ManualAdapter.ViewHolder
         return mList.size();
     }
     
+	public void refresh(List<ManualBean> data){
+		mList.clear();
+		this.mList = data;
+		notifyDataSetChanged();
+	}
     public void removeAll(){
         mList.clear();
         notifyDataSetChanged();

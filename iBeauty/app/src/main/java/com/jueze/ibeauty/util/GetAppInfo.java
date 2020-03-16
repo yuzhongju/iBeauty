@@ -69,7 +69,7 @@ public class GetAppInfo {
             lastUpdateTime = pm.getPackageInfo(packageName,0).lastUpdateTime;
 
             targetSdkVersion = pm.getApplicationInfo(packageName,0).targetSdkVersion;
-            minSdkVersion = pm.getApplicationInfo(packageName,0).minSdkVersion;
+            minSdkVersion = SystemUtil.isM()?pm.getApplicationInfo(packageName,0).minSdkVersion:null;
             dataDir = pm.getApplicationInfo(packageName,0).dataDir;
             sourceDir = pm.getApplicationInfo(packageName,0).sourceDir;
             uid = pm.getApplicationInfo(packageName,0).uid;

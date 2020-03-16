@@ -9,9 +9,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.jueze.ibeauty.R;
 import com.jueze.ibeauty.bean.ColorsBean;
-import com.jueze.ibeauty.util.MyClipBoard;
-import com.jueze.ibeauty.util.MyShape;
-import com.jueze.ibeauty.util.MyToast;
+import com.jueze.ibeauty.util.ClipBoardUtil;
+import com.jueze.ibeauty.util.ShapeUtil;
+import com.jueze.ibeauty.util.ToastUtil;
 import java.util.ArrayList;
 
 public class ColorsAdapter extends RecyclerView.Adapter<ColorsAdapter.ViewHolder> {
@@ -49,13 +49,13 @@ public class ColorsAdapter extends RecyclerView.Adapter<ColorsAdapter.ViewHolder
         final String color = data.getColor();
         holder.mLevel.setText(level);
         holder.mColor.setText(color);
-        MyShape.set(holder.mIv,100,100,100,100,color);
+        ShapeUtil.set(holder.mIv,100,100,100,100,color);
         holder.mParent.setOnClickListener(new OnClickListener(){
 
                 @Override
                 public void onClick(View view) {
-                    MyClipBoard.write(color);
-                    MyToast.ts("已写入剪切板");
+                    ClipBoardUtil.write(color);
+                    ToastUtil.show("已写入剪切板");
                 }
         });
     }
