@@ -73,12 +73,16 @@ public class PackedAdapter extends RecyclerView.Adapter<PackedAdapter.ViewHolder
         return mDataList.size();
     }
 
+	public void refresh(List<PackSourceBean> list){
+		this.mDataList = list;
+		notifyDataSetChanged();
+	}
     public void remove(int position) {
         mDataList.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, getItemCount());
     }
-    public void removeAll() {
+    public void clear() {
         mDataList.clear();
         notifyDataSetChanged();
     }

@@ -105,7 +105,6 @@ public class GetAppInfo {
         }else if(gb<1024){
             a = String.format("%.2f",gb) + " G";
         }
-
         return a;
     }
     

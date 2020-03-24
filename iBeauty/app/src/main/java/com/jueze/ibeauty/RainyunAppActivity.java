@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.jueze.ibeauty.bean.PostDataBean;
 import com.jueze.ibeauty.dialog.MyProgressDialog;
-import com.jueze.ibeauty.network.MyOkHttp;
+import com.jueze.ibeauty.network.OkHttpUtil;
 import com.jueze.ibeauty.util.NetworkUtil;
 import com.jueze.ibeauty.util.ShapeUtil;
 import com.jueze.ibeauty.util.ToastUtil;
@@ -28,7 +28,7 @@ public class RainyunAppActivity extends BaseActivity {
 
     private final String BASE_URL = "https://www.rainyun.com/";
     private final String REWARD = BASE_URL+"app/usr/reward";
-    private MyOkHttp http;
+    private OkHttpUtil http;
     private String score = "";
     private Context mContext;
     
@@ -93,7 +93,7 @@ public class RainyunAppActivity extends BaseActivity {
 
 	@Override
     public void initData(){
-        http = new MyOkHttp();
+        http = new OkHttpUtil();
     }
 
 	@Override

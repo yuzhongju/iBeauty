@@ -5,24 +5,34 @@ import android.widget.EditText;
 import com.google.gson.Gson;
 import com.jaeger.library.StatusBarUtil;
 import com.jueze.ibeauty.bean.ManualBean;
+import android.widget.TextView;
+import android.view.Menu;
+import android.view.MenuItem;
+import com.jueze.ibeauty.util.ClipBoardUtil;
+import com.jueze.ibeauty.util.ToastUtil;
+import com.jueze.ibeauty.util.ShareUtil;
 
 public class BasicManualNoteActivity extends BaseActivity {
 
     private Toolbar mToolbar;
-    private EditText mEdittext;
+    private TextView mTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manual_note);
+        String data = getIntent().getStringExtra("data");
+        ManualBean bean = new Gson().fromJson(data, ManualBean.class);
+        String title = bean.getDocTitle();
+        String note = bean.getDocContent();
         setSupportActionBar(mToolbar);
-        handleIntent();
+        setBack(title);
+        mTextView.setText(note);
     }
 
     @Override
     public void bindViews() {
-        
         mToolbar = findViewById(R.id.toolbar);
-        mEdittext = findViewById(R.id.content);
+        mTextView = findViewById(R.id.content);
     }
 
 	@Override
@@ -33,22 +43,27 @@ public class BasicManualNoteActivity extends BaseActivity {
 	public void initEvent() {
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.manual_menu, menu);
+		return true;
+	}
 
-
-	
-    @Override
-    public void setStatusBar() {
-        super.setStatusBar();
-        StatusBarUtil.setColorForSwipeBack(this,mColor,mAlpha);
-    }
-    
-    private void handleIntent(){
-        String data = getIntent().getStringExtra("data");
-        ManualBean bean = new Gson().fromJson(data, ManualBean.class);
-        String title = bean.getDocTitle();
-        String note = bean.getDocContent();
-        setBack(title);
-        mEdittext.setText(note);
-    }
-    
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch(item.getItemId()){
+			case R.id.manual_copy:
+				ClipBoardUtil.write(mTextView.getText());
+				ToastUtil.show("已写入剪切板");
+				break;
+			case R.id.manual_share:
+				ShareUtil.shareText(this, mTextView.getText().toString());
+				break;
+			case android.R.id.home:
+				finish();
+				break;
+			default:
+		}
+		return true;
+	}
 }

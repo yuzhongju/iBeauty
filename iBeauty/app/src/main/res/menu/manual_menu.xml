@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/manual_share"
+        android:title="分享"
+        android:icon="@drawable/ic_share2"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/manual_copy"
+        android:title="复制"
+        android:icon="@drawable/ic_copy"
+        app:showAsAction="always"/>
+</menu>

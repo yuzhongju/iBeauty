@@ -15,7 +15,7 @@ import com.jueze.ibeauty.RainyunAppActivity;
 import com.jueze.ibeauty.bean.PostDataBean;
 import com.jueze.ibeauty.dialog.MyProgressDialog;
 import com.jueze.ibeauty.network.CookieStore;
-import com.jueze.ibeauty.network.MyOkHttp;
+import com.jueze.ibeauty.network.OkHttpUtil;
 import com.jueze.ibeauty.util.MyString;
 import com.jueze.ibeauty.util.NetworkUtil;
 import com.jueze.ibeauty.util.ShapeUtil;
@@ -39,7 +39,7 @@ public class RainyunActivity extends BaseActivity {
 
     private MyProgressDialog mPd;
     private SharedHelper sh;
-    private MyOkHttp http;
+    private OkHttpUtil http;
     //data
     private String username;
     private String password;
@@ -121,7 +121,7 @@ public class RainyunActivity extends BaseActivity {
                 @Override
                 public void run() {
 
-                    http = new MyOkHttp();
+                    http = new OkHttpUtil();
                     Response response = http.getBySync(LOGIN);
 					//清除缓存
                     CookieStore cookieStore = http.getCookieJar().getCookieStore();

@@ -4,7 +4,7 @@
     <item
         android:id="@+id/mark_note"
         android:title="书签使用"
-        android:icon="@drawable/ic_mark_note"
+        android:icon="@drawable/ic_note"
         app:showAsAction="never"/>
     <item
         android:id="@+id/mark_refresh"

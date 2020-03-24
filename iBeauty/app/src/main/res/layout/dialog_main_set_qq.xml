@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	android:focusable="true"
+	android:focusableInTouchMode="true">
+
+	<EditText
+		android:layout_width="match_parent"
+		android:ems="10"
+		android:selectAllOnFocus="true"
+		android:textSize="13sp"
+		android:hint="输入QQ号码"
+		android:layout_height="wrap_content"
+		android:id="@+id/qq_input"
+		android:layout_marginTop="16dp"
+		android:layout_marginLeft="16dp"
+		android:layout_marginRight="16dp"
+		android:inputType="number"/>
+
+	<LinearLayout
+		android:orientation="horizontal"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="4dp"
+		android:layout_marginRight="4dp">
+
+		<Button
+			android:layout_width="wrap_content"
+			style="?android:attr/buttonBarButtonStyle"
+			android:layout_height="wrap_content"
+			android:text="不再提醒"
+			android:textSize="12sp"
+			android:layout_weight="1.0"
+			android:id="@+id/qq_not_tip"/>
+
+		<Button
+			android:layout_width="wrap_content"
+			style="?android:attr/buttonBarButtonStyle"
+			android:layout_height="wrap_content"
+			android:text="确认"
+			android:textSize="12sp"
+			android:layout_weight="1.0"
+			android:id="@+id/qq_confirm"/>
+
+	</LinearLayout>
+
+</LinearLayout>
+

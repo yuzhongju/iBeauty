@@ -1,5 +1,6 @@
 package com.jueze.ibeauty.util;
 
+import android.os.Build;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -16,12 +17,12 @@ import java.util.zip.ZipOutputStream;
 
 public class ZipUtil {
 
-    
+
     /**压缩文件及文件夹
-    *@param srcFileName
-    *@param zipFileName
-    *@return
-    */
+	 *@param srcFileName
+	 *@param zipFileName
+	 *@return
+	 */
 
     public static boolean toZip(String srcFileName, String zipFileName) {
         return toZip(new File(srcFileName), new File(zipFileName));
@@ -111,9 +112,9 @@ public class ZipUtil {
         if (!descDir.endsWith("/")) descDir = descDir + "/";
         //File pathFile = new File(descDir);
         try {
-            
+
             //解决zip文件中有中文目录或者中文文件
-            ZipFile zip = new ZipFile(zipFile, Charset.forName("GBK"));
+            ZipFile zip = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ?new ZipFile(zipFile, Charset.forName("GBK")): new ZipFile(zipFile);
             for (Enumeration entries = zip.entries(); entries.hasMoreElements();) {
                 ZipEntry entry = (ZipEntry)entries.nextElement();
                 String zipEntryName = entry.getName();

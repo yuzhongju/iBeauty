@@ -37,13 +37,14 @@ public class IappProjectAdapter extends RecyclerView.Adapter<IappProjectAdapter.
     
     static class ViewHolder extends RecyclerView.ViewHolder {
         RelativeLayout mParent;
-        TextView mTitle, mYuv, mBm, mRemark;
+        TextView mTag, mTitle, mYuv, mBm, mRemark;
         ImageView mIcon;
         View mView;
         public ViewHolder(View view) {
             super(view);
             mView = view;
             mParent = view.findViewById(R.id.item_parent);
+			mTag = view.findViewById(R.id.sort_tag);
             mTitle = view.findViewById(R.id.pro_title);
             mYuv = view.findViewById(R.id.pro_yuv);
             mBm = view.findViewById(R.id.pro_bm);
@@ -76,6 +77,15 @@ public class IappProjectAdapter extends RecyclerView.Adapter<IappProjectAdapter.
         if (remark.equals("")) {
             remark = "暂无备注";
         }
+		
+		int section = getSectionForPosition(position);
+		if(getPositionForSection(section)==position){
+			holder.mTag.setVisibility(View.VISIBLE);
+			holder.mTag.setText(yuv);
+		}else{
+			holder.mTag.setVisibility(View.GONE);
+		}
+		ShapeUtil.set(holder.mTag, 10,10,10,10,"#cdcdcd");
         holder.mTitle.setText(title);
         holder.mYuv.setText(yuv);
         holder.mBm.setText(bm);
@@ -153,25 +163,18 @@ public class IappProjectAdapter extends RecyclerView.Adapter<IappProjectAdapter.
                                             msg.obj = z;
                                             mHandler.sendMessage(msg);
                                         }
-
-
                                     }).start();
-
                             }
                         });
                     btnB.setOnClickListener(new View.OnClickListener(){
-
                             @Override
                             public void onClick(View p1) {
                                 mPd = new MyProgressDialog(mContext);
                                 mPd.setMessage("压缩中...");
                                 mPd.show();
                                 new Thread(new Runnable(){
-
                                         @Override
                                         public void run() {
-                                            
-
                                             boolean z = false;
 
                                             String dir = Environment.getExternalStorageDirectory() + "/iBeauty/backups/zip/";
@@ -203,24 +206,17 @@ public class IappProjectAdapter extends RecyclerView.Adapter<IappProjectAdapter.
                                                 }
                                                 z = ZipUtil.toZip(newFileName,zipFileName);
                                             }catch(Exception e){}
-                                            
-                                            
+                                                                                     
                                             Message msg = mHandler.obtainMessage();
                                             msg.what = MSG_COMPRESS;
                                             msg.obj = z;
                                             mHandler.sendMessage(msg);
                                         }
-
-
                                     }).start();
-
                             }
                         });
                 }
             });
-
-
-
     }
 
     
@@ -228,12 +224,31 @@ public class IappProjectAdapter extends RecyclerView.Adapter<IappProjectAdapter.
     public int getItemCount() {
         return mDataList.size();
     }
+	
+	public void refresh(List<IappProjectBean> list){
+		this.mDataList = list;
+		notifyDataSetChanged();
+	}
 
-    public void removeAll() {
+    public void clear() {
         mDataList.clear();
         notifyDataSetChanged();
     }
     
+	public int getSectionForPosition(int position) {
+        return (mDataList.get(position).getYuv()).charAt(1);
+    }
+
+    public int getPositionForSection(int section) {
+        for (int i = 0; i < getItemCount(); i++) {
+            String sortStr = mDataList.get(i).getYuv();
+            char firstChar = sortStr.toUpperCase().charAt(1);
+            if (firstChar == section) {
+                return i;
+            }
+        }
+        return -1;
+    }
     private Handler mHandler = new Handler(){
 
         @Override

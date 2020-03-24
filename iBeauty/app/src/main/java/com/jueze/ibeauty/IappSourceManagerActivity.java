@@ -17,8 +17,11 @@ public class IappSourceManagerActivity extends BaseActivity {
     private Toolbar mToolbar;
     private ViewPager mVp;
 	private TabLayout mTab;
+	
 
     //data
+	private ProjectFragment fg;
+	private PackedFragment fg2, fg3;
     private List<Fragment> mFragmentList = new ArrayList<>();
 	private List<String> mTabTitleList = new ArrayList<>();
 
@@ -28,8 +31,6 @@ public class IappSourceManagerActivity extends BaseActivity {
         setContentView(R.layout.activity_iapp_source_manager);
         setSupportActionBar(mToolbar);
         setBack("iApp源码管理");
-
-        handleViewPager();
     }
 
     @Override
@@ -45,26 +46,36 @@ public class IappSourceManagerActivity extends BaseActivity {
         backupsPath.add(Environment.getExternalStorageDirectory()+"/iBeauty/backups/iapp");
         backupsPath.add(Environment.getExternalStorageDirectory()+"/iBeauty/backups/zip");
         //加载fragment
-        mFragmentList.add(new ProjectFragment());
-        mFragmentList.add(new PackedFragment(backupsPath.get(0)));
-        mFragmentList.add(new PackedFragment(backupsPath.get(1)));
+        mFragmentList.add(fg = new ProjectFragment());
+        mFragmentList.add(fg2=new PackedFragment(backupsPath.get(0)));
+        mFragmentList.add(fg3=new PackedFragment(backupsPath.get(1)));
         mTabTitleList.add("项目");
 		mTabTitleList.add("iApp");
 		mTabTitleList.add("zip");
+		
+		handleViewPager();
 	}
 
 	@Override
 	public void initEvent() {
 	}
 
-
+	@Override
+	protected void onResume() {
+		super.onResume();int position=mVp.getCurrentItem();
+		if(position==0){
+			fg.refresh();
+		}else if(position==1){
+			fg2.refresh();
+		}else if(position==2){
+			fg3.refresh();
+		}
+	}
 
 	
-    private void handleViewPager() {
-		
-		
+
+    private void handleViewPager() {	
         mVp.setOffscreenPageLimit(mFragmentList.size());
-        //mVp.setAdapter(new PackSrcFragmentAdapter(getSupportFragmentManager(), mTabTitleList,mFragmentList));
 		mVp.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()){
 
 				@Override
@@ -80,8 +91,6 @@ public class IappSourceManagerActivity extends BaseActivity {
 				public CharSequence getPageTitle(int position){
 					return mTabTitleList.get(position);
 				}
-			
-			
 		});
 		mTab.setupWithViewPager(mVp);
 

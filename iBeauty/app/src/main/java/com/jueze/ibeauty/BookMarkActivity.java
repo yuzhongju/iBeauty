@@ -17,31 +17,33 @@ import com.jueze.ibeauty.adapter.BookMarkAdapter;
 import com.jueze.ibeauty.bean.BookMarkBean;
 import com.jueze.ibeauty.dialog.MyBottomSheetDialog;
 import com.jueze.ibeauty.dialog.MyProgressDialog;
-import com.jueze.ibeauty.network.MyOkHttp;
+import com.jueze.ibeauty.network.OkHttpUtil;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import okhttp3.Call;
 import okhttp3.Response;
+import android.text.TextUtils;
+import com.jueze.ibeauty.util.NetworkUtil;
+import com.jueze.ibeauty.util.ToastUtil;
+import android.os.Handler;
+import android.os.Message;
 
 public class BookMarkActivity extends BaseActivity {
 
-    private String path;;
     private String url;
     private Toolbar mToolbar;
     private RecyclerView mRv;
-    private MyOkHttp mokhttp;
+    private OkHttpUtil mOkhttp;
     private BookMarkAdapter adapter;
     private MyProgressDialog mPd;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bookmark);
         setSupportActionBar(mToolbar);
         setBack("网络书签");
-        load();
     }
-
 
     @Override
     public void bindViews() {
@@ -51,52 +53,40 @@ public class BookMarkActivity extends BaseActivity {
 	
 	@Override
     public void initData() {
-
-        for(File file : getFilesDir().getParentFile().listFiles()){
-            if(file.getName().equals("shared_prefs")){
-                path = file+"/bookmark.xml";
-            }
-        }
         url = "https://gitee.com/jueze/iapp/raw/master/bookmark.json";
+        mOkhttp = new OkHttpUtil();
     }
 
 	@Override
 	public void initEvent() {
+		load();
 	}
 
-
-	
-
     private void load(){
-        if(adapter != null){
-            adapter.removeAll();
-        }
-
-        mPd = new MyProgressDialog(this);
-        mPd.show();
-        String a = read();
-        if(a != null && !a.equals("")){
-            url = a;
-        }
-        mokhttp = new MyOkHttp();
-        
-        try {
-            mokhttp.getByAsync(url, new okhttp3.Callback(){
-
-                    @Override
-                    public void onFailure(Call p1, IOException p2) {
-                    }
-
-                    @Override
-                    public void onResponse(Call p1, Response response) throws IOException {
-                        if (response.isSuccessful()) {
-                            load2(response.body().string());
-                        }else{
-                            mPd.dismiss();
-                        }
-                    }
-                });
-        } catch (Exception e) {}
+		if(NetworkUtil.state()!=0){
+			if(adapter != null) adapter.removeAll();
+			mPd = new MyProgressDialog(this);
+			mPd.show();
+			String a = read();
+			if(!TextUtils.isEmpty(a)) url=a;
+			new Thread(new Runnable(){
+					@Override
+					public void run() {
+						try{
+							Response resp = mOkhttp.getBySync(url);
+							if(resp!=null && resp.isSuccessful()){
+								load2(resp.body().string());
+							}else{
+								mPd.dismiss();
+							}
+						}catch(Exception e){
+							mPd.dismiss();
+						}
+					}
+				}).start();
+		}else{
+			ToastUtil.show("无网络连接");
+		}
     }
     
     private void load2(final String data){
@@ -113,10 +103,7 @@ public class BookMarkActivity extends BaseActivity {
                         adapter = new BookMarkAdapter(bookmarkBean.getBookMark());
                         mRv.setAdapter(adapter);
                     }catch(Exception e){}
-                    
-                }
-                
-            
+                }     
         });
     }
     
@@ -142,20 +129,6 @@ public class BookMarkActivity extends BaseActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
-    public boolean onMenuOpened(int featureId, Menu menu) {
-        if(menu != null){
-            if(menu.getClass().getSimpleName().equalsIgnoreCase("MenuBuilder")){
-                try{
-                    Method method = menu.getClass().getDeclaredMethod("setOptionalIconsVisible",Boolean.TYPE);
-                    method.setAccessible(true);
-                    method.invoke(menu,true);
-                }catch(Exception e){}
-            }
-        }
-        return super.onMenuOpened(featureId, menu);
-    }
-    
     
 
     @Override
@@ -205,17 +178,5 @@ public class BookMarkActivity extends BaseActivity {
         return null;
     }
 
-    private void clear(){
-        SharedPreferences sp = getSharedPreferences("bookmark", Context.MODE_PRIVATE);
-        if(sp != null ) sp.edit().clear().apply();
-    }
-    
-    private boolean delete(){
-        File file = new File(path);
-        if(file.exists()){
-            return file.delete();
-        }
-        return false;
-    }
 
 }

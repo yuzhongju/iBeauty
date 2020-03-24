@@ -21,6 +21,7 @@ import java.util.Locale;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import com.jueze.ibeauty.util.ToastUtil;
 
 public class ProjectFragment extends Fragment {
 
@@ -37,15 +38,40 @@ public class ProjectFragment extends Fragment {
         }
         mContext = mView.getContext();
         mRv = mView.findViewById(R.id.recycler_view);
-        handleData();
+		loadRv();	//第一次加载
         return mView;
     }
 
+
+	@Override
+	public void setUserVisibleHint(boolean isVisibleToUser) {
+		super.setUserVisibleHint(isVisibleToUser);
+		if(isVisibleToUser){
+			refresh();
+		}
+	}
+
+	public void refresh(){
+		if(adapter!=null){
+			handleData();
+			adapter.refresh(mDataList);
+		}
+	}
+	
+	private void loadRv(){
+		if(adapter==null){
+			handleData();
+			adapter = new IappProjectAdapter(mDataList);
+		}
+		mRv.setLayoutManager(new LinearLayoutManager(mContext));
+		mRv.setAdapter(adapter);
+	}
+	
+	
     private void handleData() {
-        if (adapter != null) adapter.removeAll();
+		if(adapter!=null) adapter.clear();
         String dir = "/storage/emulated/0/iApp/ProjectApp";
         File file = new File(dir);
-
         try {
             File[] fileList = file.listFiles();
 
@@ -68,23 +94,20 @@ public class ProjectFragment extends Fragment {
             }
 
             Collections.sort(mDataList, new Comparator<IappProjectBean>(){
-
                     @Override
                     public int compare(IappProjectBean p1, IappProjectBean p2) {
                         Comparator<Object> com = Collator.getInstance(Locale.CHINA);
-
                         return com.compare(p1.getTitle(), p2.getTitle());
                     }
-
-
 				});
-            LinearLayoutManager lm = new LinearLayoutManager(mContext);
-            mRv.setLayoutManager(lm);
 
-			adapter = new IappProjectAdapter(mDataList);
-
-            mRv.setAdapter(adapter);
-
+            Collections.sort(mDataList, new Comparator<IappProjectBean>(){
+                    @Override
+                    public int compare(IappProjectBean p1, IappProjectBean p2) {
+                        Comparator<Object> com = Collator.getInstance(Locale.CHINA);
+                        return com.compare(p2.getYuv(), p1.getYuv());
+                    }
+				});
         } catch (Exception e) {}
     }
 }

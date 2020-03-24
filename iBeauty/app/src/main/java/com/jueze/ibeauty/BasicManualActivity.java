@@ -8,12 +8,12 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
 import com.jaeger.library.StatusBarUtil;
-import com.jueze.ibeauty.adapter.ManualAdapter;
 import com.jueze.ibeauty.fragment.ManualFragment;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +22,8 @@ public class BasicManualActivity extends BaseActivity {
 
     //widget
     private Toolbar mToolbar;
-    private ManualAdapter adapter;
-    private LinearLayout mParent;
     private SearchView mSearchView;
+	private SearchView.SearchAutoComplete mSearchAutoComplete;
     private ViewPager mViewPager;
 	private TabLayout mTab;
 	private ManualFragment fg, fg2, fg3, fg4, fg5;
@@ -54,7 +53,6 @@ public class BasicManualActivity extends BaseActivity {
         mToolbar = findViewById(R.id.toolbar);
 		mViewPager = findViewById(R.id.view_pager);
 		mTab = findViewById(R.id.tab_layout);
-        mParent = findViewById(R.id.parent);
     }
 
 	@Override
@@ -108,87 +106,61 @@ public class BasicManualActivity extends BaseActivity {
         getMenuInflater().inflate(R.menu.search_menu, menu);
 
         MenuItem searchItem = menu.findItem(R.id.search);
+
         mSearchView = (SearchView)MenuItemCompat.getActionView(searchItem);
-        mSearchView.setIconifiedByDefault(true);
-        mSearchView.setSubmitButtonEnabled(true);
-        //焦点
-        mSearchView.setFocusable(true);
-        mSearchView.requestFocusFromTouch();
-
         mSearchView.setQueryHint("输入关键字");
-        EditText editText = mSearchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
-        editText.setTextSize(14);
-        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
 
-                @Override
-                public boolean onQueryTextSubmit(String p1) {
-					int z = mViewPager.getCurrentItem();
-					switch (z) {
-						case 0:
-							fg.filter(p1);
-							break;
-						case 1:
-							fg2.filter(p1);
-							break;
-						case 2:
-							fg3.filter(p1);
-							break;
-						case 3:
-							fg4.filter(p1);
-							break;
-						case 4:
-							fg5.filter(p1);
-							break;
-						default:
-					}
-                    return false;
-                }
+		mSearchAutoComplete = mSearchView.findViewById(R.id.search_src_text);
+		mSearchAutoComplete.setTextSize(13);
+		
+		mSearchAutoComplete.setOnEditorActionListener(new TextView.OnEditorActionListener(){
 
-                @Override
-                public boolean onQueryTextChange(String p1) {
-                    int z = mViewPager.getCurrentItem();
-					switch (z) {
-						case 0:
-							fg.filter(p1);
-							break;
-						case 1:
-							fg2.filter(p1);
-							break;
-						case 2:
-							fg3.filter(p1);
-							break;
-						case 3:
-							fg4.filter(p1);
-							break;
-						case 4:
-							fg5.filter(p1);
-							break;
-						default:
+				@Override
+				public boolean onEditorAction(TextView tv, int actionId, KeyEvent event) {
+					if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+						query(tv.getText().toString());
+						return true;
 					}
-                    return false;
-                }
+					return false;
+				}
 			});
 
-        return super.onCreateOptionsMenu(menu);
-    }
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        clearFocus();
-    }
-
-    private void clearFocus() {
-        if (mSearchView != null) {
-            mSearchView.onActionViewCollapsed();
-            mSearchView.clearFocus();
-        }
-        mParent.setFocusable(true);
-        mParent.setFocusableInTouchMode(true);
-        mParent.requestFocus();
+				@Override
+				public boolean onQueryTextSubmit(String p1) {
+					return false;
+				}
+                @Override
+                public boolean onQueryTextChange(String p1) {
+                    query(p1);
+                    return true;
+                }
+			});
+        return true;
     }
 
 
-
+	private void query(String p1) {
+		int z = mViewPager.getCurrentItem();
+		switch (z) {
+			case 0:
+				fg.filter(p1);
+				break;
+			case 1:
+				fg2.filter(p1);
+				break;
+			case 2:
+				fg3.filter(p1);
+				break;
+			case 3:
+				fg4.filter(p1);
+				break;
+			case 4:
+				fg5.filter(p1);
+				break;
+			default:
+		}
+	}
 
 }

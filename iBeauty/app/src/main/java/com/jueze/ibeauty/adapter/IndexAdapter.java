@@ -34,7 +34,7 @@ import com.jueze.ibeauty.bean.TrushBean;
 import com.jueze.ibeauty.dialog.MyBottomSheetDialog;
 import com.jueze.ibeauty.dialog.MyProgressDialog;
 import com.jueze.ibeauty.network.MyHttp;
-import com.jueze.ibeauty.network.MyOkHttp;
+import com.jueze.ibeauty.network.OkHttpUtil;
 import com.jueze.ibeauty.util.ClipBoardUtil;
 import com.jueze.ibeauty.util.DisplayUtil;
 import com.jueze.ibeauty.util.MyString;
@@ -45,6 +45,7 @@ import java.io.IOException;
 import java.util.List;
 import okhttp3.Response;
 import com.jueze.ibeauty.util.AppUtil;
+import com.jueze.ibeauty.ImageToolActivity;
 
 public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.ViewHolder> {
 
@@ -106,6 +107,9 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.ViewHolder> 
 
     private void handleData(final String spell) {
         switch (spell) {
+			case "txgj":
+				mContext.startActivity(new Intent(mContext, ImageToolActivity.class));
+				break;
             case "yygl":
 				mContext.startActivity(new Intent(mContext, AppManagerActivity.class));
                 break;
@@ -235,7 +239,7 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.ViewHolder> 
 
 								@Override
 								public void run() {
-									MyOkHttp http = new MyOkHttp();
+									OkHttpUtil http = new OkHttpUtil();
 									Response resp = http.getBySyncIgnoreSSL(url);
 									if (resp != null && resp.isSuccessful()) {
 										try {

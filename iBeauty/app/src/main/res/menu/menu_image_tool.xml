@@ -1,0 +1,46 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto">
+
+	<item
+		android:id="@+id/image_info"
+		android:icon="@drawable/ic_note"
+		android:title="图片信息"
+		app:showAsAction="never"/>
+    <item
+        android:id="@+id/rotate"
+		android:icon="@drawable/ic_rotate"
+        android:title="旋转"
+		app:showAsAction="always">
+		<menu>
+			<item
+				android:id="@+id/rotate_left_90"
+				android:icon="@drawable/ic_rotate_left"
+				android:title="左旋90°"/>
+			<item
+				android:id="@+id/rotate_right_90"
+				android:icon="@drawable/ic_rotate_right"
+				android:title="右旋90°"/>
+			<item
+				android:id="@+id/rotate_180"
+				android:icon="@drawable/ic_rotate_right"
+				android:title="旋转180°"/>
+		</menu>
+	</item>
+    <item
+        android:id="@+id/flip"
+		android:icon="@drawable/ic_flip"
+        android:title="翻转"
+		app:showAsAction="always">
+		<menu>
+			<item
+				android:id="@+id/flip_horizontal"
+				android:icon="@drawable/ic_flip_horizontal"
+				android:title="水平翻转"/>
+			<item
+				android:id="@+id/flip_vertical"
+				android:icon="@drawable/ic_flip_vertical"
+				android:title="垂直翻转"/>
+		</menu>
+	</item>
+
+</menu>

@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,10 +37,10 @@ import com.jueze.ibeauty.bean.DaywordBean;
 import com.jueze.ibeauty.bean.FunBean;
 import com.jueze.ibeauty.dialog.MyProgressDialog;
 import com.jueze.ibeauty.network.MyHttp;
-import com.jueze.ibeauty.util.CheckStoragePermission;
 import com.jueze.ibeauty.util.DisplayUtil;
 import com.jueze.ibeauty.util.FileUtil;
 import com.jueze.ibeauty.util.NetworkUtil;
+import com.jueze.ibeauty.util.PermissionUtil;
 import com.jueze.ibeauty.util.ScreenUtil;
 import com.jueze.ibeauty.util.ShapeUtil;
 import com.jueze.ibeauty.util.ToastUtil;
@@ -45,6 +48,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import java.util.ArrayList;
 import java.util.List;
 import org.json.JSONObject;
+import android.widget.RelativeLayout;
 
 public class MainActivity extends BaseActivity {
 
@@ -54,6 +58,7 @@ public class MainActivity extends BaseActivity {
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
     
+	private RelativeLayout dwParent;
     private ImageView mDwBg;
     private TextView mDwEN, mDwCN;
     private CircleImageView mCircleImageView;
@@ -69,27 +74,57 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CheckStoragePermission.verifyStoragePermissions(this);
         setContentView(R.layout.activity_main);
-        mContext = this;
+        //PermissionUtil.requestReadPermission(this);
 		StatusBarUtil.setTransparentForImageView(this,mToolbar);
 		setSupportActionBar(mToolbar);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.setDrawerListener(toggle);
         toggle.syncState();
-
-        handleFun();
-        handleImageScale();
-        handleNvagationView();
-        handleDayword();
-        handleHeader();
-		setHeader();
+		
     }
 
+    @Override
+    public void bindViews() {   
+		mToolbar = findViewById(R.id.toolbar);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        mNavigationView = findViewById(R.id.navigation_view);
+		dwParent=findViewById(R.id.dw_parent);
+        mDwBg = findViewById(R.id.dw_bg);
+        mDwCN = findViewById(R.id.dw_cn);
+        mDwEN = findViewById(R.id.dw_en);
+        
+        mRecyclerView = findViewById(R.id.recycler_view);
 
-    private void handleNvagationView(){
-        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
+        View headerView = mNavigationView.getHeaderView(0);
+        mCircleImageView = headerView.findViewById(R.id.header);
+		headerName = headerView.findViewById(R.id.nickname);
+		headerEmail = headerView.findViewById(R.id.email);
+    }
+
+	@Override
+	public void initData() {
+		PermissionUtil.requestReadPermission(this);
+		mContext = this;
+		sh = new SharedHelper();
+
+		if(NetworkUtil.state()==0){
+			dwParent.setVisibility(View.GONE);
+		}else{
+			dwParent.setVisibility(View.VISIBLE);
+		}
+		//显示dayword图片宽高
+        handleImageScale();
+        handleDayword();
+		checkQQInfo();
+		handleFun();
+		
+	}
+
+	@Override
+	public void initEvent() {
+		mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
 
                 @Override
                 public boolean onNavigationItemSelected(MenuItem p1) {
@@ -100,100 +135,85 @@ public class MainActivity extends BaseActivity {
                     }
                     return true;
                 }
-        });
-    }
-    
-    
-    @Override
-    public void bindViews() {
-        
-		mToolbar = findViewById(R.id.toolbar);
-        mDrawerLayout = findViewById(R.id.drawer_layout);
-        mNavigationView = findViewById(R.id.navigation_view);
-        mDwBg = findViewById(R.id.dw_bg);
-        mDwCN = findViewById(R.id.dw_cn);
-        mDwEN = findViewById(R.id.dw_en);
-        
-        mRecyclerView = findViewById(R.id.recycler_view);
-    }
-
-	@Override
-	public void initData() {
-		sh = new SharedHelper();
-
-        View headerView = mNavigationView.getHeaderView(0);
-        mCircleImageView = headerView.findViewById(R.id.header);
-		headerName = headerView.findViewById(R.id.nickname);
-		headerEmail = headerView.findViewById(R.id.email);
-	}
-
-	@Override
-	public void initEvent() {
+			});
+		//NavigationView头像点击设置qq
 		mCircleImageView.setOnClickListener(new View.OnClickListener(){
-
 				@Override
 				public void onClick(View v) {
-					initQQEvent();
+					initQQEvent(false);
 				}
 		});
 	}
 
-
-	
-	private void setHeader(){
+	//如果qq信息为空，则弹出设置qq对话框，否则设置
+	private void checkQQInfo(){
 		SharedPreferences sp = getSharedPreferences("qqinfo", Context.MODE_PRIVATE);
 		String qq = sp.getString(sh.qqNum, "");
 		String name = sp.getString(sh.qqName, "");
 		String url = sp.getString(sh.imgUrl, "");
-		if(TextUtils.isEmpty(qq) || TextUtils.isEmpty(name) || TextUtils.isEmpty(url)){
-			initQQEvent();
+		boolean isNotTip = sp.getBoolean(sh.qqTip, false);
+		if(!isNotTip){
+			if(TextUtils.isEmpty(qq) || TextUtils.isEmpty(name) || TextUtils.isEmpty(url)){
+				initQQEvent(true);
+			}else{
+				Glide.with(this).load(url).into(mCircleImageView);
+				headerName.setText(name);
+				headerEmail.setText(qq+"@qq.com");
+			}
 		}
 	}
 	
-    private void initQQEvent(){
-		LinearLayout parent = new LinearLayout(this);
-		final EditText qqInput = new EditText(this);
-		Button saveBtn = new Button(this);
-
-		int width = -1;
-		int height = -2;
-
-		parent.addView(qqInput, width, height);
-		parent.addView(saveBtn, width, height);
-
-		int padding = DisplayUtil.dip2px(8);
-		parent.setOrientation(LinearLayout.VERTICAL);
-		parent.setPadding(padding,padding,padding,padding);
-		parent.setFocusable(true);
-		parent.setFocusableInTouchMode(true);
+	//设置header
+    private void handleHeader() {
+		SharedPreferences sp = getSharedPreferences("qqinfo", Context.MODE_PRIVATE);
+		String qq = sp.getString(sh.qqNum, "");
+		String name = sp.getString(sh.qqName, "");
+		String url = sp.getString(sh.imgUrl, "");
+		if(!TextUtils.isEmpty(qq) && !TextUtils.isEmpty(name) && !TextUtils.isEmpty(url)){
+			Glide.with(this).load(url).into(mCircleImageView);
+			headerName.setText(name);
+			headerEmail.setText(qq+"@qq.com");
+		}
+    }
+	
+	//初始化添加qq的AlertDialog
+    private void initQQEvent(boolean isStart){
 		
-		qqInput.setText(sh.get(sh.qqNum));
-		qqInput.setSelectAllOnFocus(true);
-		qqInput.setSingleLine(true);
-		qqInput.setTextSize(13);
-
-		ShapeUtil.set(saveBtn.getBackground(),getString(R.color.colorPrimary));
-		saveBtn.setText("保存");
-		saveBtn.setTextSize(13);
-		saveBtn.setTextColor(Color.parseColor("#ffffff"));
-
+		View parent = View.inflate(this,R.layout.dialog_main_set_qq,null);
+		final EditText qqInput = parent.findViewById(R.id.qq_input);
+		Button saveBtn = parent.findViewById(R.id.qq_confirm);
+		Button notTipBtn = parent.findViewById(R.id.qq_not_tip);
+		
+		if(!isStart){
+			notTipBtn.setVisibility(View.GONE);
+		}else{
+			notTipBtn.setVisibility(View.VISIBLE);
+		}
+		
 		AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
 		alertDialog.setView(parent);
 		final AlertDialog dialog = alertDialog.create();
 		dialog.show();
+		//设置弹窗宽度
 		dialog.getWindow().setLayout((ScreenUtil.getWidth()*2)/3, LinearLayout.LayoutParams.WRAP_CONTENT);
+		
+		notTipBtn.setOnClickListener(new View.OnClickListener(){
 
+				@Override
+				public void onClick(View p1) {
+					sh.setTip(true);
+					dialog.dismiss();
+				}
+			});
 		saveBtn.setOnClickListener(new View.OnClickListener(){
 
 				@Override
 				public void onClick(View v) {
 					final String qqNum = qqInput.getText().toString();
 					if(NetworkUtil.state()==0){
-						ToastUtil.show("请检查网络连接");
+						ToastUtil.show("无网络连接");
 					}else if(TextUtils.isEmpty(qqNum)){
 						ToastUtil.show("输入不能为空");
-					}else if(!TextUtils.isDigitsOnly(qqNum)){
-						ToastUtil.show("格式错误，只允许数字");
 					}else if(TextUtils.isDigitsOnly(qqNum)){
 						final MyProgressDialog pd = new MyProgressDialog(mContext);
 						pd.show();
@@ -218,12 +238,13 @@ public class MainActivity extends BaseActivity {
 															handleHeader();
 															dialog.dismiss();
 															ToastUtil.show("设置头像成功");
+															mDrawerLayout.openDrawer(Gravity.START);
 														}else{
-															ToastUtil.show("QQ号错误");
+															ToastUtil.show("设置失败，请重新尝试");
 														}
 													}catch(Exception e){}
 												}else{
-													ToastUtil.show("QQ号错误");
+													ToastUtil.show("网络超时或未知错误");
 												}
 											}
 										});
@@ -236,50 +257,49 @@ public class MainActivity extends BaseActivity {
 			});
 	}
 	
+	//处理首页功能列表
     private void handleFun(){
+		new Thread(new Runnable(){
 
-        String jsonData = FileUtil.readTxtFromAssets("function.json");
-        Gson gson = new Gson();
-        JsonObject jsonObject = new JsonParser().parse(jsonData).getAsJsonObject();
-        JsonArray jsonArray = jsonObject.getAsJsonArray("data");
-        for (JsonElement data : jsonArray) {
-            FunBean funBean = gson.fromJson(data, new TypeToken<FunBean>(){}.getType());
-            funList.add(funBean);
-        }
-
-        StaggeredGridLayoutManager lm = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(lm);
-        adapter = new IndexAdapter(funList);
-        mRecyclerView.setAdapter(adapter);
+				@Override
+				public void run() {
+					String jsonData = FileUtil.readTxtFromAssets("function.json");
+					Gson gson = new Gson();
+					JsonObject jsonObject = new JsonParser().parse(jsonData).getAsJsonObject();
+					JsonArray jsonArray = jsonObject.getAsJsonArray("data");
+					for (JsonElement data : jsonArray) {
+						FunBean funBean = gson.fromJson(data, new TypeToken<FunBean>(){}.getType());
+						funList.add(funBean);
+					}
+					mHandler.sendEmptyMessage(0);
+				}
+		}).start();
     }
 
-    
+    private Handler mHandler=new Handler(){
+
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			if(msg.what==0){
+				mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
+				adapter = new IndexAdapter(funList);
+				mRecyclerView.setAdapter(adapter);
+			}
+		}
+		
+	};
     private void handleImageScale() {
         //设置图像宽高
         float scale = 938 / 580f;
         int width = ScreenUtil.getWidth();
         int height = (int)(width / scale);
-        
-        
+            
         ViewGroup.LayoutParams lp = mDwBg.getLayoutParams();
         lp.width = width;
         lp.height = height;
         mDwBg.setLayoutParams(lp);
 
-    }
-
-    private void handleHeader() {
-		SharedPreferences sp = getSharedPreferences("qqinfo", Context.MODE_PRIVATE);
-		String qq = sp.getString(sh.qqNum, "");
-		String name = sp.getString(sh.qqName, "");
-		String url = sp.getString(sh.imgUrl, "");
-		if(!TextUtils.isEmpty(qq) && !TextUtils.isEmpty(name) && !TextUtils.isEmpty(url)){
-			//String qqtx = "http://q1.qlogo.cn/g?b=qq&nk=2550962720&s=640";
-			Glide.with(this).load(url).into(mCircleImageView);
-			headerName.setText(name);
-			headerEmail.setText(qq+"@qq.com");
-		}
-		
     }
 
     private void handleDayword() {
@@ -314,11 +334,28 @@ public class MainActivity extends BaseActivity {
             });
     }
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		if(NetworkUtil.state()==0){
+			dwParent.setVisibility(View.GONE);
+		}else{
+			dwParent.setVisibility(View.VISIBLE);
+			handleDayword();
+			handleHeader();
+		}
+	}
+	
+	
+
+	//保存qq信息
 	class SharedHelper{
 		public String spName = "qqinfo";
 		public String qqNum = "qqNum";
 		public String qqName = "qqName";
 		public String imgUrl = "imgUrl";
+		public String qqTip = "qqTip";
 		private SharedPreferences.Editor editor;
 		private SharedPreferences sp;
 		public SharedHelper(){
@@ -333,10 +370,17 @@ public class MainActivity extends BaseActivity {
 			editor.apply();
 		}
 		
-		public String get(String name){
+		public void setTip(boolean isTip){
+			editor.putBoolean(this.qqTip,isTip);
+			editor.apply();
+		}
+		public String getString(String name){
 			return sp.getString(name,"");
 		}
 		
+		public boolean getBoolean(String tip){
+			return sp.getBoolean(tip,false);
+		}
 		public void clear(){
 			editor.clear();
 			editor.apply();

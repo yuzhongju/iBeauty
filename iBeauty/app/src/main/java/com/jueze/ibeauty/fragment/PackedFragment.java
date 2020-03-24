@@ -38,20 +38,35 @@ public class PackedFragment extends Fragment {
             rootView = inflater.inflate(R.layout.fragment_packed, container, false);
         }
         mRv = rootView.findViewById(R.id.recycler_view);
-        handleData();
+        load();
         return rootView;
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if(isVisibleToUser) handleData();
+        if(isVisibleToUser) refresh();
     }
     
-    
-    
+	public void refresh(){
+		if(adapter!=null){
+			handleData();
+			adapter.refresh(mDataList);
+		}
+	}
+	
+	private void load(){
+		if(adapter==null){
+			handleData();
+			adapter = new PackedAdapter(mDataList);
+		}
+		mRv.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+		mRv.setAdapter(adapter);
+		
+	}
+	
     private void handleData() {
-        if (adapter != null) adapter.removeAll();
+        if (adapter != null) adapter.clear();
         File file = new File(filePath);
         try {
             for (File f : file.listFiles()) {
@@ -71,11 +86,6 @@ public class PackedFragment extends Fragment {
                         return com.compare(p1.getTitle(), p2.getTitle());
                     }
             });
-           
-            mRv.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-            adapter = new PackedAdapter(mDataList);
-            mRv.setAdapter(adapter);
-
         } catch (Exception e) {}
     }
 

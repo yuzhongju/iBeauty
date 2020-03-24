@@ -1,23 +1,21 @@
 package com.jueze.ibeauty;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.LinearLayout;
-import com.tencent.smtt.sdk.WebSettings;
-import com.tencent.smtt.sdk.WebView;
-import com.tencent.smtt.sdk.WebViewClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
-import com.jueze.ibeauty.util.ImageUtil;
-import com.jueze.ibeauty.util.ToastUtil;
-import android.content.Context;
-import com.jaeger.library.StatusBarUtil;
-import android.graphics.Color;
+import android.widget.LinearLayout;
 import android.widget.MultiAutoCompleteTextView;
+import com.jueze.ibeauty.R;
+import com.jueze.ibeauty.util.ImageUtil;
+
 
 public class BrowserActivity extends BaseActivity implements View.OnClickListener {
 
@@ -63,7 +61,7 @@ public class BrowserActivity extends BaseActivity implements View.OnClickListene
 
 	@Override
 	public void initData() {
-		rightBmp = ImageUtil.rotateImg(180, ImageUtil.readBitmapById(this, R.drawable.browser_left));
+		rightBmp = ImageUtil.rotate(180, ImageUtil.getBitmapById(this, R.drawable.browser_left));
 		rightImg.setImageBitmap(rightBmp);
 		backView.setOnClickListener(this);
 		forwardView.setOnClickListener(this);
@@ -114,10 +112,20 @@ public class BrowserActivity extends BaseActivity implements View.OnClickListene
 		// this.getSettingsExtension().setPageCacheCapacity(IX5WebSettings.DEFAULT_CACHE_CAPACITY);//extension
 		// settings 的设计
 
+		
 	}
 	private WebViewClient client = new WebViewClient(){
 		@Override
 		public boolean shouldOverrideUrlLoading(WebView view, String url) {
+			try{
+				if(!url.startsWith("http://") && !url.startsWith("https://")){
+					Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+					startActivity(intent);
+					return true;
+				}
+			}catch(Exception e){
+				return false;
+			}
 			loadingUrl = url;
 			view.loadUrl(url);
 			return true;
@@ -132,6 +140,7 @@ public class BrowserActivity extends BaseActivity implements View.OnClickListene
 		@Override
 		public void onPageFinished(WebView view, String url) {
 			super.onPageFinished(view, url);
+			loadingUrl = url;
 			titleView.setText(view.getTitle());
 		}
 

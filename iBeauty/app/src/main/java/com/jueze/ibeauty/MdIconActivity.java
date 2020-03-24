@@ -12,17 +12,17 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
 import android.webkit.DownloadListener;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import com.jueze.ibeauty.bean.MdIconBean;
+import android.widget.TextView;
 import com.jueze.ibeauty.dialog.MyProgressDialog;
 import com.jueze.ibeauty.fragment.MdIconFragment;
-import com.jueze.ibeauty.network.MyOkHttp;
+import com.jueze.ibeauty.network.OkHttpUtil;
 import com.jueze.ibeauty.util.FileUtil;
 import com.jueze.ibeauty.util.MyString;
 import com.jueze.ibeauty.util.ToastUtil;
@@ -58,11 +58,11 @@ public class MdIconActivity extends BaseActivity {
     private AlertDialog mAlertDialog;
     private MyProgressDialog mPd;
     private Context mContext;
-    private MyOkHttp mHttp;
+    private OkHttpUtil mHttp;
     
     private Toolbar mToolbar;
-    private LinearLayout mParent;
     private SearchView mSearchView;
+	private SearchView.SearchAutoComplete mSearchAutoComplete;
 	private ViewPager mViewPager;
 	private TabLayout mTab;
     private MdIconFragment fg, fg2;
@@ -81,7 +81,6 @@ public class MdIconActivity extends BaseActivity {
     @Override
     public void bindViews() {
         mToolbar = findViewById(R.id.toolbar);
-        mParent = findViewById(R.id.parent);
 		mTab = findViewById(R.id.tab_layout);
 		mViewPager = findViewById(R.id.view_pager);
     }
@@ -118,8 +117,6 @@ public class MdIconActivity extends BaseActivity {
 	public void initEvent() {
 	}
 
-
-	
 	private void handleViewPager(){
 		mViewPager.setOffscreenPageLimit(mFragments.size());
 		mViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()){
@@ -137,19 +134,17 @@ public class MdIconActivity extends BaseActivity {
 				public CharSequence getPageTitle(int position){
 					return mTabTitles.get(position);
 				}
-				
-			
 		});
 		mTab.setupWithViewPager(mViewPager);
 	}
 	
-    private void checkFile(){
-        
+    private void checkFile(){     
         if (new File(filePath).exists() && new File(filePath).isDirectory()) {
             handleViewPager();
         }else{
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
             builder.setTitle("提示");
+			builder.setCancelable(false);
             builder.setMessage("没有资源文件，是否下载\nmaterial-design-icons.zip(1.2M)");
             builder.setPositiveButton("下载", new DialogInterface.OnClickListener(){
 
@@ -178,40 +173,46 @@ public class MdIconActivity extends BaseActivity {
         MenuItem searchItem = menu.findItem(R.id.search);
         mSearchView = (SearchView)MenuItemCompat.getActionView(searchItem);
         mSearchView.setIconifiedByDefault(true);
-        mSearchView.setSubmitButtonEnabled(true);
-        //焦点
-        mSearchView.setFocusable(true);
-        mSearchView.requestFocusFromTouch();
-
         mSearchView.setQueryHint("输入关键字");
-        EditText editText = mSearchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
-        editText.setTextSize(14);
+		mSearchAutoComplete = mSearchView.findViewById(R.id.search_src_text);
+        mSearchAutoComplete.setTextSize(13);
+		
+
+		mSearchAutoComplete.setOnEditorActionListener(new TextView.OnEditorActionListener(){
+
+				@Override
+				public boolean onEditorAction(TextView tv, int actionId, KeyEvent event) {
+					if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+						query(tv.getText().toString());
+						return true;
+					}
+					return false;
+				}
+			});
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
 
                 @Override
                 public boolean onQueryTextSubmit(String p1) {
-					int position = mViewPager.getCurrentItem();
-					if(position==0){
-						fg.refresh(position, p1);	
-					}else if(position==1){
-						fg2.refresh(position, p1);
-					}
                     return false;
                 }
 
                 @Override
                 public boolean onQueryTextChange(String p1) {
-					int position = mViewPager.getCurrentItem();
-					if(position==0){
-						fg.refresh(position, p1);	
-					}else if(position==1){
-						fg2.refresh(position, p1);
-					}
-                    return false;
+					query(p1);
+                    return true;
                 }
             });
         return super.onCreateOptionsMenu(menu);
     }
+	
+	private void query(String p1){
+		int position = mViewPager.getCurrentItem();
+		if(position==0){
+			fg.filter(p1);	
+		}else if(position==1){
+			fg2.filter(p1);
+		}
+	}
     
     private void downloadFile(){
         getRealUrl();
@@ -225,7 +226,7 @@ public class MdIconActivity extends BaseActivity {
 
                 @Override
                 public void run() {
-                    mHttp = new MyOkHttp();
+                    mHttp = new OkHttpUtil();
                     Response response = null;
                     String body = null;
                     try {
@@ -281,25 +282,6 @@ public class MdIconActivity extends BaseActivity {
                 }
         }).start();
     }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        clearFocus();
-    }
-
-    private void clearFocus(){
-        if (mSearchView != null) {
-            mSearchView.onActionViewCollapsed();
-            mSearchView.clearFocus();
-        }
-        mParent.setFocusable(true);
-        mParent.setFocusableInTouchMode(true);
-        mParent.requestFocus();
-    }
-    
-    
     
     private Handler mHandler = new Handler(){
 

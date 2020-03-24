@@ -1,7 +1,9 @@
 package com.jueze.ibeauty;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 import android.view.MenuItem;
 import com.jaeger.library.StatusBarUtil;
+import java.lang.reflect.Method;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
@@ -47,6 +49,19 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void setStatusBar(){
 		StatusBarUtil.setColor(this,mColor,mAlpha);
+    }
+    @Override
+    public boolean onMenuOpened(int featureId, Menu menu) {
+        if(menu != null){
+            if(menu.getClass().getSimpleName().equalsIgnoreCase("MenuBuilder")){
+                try{
+                    Method method = menu.getClass().getDeclaredMethod("setOptionalIconsVisible",Boolean.TYPE);
+                    method.setAccessible(true);
+                    method.invoke(menu,true);
+                }catch(Exception e){}
+            }
+        }
+        return super.onMenuOpened(featureId, menu);
     }
     
     

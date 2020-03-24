@@ -7,27 +7,34 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.jueze.ibeauty.R;
 import com.jueze.ibeauty.bean.AppDataBean;
+import com.jueze.ibeauty.bean.ManualBean;
 import com.jueze.ibeauty.dialog.MyProgressDialog;
-import com.jueze.ibeauty.util.FileUtil;
 import com.jueze.ibeauty.util.ClipBoardUtil;
+import com.jueze.ibeauty.util.FileUtil;
 import com.jueze.ibeauty.util.ShapeUtil;
 import com.jueze.ibeauty.util.ShareUtil;
 import com.jueze.ibeauty.util.ToastUtil;
+import java.util.ArrayList;
 import java.util.List;
-import com.jueze.ibeauty.util.LogUtil;
+import com.jueze.ibeauty.util.MyString;
+import android.graphics.Color;
 
-public class AppManagerAdapter extends RecyclerView.Adapter<AppManagerAdapter.ViewHolder> {
-
-    private List<AppDataBean> mAppList;
+public class AppManagerAdapter extends RecyclerView.Adapter<AppManagerAdapter.ViewHolder> implements Filterable {
+	
+    private List<AppDataBean> mAppList, filterList;
+	private String queryString;
     private Context mContext;
     private Activity mActivity;
     private BottomSheetDialog mBsd;
@@ -37,26 +44,9 @@ public class AppManagerAdapter extends RecyclerView.Adapter<AppManagerAdapter.Vi
     private TextView mAppname, mAppbm, mAppqdl, mAppbb, mAppbbh, mAppuid, mAppflags, mAppfid, mApplud, mAppsjml, mAppywjml;
     private Button mAppqc;
 
-    private String appName;
-    private String packageName;
-    private Drawable appIcon;
-    private String appSize;
-    private int versionCode;
-    private String versionName;
-
-    private String firstInstallDate;
-    private String lastUpdateDate;
-
-    private int targetSdkVersion;
-    private int minSdkVersion;
-    private String dataDir;
-    private String sourceDir;
-    private int uid;
-    private int flags;
-
-    private String mainActivity;
-    
-    
+    private String appName, packageName, appSize, versionName, firstInstallDate, lastUpdateDate, dataDir, sourceDir, mainActivity;
+    private int versionCode, targetSdkVersion, minSdkVersion, uid, flags;
+	private Drawable appIcon;
     
     private Handler mHandler = new Handler(){
 
@@ -88,8 +78,11 @@ public class AppManagerAdapter extends RecyclerView.Adapter<AppManagerAdapter.Vi
         
     };
     
-    public AppManagerAdapter(List<AppDataBean> list){
+    public AppManagerAdapter(Context context, List<AppDataBean> list){
+		this.mContext = context;
+		this.mActivity = (Activity) context;
         this.mAppList = list;
+		this.filterList = list;
     }
     
     static class ViewHolder extends RecyclerView.ViewHolder{
@@ -117,15 +110,19 @@ public class AppManagerAdapter extends RecyclerView.Adapter<AppManagerAdapter.Vi
 
     @Override
     public void onBindViewHolder(AppManagerAdapter.ViewHolder holder, int position) {
-        final AppDataBean data = mAppList.get(position);
-
+        final AppDataBean data = filterList.get(position);
+		
         appName = data.getAppName();
         appIcon = data.getAppIcon();
         appSize = data.getAppSize();
         versionName = data.getVersionName();
         
-        holder.mTitle.setText(appName);
-        holder.mVersion.setText("v"+versionName);
+		if(TextUtils.isEmpty(queryString)){
+			holder.mTitle.setText(appName);
+		}else{
+			holder.mTitle.setText(MyString.highlightStr(Color.RED, appName, queryString));
+		}
+        holder.mVersion.setText("v_"+versionName);
         holder.mSize.setText(appSize);
         holder.mIcon.setImageDrawable(appIcon);
         
@@ -133,14 +130,43 @@ public class AppManagerAdapter extends RecyclerView.Adapter<AppManagerAdapter.Vi
 
                 @Override
                 public void onClick(View view) {
-                    mContext = view.getContext();
-                    mActivity = (Activity) mContext;
                     handleDialog(data);
                 }
         });
         
     }
 
+	@Override
+	public Filter getFilter() {
+		return new Filter(){
+
+			@Override
+			protected Filter.FilterResults performFiltering(CharSequence p1) {
+				queryString = p1.toString();
+				if (TextUtils.isEmpty(queryString)) {
+					filterList = mAppList;
+				} else {
+					List<AppDataBean> filteredList = new ArrayList<>();
+					for (int i=0; i < mAppList.size(); i++) {
+						if (mAppList.get(i).getAppName().toLowerCase().contains(queryString.toLowerCase()) || mAppList.get(i).getPackageName().toLowerCase().contains(queryString.toLowerCase())) {
+							filteredList.add(mAppList.get(i));
+						}
+					}
+					filterList = filteredList;
+				}
+				FilterResults filterRes = new FilterResults();
+				filterRes.values = filterList;
+				return filterRes;
+			}
+
+			@Override
+			protected void publishResults(CharSequence p1, Filter.FilterResults p2) {
+				filterList = (List<AppDataBean>)p2.values;
+				notifyDataSetChanged();
+			}
+		};
+	}
+	
     private void handleDialog(AppDataBean data){
 
         appName = data.getAppName();
@@ -281,13 +307,7 @@ public class AppManagerAdapter extends RecyclerView.Adapter<AppManagerAdapter.Vi
     
     @Override
     public int getItemCount() {
-        return mAppList.size();
+        return filterList.size();
     }
-    
-    public void removeAll(){
-        mAppList.clear();
-        notifyDataSetChanged();
-    }
-    
     
 }

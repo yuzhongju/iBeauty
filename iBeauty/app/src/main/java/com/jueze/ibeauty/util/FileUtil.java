@@ -253,4 +253,22 @@ public class FileUtil {
         return false;
     }
 
+    public static String decimal2(long size){
+        String a = null;
+        double b = size;
+        double kb = size/1024d;
+        double mb = size/1024/1024d;
+        double gb = size/1024/1024/1024d;
+        if(b<1024){
+            a = String.format("%.2f",b) + " B";
+        }else if(kb<1024){
+            a = String.format("%.2f",kb) + " K";
+        }else if(mb<1024){
+            a = String.format("%.2f",mb) + " M";
+        }else if(gb<1024){
+            a = String.format("%.2f",gb) + " G";
+        }
+        return a;
+    }
+
 }
