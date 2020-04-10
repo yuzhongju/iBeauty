@@ -54,7 +54,8 @@
 
         <activity android:name=".AppManagerActivity"/>
 
-        <activity android:name=".WebSourceActivity"/>
+        <activity android:name=".WebSourceActivity"
+			android:windowSoftInputMode="adjustPan"/>
 
         <activity android:name=".MdIconActivity"/>
 

@@ -58,7 +58,7 @@ public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHo
 
                 @Override
                 public void onClick(View view) {
-					BrowserActivity.actionStart(mContext, url);
+					BrowserActivity.actionStart(mContext, title, url);
                 }
         });
     }

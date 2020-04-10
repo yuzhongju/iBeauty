@@ -45,12 +45,13 @@ public class OpenSourceActivity extends BaseActivity {
     @Override
     public void initData() {
         
-        list.add(new OpenSourceBean("gson-2.8.5","A Java serialization/deserialization library to convert Java Objects into JSON and back","https://github.com/google/gson"));
-        list.add(new OpenSourceBean("okhttp-4.2.1","Square’s meticulous HTTP client for Java and Kotlin.","https://github.com/square/okhttp"));
+        list.add(new OpenSourceBean("Gson-2.8.5","A Java serialization/deserialization library to convert Java Objects into JSON and back","https://github.com/google/gson"));
+        list.add(new OpenSourceBean("OkHttp-4.2.1","Square’s meticulous HTTP client for Java and Kotlin.","https://github.com/square/okhttp"));
         list.add(new OpenSourceBean("CircleImageView-2.1.0","A circular ImageView for Android","https://github.com/hdodenhof/CircleImageView"));
-        list.add(new OpenSourceBean("glide-3.7.0","An image loading and caching library for Android focused on smooth scrolling.","https://github.com/bumptech/glide"));
+        list.add(new OpenSourceBean("Glide-3.7.0","An image loading and caching library for Android focused on smooth scrolling.","https://github.com/bumptech/glide"));
         list.add(new OpenSourceBean("StatusBarUtil-1.4.0","A util for setting status bar style on Android App.","https://github.com/laobie/StatusBarUtil"));
-        list.add(new OpenSourceBean("jsoup-1.12.1","Java HTML Parser, with best of DOM, CSS, and jquery","https://github.com/jhy/jsoup"));
+        list.add(new OpenSourceBean("Jsoup-1.12.1","Java HTML Parser, with best of DOM, CSS, and jquery","https://github.com/jhy/jsoup"));
+        list.add(new OpenSourceBean("FloatingActionButton-1.6.4","Android Floating Action Button based on Material Design specification","https://github.com/Clans/FloatingActionButton"));
     }
 
 	@Override

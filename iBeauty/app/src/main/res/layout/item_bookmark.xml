@@ -28,6 +28,8 @@
 			<TextView
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
+				android:maxLines="2"
+				android:ellipsize="end"
 				android:text="Text"
 				android:textSize="12sp"
 				android:id="@+id/mark_url"

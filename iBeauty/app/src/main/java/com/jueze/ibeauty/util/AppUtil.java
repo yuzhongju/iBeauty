@@ -2,6 +2,8 @@ package com.jueze.ibeauty.util;
 import android.text.TextUtils;
 import android.content.pm.PackageInfo;
 import com.jueze.ibeauty.MyApplication;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 
 public class AppUtil {
 	
@@ -16,5 +18,16 @@ public class AppUtil {
 		}else{
 			return true;
 		}
+	}
+	
+	public static int getVersionCode(){
+		int version = 0;
+		PackageManager pm = MyApplication.getContext().getPackageManager();
+		try {
+			PackageInfo info=pm.getPackageInfo(MyApplication.getContext().getPackageName(), 0);
+			version= info.versionCode;
+		} catch (PackageManager.NameNotFoundException e) {}
+
+		return version;
 	}
 }

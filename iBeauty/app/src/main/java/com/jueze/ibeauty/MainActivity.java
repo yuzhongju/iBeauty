@@ -49,6 +49,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.json.JSONObject;
 import android.widget.RelativeLayout;
+import com.jueze.ibeauty.util.LogUtil;
+import com.jueze.ibeauty.util.AppUtil;
 
 public class MainActivity extends BaseActivity {
 
@@ -132,6 +134,9 @@ public class MainActivity extends BaseActivity {
                         case R.id.nav_open_source:
 							mContext.startActivity(new Intent(mContext,OpenSourceActivity.class));
                             break;
+						case R.id.nav_update:
+							
+							break;
                     }
                     return true;
                 }
@@ -220,7 +225,7 @@ public class MainActivity extends BaseActivity {
 						new Thread(new Runnable(){
 								@Override
 								public void run() {
-									String api = "https://api.toubiec.cn/qq?qq="+qqNum+"&size=100";
+									String api = "http://api.5ifxw.cn/qqxt/api.php?qq="+qqNum;
 									final String result = MyHttp.getHtml(api);
 									runOnUiThread(new Runnable(){
 											@Override
@@ -230,10 +235,10 @@ public class MainActivity extends BaseActivity {
 													try{
 														JSONObject jsonObj = new JSONObject(result);
 														String code = jsonObj.getString("code");
-														if(code.equals("200")){
-															String qq = jsonObj.getString("qq");
-															String imgurl = "http://q1.qlogo.cn/g?b=qq&nk="+qq+"&s=640";
+														if(code.equals("1")){
+															String qq = qqNum;
 															String name = jsonObj.getString("name");
+															String imgurl = jsonObj.getString("imgurl");
 															sh.save(qq,name,imgurl);
 															handleHeader();
 															dialog.dismiss();

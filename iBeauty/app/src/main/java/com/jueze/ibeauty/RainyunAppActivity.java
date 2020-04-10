@@ -37,6 +37,7 @@ public class RainyunAppActivity extends BaseActivity {
     private Button mSignin;
     private Toolbar mToolbar;
     private MyProgressDialog mPd;
+	private boolean isSignined=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -143,6 +144,7 @@ public class RainyunAppActivity extends BaseActivity {
     
     
     private void signin(){
+		
         mPd = new MyProgressDialog(mContext);
         mPd.setMessage("签到中...");
         mPd.show();

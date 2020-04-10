@@ -7,215 +7,265 @@
 	android:orientation="vertical"
 	android:background="#FFFFFFFF">
 
-	<android.support.design.widget.AppBarLayout
+	<android.support.design.widget.CoordinatorLayout
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+		android:layout_height="match_parent">
 
-		<android.support.v7.widget.Toolbar
-			android:id="@+id/toolbar"
-			android:layout_width="match_parent"
-			android:layout_height="?attr/actionBarSize"
-			app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
-
-	</android.support.design.widget.AppBarLayout>
-
-	<LinearLayout
-		android:orientation="vertical"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:padding="16dp">
-
-		<LinearLayout
-			android:orientation="vertical"
+		<android.support.design.widget.AppBarLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:focusable="true"
-			android:focusableInTouchMode="true">
+			android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="url"
-				android:textSize="12sp"/>
-
-			<EditText
+			<android.support.v7.widget.Toolbar
+				android:fitsSystemWindows="true"
+				android:id="@+id/toolbar"
 				android:layout_width="match_parent"
-				android:ems="10"
 				android:layout_height="wrap_content"
-				android:textSize="13sp"
-				android:id="@+id/web_src_url"
-				android:maxLines="2"/>
+				app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
-		</LinearLayout>
+		</android.support.design.widget.AppBarLayout>
 
-		<LinearLayout
-			android:orientation="vertical"
+		<android.support.v4.widget.NestedScrollView
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="4dp"
-			android:focusable="true"
-			android:focusableInTouchMode="true">
+			android:layout_height="match_parent"
+			app:layout_behavior="@string/appbar_scrolling_view_behavior"
+			android:id="@+id/nested_scroll">
 
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="post data"
-				android:textSize="12sp"/>
-
-			<EditText
-				android:layout_width="match_parent"
-				android:ems="10"
-				android:layout_height="wrap_content"
-				android:textSize="13sp"
-				android:id="@+id/web_src_post_data"
-				android:maxLines="2"/>
-
-		</LinearLayout>
-
-		<LinearLayout
-			android:orientation="vertical"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="4dp"
-			android:focusable="true"
-			android:focusableInTouchMode="true">
-
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="cookie"
-				android:textSize="12sp"/>
-
-			<EditText
-				android:layout_width="match_parent"
-				android:ems="10"
-				android:layout_height="wrap_content"
-				android:textSize="13sp"
-				android:id="@+id/web_src_cookie"
-				android:maxLines="2"/>
-
-		</LinearLayout>
-
-		<LinearLayout
-			android:orientation="vertical"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="4dp"
-			android:focusable="true"
-			android:focusableInTouchMode="true">
-
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="user agent"
-				android:textSize="12sp"/>
-
-			<EditText
-				android:layout_width="match_parent"
-				android:ems="10"
-				android:layout_height="wrap_content"
-				android:textSize="13sp"
-				android:id="@+id/web_src_ua"
-				android:maxLines="2"/>
-
-		</LinearLayout>
-
-		<LinearLayout
-			android:orientation="horizontal"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content">
-
-			<Button
-				android:layout_width="wrap_content"
-				style="?android:attr/buttonStyleSmall"
-				android:layout_height="wrap_content"
-				android:text="GET"
-				android:layout_weight="1.0"
-				android:textColor="#FFFFFFFF"
-				android:id="@+id/web_src_get"/>
-
-			<Button
-				android:layout_width="wrap_content"
-				style="?android:attr/buttonStyleSmall"
-				android:layout_height="wrap_content"
-				android:text="POST"
-				android:layout_weight="1.0"
-				android:textColor="#FFFFFFFF"
-				android:id="@+id/web_src_post"/>
-
-		</LinearLayout>
-
-		<Button
-			android:layout_height="wrap_content"
-			android:layout_width="match_parent"
-			style="?android:attr/buttonStyleSmall"
-			android:id="@+id/web_src_copy"
-			android:textColor="#FFFFFFFF"
-			android:text="复制"/>
-
-
-			<ScrollView
+			<LinearLayout
+				android:orientation="vertical"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
-                android:visibility="gone"
-                android:id="@+id/web_src_response"
-                android:fillViewport="true">
+				android:padding="16dp">
 
 				<LinearLayout
 					android:orientation="vertical"
 					android:layout_width="match_parent"
-					android:layout_height="match_parent">
+					android:layout_height="wrap_content"
+					android:focusable="true"
+					android:focusableInTouchMode="true">
 
-					<LinearLayout
-						android:orientation="vertical"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content">
-
-						<TextView
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="Headers"
-							android:textColor="#FF000000"/>
-
-						<TextView
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:id="@+id/web_src_headers"/>
-
-					</LinearLayout>
-
-					<RelativeLayout
-						android:layout_height="1dp"
-						android:layout_width="match_parent"
-						android:background="#ffcccccc"
-						android:layout_marginTop="4dp"/>
-
-					<LinearLayout
-						android:orientation="vertical"
-						android:layout_width="match_parent"
+					<TextView
+						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:layout_marginTop="4dp">
+						android:text="url"
+						android:textSize="12sp"/>
 
-						<TextView
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="Response"
-							android:textColor="#FF000000"/>
-
-						<TextView
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:scrollbars="vertical"
-							android:id="@+id/web_src_result"/>
-
-					</LinearLayout>
+					<EditText
+						android:layout_width="match_parent"
+						android:ems="10"
+						android:layout_height="wrap_content"
+						android:textSize="13sp"
+						android:id="@+id/web_src_url"
+						android:maxLines="2"/>
 
 				</LinearLayout>
 
-			</ScrollView>
+				<LinearLayout
+					android:orientation="vertical"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="4dp"
+					android:focusable="true"
+					android:focusableInTouchMode="true">
 
-	</LinearLayout>
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="post data"
+						android:textSize="12sp"/>
+
+					<EditText
+						android:layout_width="match_parent"
+						android:ems="10"
+						android:layout_height="wrap_content"
+						android:textSize="13sp"
+						android:id="@+id/web_src_post_data"
+						android:maxLines="2"/>
+
+				</LinearLayout>
+
+				<LinearLayout
+					android:orientation="vertical"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="4dp"
+					android:focusable="true"
+					android:focusableInTouchMode="true">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="cookie"
+						android:textSize="12sp"/>
+
+					<EditText
+						android:layout_width="match_parent"
+						android:ems="10"
+						android:layout_height="wrap_content"
+						android:textSize="13sp"
+						android:id="@+id/web_src_cookie"
+						android:maxLines="2"/>
+
+				</LinearLayout>
+
+				<LinearLayout
+					android:orientation="vertical"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="4dp"
+					android:focusable="true"
+					android:focusableInTouchMode="true">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="user agent"
+						android:textSize="12sp"/>
+
+					<EditText
+						android:layout_width="match_parent"
+						android:ems="10"
+						android:layout_height="wrap_content"
+						android:textSize="13sp"
+						android:id="@+id/web_src_ua"
+						android:maxLines="2"/>
+
+				</LinearLayout>
+
+				<LinearLayout
+					android:orientation="horizontal"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content">
+
+					<Button
+						android:layout_width="wrap_content"
+						style="?android:attr/buttonStyleSmall"
+						android:layout_height="wrap_content"
+						android:text="GET"
+						android:layout_weight="1.0"
+						android:textColor="#FFFFFFFF"
+						android:id="@+id/web_src_get"/>
+
+					<Button
+						android:layout_width="wrap_content"
+						style="?android:attr/buttonStyleSmall"
+						android:layout_height="wrap_content"
+						android:text="POST"
+						android:layout_weight="1.0"
+						android:textColor="#FFFFFFFF"
+						android:id="@+id/web_src_post"/>
+
+				</LinearLayout>
+
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal">
+
+					<Button
+						android:layout_height="wrap_content"
+						android:layout_width="match_parent"
+						style="?android:attr/buttonStyleSmall"
+						android:layout_weight="1"
+						android:id="@+id/web_src_copy"
+						android:textColor="#FFFFFFFF"
+						android:text="复制"/>
+
+					<Button
+						android:layout_height="wrap_content"
+						android:layout_width="match_parent"
+						android:layout_weight="1"
+						style="?android:attr/buttonStyleSmall"
+						android:id="@+id/web_src_del"
+						android:textColor="#FFFFFFFF"
+						android:text="清空"/>
+
+				</LinearLayout>
+
+				<ScrollView
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:visibility="gone"
+					android:id="@+id/web_src_response"
+					android:fillViewport="true">
+
+					<HorizontalScrollView
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:fillViewport="true">
+
+						<LinearLayout
+							android:orientation="vertical"
+							android:layout_width="match_parent"
+							android:layout_height="match_parent">
+
+							<LinearLayout
+								android:orientation="vertical"
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content">
+
+								<TextView
+									android:layout_width="wrap_content"
+									android:layout_height="wrap_content"
+									android:text="Headers"
+									android:textColor="#FF000000"/>
+
+								<TextView
+									android:layout_width="wrap_content"
+									android:layout_height="wrap_content"
+									android:id="@+id/web_src_headers"/>
+
+							</LinearLayout>
+
+							<RelativeLayout
+								android:layout_height="1dp"
+								android:layout_width="match_parent"
+								android:background="#ffcccccc"
+								android:layout_marginTop="4dp"/>
+
+							<LinearLayout
+								android:orientation="vertical"
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								android:layout_marginTop="4dp">
+
+								<TextView
+									android:layout_width="wrap_content"
+									android:layout_height="wrap_content"
+									android:text="Response"
+									android:textColor="#FF000000"/>
+
+								<TextView
+									android:layout_width="wrap_content"
+									android:layout_height="wrap_content"
+									android:scrollbars="vertical"
+									android:textIsSelectable="true"
+									android:id="@+id/web_src_result"/>
+
+							</LinearLayout>
+
+						</LinearLayout>
+
+					</HorizontalScrollView>
+
+				</ScrollView>
+
+			</LinearLayout>
+
+		</android.support.v4.widget.NestedScrollView>
+
+		<android.support.design.widget.FloatingActionButton
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_margin="16dp"
+			android:layout_gravity="bottom|right"
+			app:fabSize="mini"
+			android:visibility="gone"
+			android:gravity="center"
+			android:src="@drawable/ic_top_white"
+			android:id="@+id/fab"/>
+
+	</android.support.design.widget.CoordinatorLayout>
 
 </LinearLayout>
 

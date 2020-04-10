@@ -11,11 +11,7 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 
 public class FileUriUtils {
-
-	public static String getByUri(Uri p1) {
-		return null;
-	}
-
+	
 	public static String getByIntent(Context context, Intent intent)throws Exception {
 		return getByUri(context, intent.getData());
 	}

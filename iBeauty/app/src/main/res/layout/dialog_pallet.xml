@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	android:padding="8dp"
+	android:gravity="center_horizontal"
+	android:background="#FFFFFFFF">
+
+	<android.support.v7.widget.CardView
+		android:layout_width="100dp"
+		android:layout_height="100dp"
+		app:cardCornerRadius="50dp">
+
+		<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:id="@+id/hex_color_bg"/>
+
+	</android.support.v7.widget.CardView>
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="#00000000"
+		android:background="?android:attr/selectableItemBackground"
+		android:textAllCaps="true"
+		android:id="@+id/hex_string"
+		android:layout_marginTop="16dp"/>
+
+	<LinearLayout
+		android:orientation="horizontal"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center_vertical">
+
+		<Button
+			android:layout_width="wrap_content"
+			style="?android:attr/buttonBarButtonStyle"
+			android:layout_height="wrap_content"
+			android:text="a"
+			android:textAllCaps="true"
+			android:textSize="12sp"
+			android:id="@+id/alpha_down"/>
+
+		<SeekBar
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:max="255"
+			android:layout_weight="1.0"
+			android:id="@+id/alpha_seek_bar"/>
+
+		<Button
+			android:layout_width="wrap_content"
+			style="?android:attr/buttonBarButtonStyle"
+			android:layout_height="wrap_content"
+			android:text="00"
+			android:textAllCaps="true"
+			android:textSize="12sp"
+			android:id="@+id/alpha_text"/>
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:orientation="horizontal"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center_vertical">
+
+		<Button
+			android:layout_width="wrap_content"
+			style="?android:attr/buttonBarButtonStyle"
+			android:layout_height="wrap_content"
+			android:text="r"
+			android:textAllCaps="true"
+			android:textSize="12sp"
+			android:id="@+id/red_down"/>
+
+		<SeekBar
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:max="255"
+			android:layout_weight="1.0"
+			android:id="@+id/red_seek_bar"/>
+
+		<Button
+			android:layout_width="wrap_content"
+			style="?android:attr/buttonBarButtonStyle"
+			android:layout_height="wrap_content"
+			android:text="00"
+			android:textAllCaps="true"
+			android:textSize="12sp"
+			android:id="@+id/red_text"/>
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:orientation="horizontal"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center_vertical">
+
+		<Button
+			android:layout_width="wrap_content"
+			style="?android:attr/buttonBarButtonStyle"
+			android:layout_height="wrap_content"
+			android:text="g"
+			android:textAllCaps="true"
+			android:textSize="12sp"
+			android:id="@+id/green_down"/>
+
+		<SeekBar
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:max="255"
+			android:layout_weight="1.0"
+			android:id="@+id/green_seek_bar"/>
+
+		<Button
+			android:layout_width="wrap_content"
+			style="?android:attr/buttonBarButtonStyle"
+			android:layout_height="wrap_content"
+			android:text="00"
+			android:textAllCaps="true"
+			android:textSize="12sp"
+			android:id="@+id/green_text"/>
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:orientation="horizontal"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center_vertical">
+
+		<Button
+			android:layout_width="wrap_content"
+			style="?android:attr/buttonBarButtonStyle"
+			android:layout_height="wrap_content"
+			android:text="b"
+			android:textAllCaps="true"
+			android:textSize="12sp"
+			android:id="@+id/blue_down"/>
+
+		<SeekBar
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:max="255"
+			android:layout_weight="1.0"
+			android:id="@+id/blue_seek_bar"/>
+
+		<Button
+			android:layout_width="wrap_content"
+			style="?android:attr/buttonBarButtonStyle"
+			android:layout_height="wrap_content"
+			android:text="00"
+			android:textAllCaps="true"
+			android:textSize="12sp"
+			android:id="@+id/blue_text"/>
+
+	</LinearLayout>
+
+	<Button
+		android:layout_width="wrap_content"
+		style="?android:attr/buttonBarButtonStyle"
+		android:layout_height="wrap_content"
+		android:text="关闭"
+		android:id="@+id/close_pallet"/>
+
+</LinearLayout>
+

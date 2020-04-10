@@ -4,6 +4,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import com.jaeger.library.StatusBarUtil;
 import java.lang.reflect.Method;
+import android.support.v7.app.ActionBar;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
@@ -32,12 +33,30 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 
     public void setBack(String title) {
-        if (getSupportActionBar() != null) {
+        if (hasActionBar()) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle(title);
         }
     }
 
+	public void setToolBarTitle(String title){
+		if(hasActionBar()){
+			getSupportActionBar().setTitle(title);
+		}
+	}
+
+	public void setToolBarSubTitle(String title){
+		if(hasActionBar()){
+			getSupportActionBar().setSubtitle(title);
+		}
+	}
+	public boolean hasActionBar(){
+		if(getSupportActionBar()!=null){
+			return true;
+		}else{
+			return false;
+		}
+	}
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
