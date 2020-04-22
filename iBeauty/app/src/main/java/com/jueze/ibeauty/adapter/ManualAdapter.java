@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
-import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +17,7 @@ import com.google.gson.Gson;
 import com.jueze.ibeauty.BasicManualNoteActivity;
 import com.jueze.ibeauty.R;
 import com.jueze.ibeauty.bean.ManualBean;
-import com.jueze.ibeauty.util.MyString;
+import com.jueze.utils.MyString;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,8 +60,8 @@ public class ManualAdapter extends RecyclerView.Adapter<ManualAdapter.ViewHolder
         final String note = data.getDocContent();
 
 		if (!TextUtils.isEmpty(queryString)) {
-			SpannableString titleStr = MyString.highlightStr(Color.RED, title, queryString);
-			SpannableString noteStr = MyString.highlightStr(Color.RED, note, queryString);
+			SpannableStringBuilder titleStr = MyString.highlightStr(Color.RED, title, queryString);
+			SpannableStringBuilder noteStr = MyString.highlightStr(Color.RED, note, queryString);
 			holder.tv.setText(titleStr);
 			holder.tv2.setText(noteStr);
 		} else {

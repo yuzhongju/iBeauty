@@ -51,7 +51,8 @@ public class OpenSourceActivity extends BaseActivity {
         list.add(new OpenSourceBean("Glide-3.7.0","An image loading and caching library for Android focused on smooth scrolling.","https://github.com/bumptech/glide"));
         list.add(new OpenSourceBean("StatusBarUtil-1.4.0","A util for setting status bar style on Android App.","https://github.com/laobie/StatusBarUtil"));
         list.add(new OpenSourceBean("Jsoup-1.12.1","Java HTML Parser, with best of DOM, CSS, and jquery","https://github.com/jhy/jsoup"));
-        list.add(new OpenSourceBean("FloatingActionButton-1.6.4","Android Floating Action Button based on Material Design specification","https://github.com/Clans/FloatingActionButton"));
+		list.add(new OpenSourceBean("FloatingActionButton-1.6.4","Android Floating Action Button based on Material Design specification","https://github.com/Clans/FloatingActionButton"));
+		list.add(new OpenSourceBean("ColorPickerPreference","ColorPickerPreference for android to create color picker in preferences. Project created as Library","https://github.com/attenzione/android-ColorPickerPreference"));
     }
 
 	@Override

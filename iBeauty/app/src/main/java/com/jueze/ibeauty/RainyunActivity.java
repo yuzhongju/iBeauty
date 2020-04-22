@@ -11,15 +11,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import com.jueze.ibeauty.R;
 import com.jueze.ibeauty.RainyunAppActivity;
 import com.jueze.ibeauty.bean.PostDataBean;
 import com.jueze.ibeauty.dialog.MyProgressDialog;
 import com.jueze.ibeauty.network.CookieStore;
 import com.jueze.ibeauty.network.OkHttpUtil;
-import com.jueze.ibeauty.util.MyString;
-import com.jueze.ibeauty.util.NetworkUtil;
-import com.jueze.ibeauty.util.ShapeUtil;
-import com.jueze.ibeauty.util.ToastUtil;
+import com.jueze.utils.MyString;
+import com.jueze.utils.NetworkUtil;
+import com.jueze.utils.ShapeUtil;
+import com.jueze.utils.ToastUtil;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,8 +28,6 @@ import java.util.List;
 import java.util.Map;
 import okhttp3.Cookie;
 import okhttp3.Response;
-import com.jueze.ibeauty.util.LogUtil;
-import android.os.Handler;
 
 public class RainyunActivity extends BaseActivity {
 
@@ -48,7 +47,6 @@ public class RainyunActivity extends BaseActivity {
     private final String BASE_URL = "https://www.rainyun.com/";
     private final String LOGIN = BASE_URL + "login";
 
-	private List<Cookie> cookies=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +54,7 @@ public class RainyunActivity extends BaseActivity {
         mContext = this;
         setSupportActionBar(mToolbar);
         setBack("雨云主机");
+
     }
 
 	@Override
@@ -80,16 +79,18 @@ public class RainyunActivity extends BaseActivity {
                 public void onClick(View view) {
                     username = mUser.getText().toString().trim();
                     password = mPass.getText().toString().trim();
-                    if (NetworkUtil.state() == 0) {
-                        ToastUtil.show("无网络连接");
+                    if (NetworkUtil.state(RainyunActivity.this) == 0) {
+                        ToastUtil.show(mContext,"无网络连接");
                     } else if (!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)) {
 						login();
 					} else {
-						ToastUtil.show("请填写完整信息");
+						ToastUtil.show(mContext,"请填写完整信息");
                     }
                 }
 			});
 	}
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -100,6 +101,9 @@ public class RainyunActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
             case R.id.visit:
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(BASE_URL));
                 startActivity(intent);
@@ -122,12 +126,11 @@ public class RainyunActivity extends BaseActivity {
                     Response response = http.getBySync(LOGIN);
 					//清除缓存
                     CookieStore cookieStore = http.getCookieJar().getCookieStore();
-                    cookies = cookieStore.get(http.getHttpUrl());
-					
+                    List<Cookie> cookies = cookieStore.get(http.getHttpUrl());
                     for (Cookie cookie : cookies) {
                         cookieStore.remove(http.getHttpUrl(), cookie);
                     }
-					
+
                     try {
                         Thread.sleep(200);
                     } catch (InterruptedException e) {}
@@ -144,7 +147,7 @@ public class RainyunActivity extends BaseActivity {
                     } catch (InterruptedException e) {}
                     response = http.postWithListBySync(LOGIN, postDataList);
                     handleLogin(response);
-					
+
                 }
 			}).start();
     }
@@ -155,16 +158,16 @@ public class RainyunActivity extends BaseActivity {
                 public void run() {
                     mPd.dismiss();
                     if (!response.isSuccessful()) {
-                        ToastUtil.show("登录失败");
+                        ToastUtil.show(mContext,"登录失败");
                     } else {
                         try {
                             String body = response.body().string();
                             if (body.equals("0")) {
-                                ToastUtil.show("登录失败");
+                                ToastUtil.show(mContext,"登录失败");
                             } else if (body.equals("1")) {
-                                ToastUtil.show("登录成功");
+                                ToastUtil.show(mContext,"登录成功");
                                 //登录成功保存用户信息
-                                sh.save(username, password,true);
+                                sh.save(username, password);
 								mContext.startActivity(new Intent(mContext, RainyunAppActivity.class));
                                 finish();
                             }
@@ -189,9 +192,9 @@ public class RainyunActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Map<String, Object> data = sh.read();
-		username = data.get("username").toString();
-		password = data.get("password").toString();
+        Map<String, String> data = sh.read();
+		username = data.get("username");
+		password = data.get("password");
 		if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)){
 			mUser.setText(username);
 			mPass.setText(password);
@@ -207,21 +210,19 @@ public class RainyunActivity extends BaseActivity {
         public SharedHelper() {
         }
 
-        public void save(String name, String pass,boolean hassignin) {
+        public void save(String name, String pass) {
             SharedPreferences sp = mContext.getSharedPreferences("rainyun", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sp.edit();
             editor.putString("username", name);
             editor.putString("password", pass);
-			editor.putBoolean("hassignin",hassignin);
             editor.apply();
         }
 
-        public Map<String, Object> read() {
-            Map<String, Object> data = new HashMap<>();
+        public Map<String, String> read() {
+            Map<String, String> data = new HashMap<String, String>();
             SharedPreferences sp = mContext.getSharedPreferences("rainyun", Context.MODE_PRIVATE);
             data.put("username", sp.getString("username", ""));
             data.put("password", sp.getString("password", ""));
-			data.put("hassignin",sp.getBoolean("hassignin",false));
             return data;
         }
 

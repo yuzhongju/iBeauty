@@ -17,11 +17,11 @@ import android.widget.TextView;
 import com.jueze.ibeauty.R;
 import com.jueze.ibeauty.bean.IappProjectBean;
 import com.jueze.ibeauty.dialog.MyProgressDialog;
-import com.jueze.ibeauty.util.FileUtil;
-import com.jueze.ibeauty.util.ShapeUtil;
-import com.jueze.ibeauty.util.ToastUtil;
-import com.jueze.ibeauty.util.ZipUtil;
-import com.jueze.ibeauty.util.DisplayUtil;
+import com.jueze.utils.DisplayUtil;
+import com.jueze.utils.FileUtil;
+import com.jueze.utils.ShapeUtil;
+import com.jueze.utils.ToastUtil;
+import com.jueze.utils.ZipUtil;
 import java.io.File;
 import java.util.List;
 
@@ -114,7 +114,7 @@ public class IappProjectAdapter extends RecyclerView.Adapter<IappProjectAdapter.
                     builder.setView(view);
                     alertDialog = builder.create();
                     alertDialog.show();
-                    alertDialog.getWindow().setLayout(DisplayUtil.dip2px(240), ViewGroup.LayoutParams.WRAP_CONTENT);
+                    alertDialog.getWindow().setLayout(DisplayUtil.dip2px(mContext,240), ViewGroup.LayoutParams.WRAP_CONTENT);
                     btnA.setOnClickListener(new View.OnClickListener(){
 
                             @Override
@@ -260,9 +260,9 @@ public class IappProjectAdapter extends RecyclerView.Adapter<IappProjectAdapter.
                     boolean z = msg.obj;
                     mPd.dismiss();
                     if (z) {
-                        ToastUtil.show("压缩完成");
+                        ToastUtil.show(mContext,"压缩完成");
                     } else {
-                        ToastUtil.show("压缩失败");
+                        ToastUtil.show(mContext,"压缩失败");
                     }
                     break;
                 default:

@@ -20,7 +20,7 @@ import com.jueze.ibeauty.adapter.AppManagerAdapter;
 import com.jueze.ibeauty.bean.AppDataBean;
 import com.jueze.ibeauty.dialog.MyProgressDialog;
 import com.jueze.ibeauty.util.CacheUtil;
-import com.jueze.ibeauty.util.GetAppInfo;
+import com.jueze.utils.GetAppInfo;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;

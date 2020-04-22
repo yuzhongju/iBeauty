@@ -1,6 +1,7 @@
 package com.jueze.ibeauty.adapter;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.os.Handler;
@@ -19,17 +20,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.jueze.ibeauty.R;
 import com.jueze.ibeauty.bean.AppDataBean;
-import com.jueze.ibeauty.bean.ManualBean;
 import com.jueze.ibeauty.dialog.MyProgressDialog;
-import com.jueze.ibeauty.util.ClipBoardUtil;
-import com.jueze.ibeauty.util.FileUtil;
-import com.jueze.ibeauty.util.ShapeUtil;
-import com.jueze.ibeauty.util.ShareUtil;
-import com.jueze.ibeauty.util.ToastUtil;
+import com.jueze.utils.ClipBoardUtil;
+import com.jueze.utils.FileUtil;
+import com.jueze.utils.MyString;
+import com.jueze.utils.ShapeUtil;
+import com.jueze.utils.ShareUtil;
+import com.jueze.utils.ToastUtil;
 import java.util.ArrayList;
 import java.util.List;
-import com.jueze.ibeauty.util.MyString;
-import android.graphics.Color;
 
 public class AppManagerAdapter extends RecyclerView.Adapter<AppManagerAdapter.ViewHolder> implements Filterable {
 	
@@ -58,9 +57,9 @@ public class AppManagerAdapter extends RecyclerView.Adapter<AppManagerAdapter.Vi
                     mPd.dismiss();
                     boolean z = msg.obj;
                     if(z){
-                        ToastUtil.show("提取成功");
+                        ToastUtil.show(mContext,"提取成功");
                     }else{
-                        ToastUtil.show("提取失败");
+                        ToastUtil.show(mContext,"提取失败");
                     }
                     break;
                 case 2:
@@ -275,32 +274,32 @@ public class AppManagerAdapter extends RecyclerView.Adapter<AppManagerAdapter.Vi
 
                 @Override
                 public void onClick(View p1) {
-                    ClipBoardUtil.write(packageName);
-                    ToastUtil.show("已写入剪切板");
+                    ClipBoardUtil.write(mContext,packageName);
+                    ToastUtil.show(mContext,"已写入剪切板");
                 }
         });
         mAppqdl.setOnClickListener(new View.OnClickListener(){
 
                 @Override
                 public void onClick(View p1) {
-                    ClipBoardUtil.write(mainActivity);
-                    ToastUtil.show("已写入剪切板");
+                    ClipBoardUtil.write(mContext,mainActivity);
+                    ToastUtil.show(mContext,"已写入剪切板");
                 }
             });
         mAppuid.setOnClickListener(new View.OnClickListener(){
 
                 @Override
                 public void onClick(View p1) {
-                    ClipBoardUtil.write(uid+"");
-                    ToastUtil.show("已写入剪切板");
+                    ClipBoardUtil.write(mContext,uid+"");
+                    ToastUtil.show(mContext,"已写入剪切板");
                 }
             });
         mAppflags.setOnClickListener(new View.OnClickListener(){
 
                 @Override
                 public void onClick(View p1) {
-                    ClipBoardUtil.write(flags+"");
-                    ToastUtil.show("已写入剪切板");
+                    ClipBoardUtil.write(mContext,flags+"");
+                    ToastUtil.show(mContext,"已写入剪切板");
                 }
             });
     }

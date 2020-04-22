@@ -1,8 +1,8 @@
 package com.jueze.ibeauty.util;
 import android.content.Context;
 import android.os.Environment;
-import java.io.File;
 import com.jueze.ibeauty.MyApplication;
+import com.jueze.utils.FileUtil;
 
 public class CacheUtil {
     public static void clear(){

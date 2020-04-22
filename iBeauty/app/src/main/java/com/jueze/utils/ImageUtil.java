@@ -1,4 +1,4 @@
-package com.jueze.ibeauty.util;
+package com.jueze.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;

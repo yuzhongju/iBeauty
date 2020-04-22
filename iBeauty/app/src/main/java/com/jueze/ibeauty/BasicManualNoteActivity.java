@@ -1,16 +1,14 @@
 package com.jueze.ibeauty;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.widget.EditText;
-import com.google.gson.Gson;
-import com.jaeger.library.StatusBarUtil;
-import com.jueze.ibeauty.bean.ManualBean;
-import android.widget.TextView;
 import android.view.Menu;
 import android.view.MenuItem;
-import com.jueze.ibeauty.util.ClipBoardUtil;
-import com.jueze.ibeauty.util.ToastUtil;
-import com.jueze.ibeauty.util.ShareUtil;
+import android.widget.TextView;
+import com.google.gson.Gson;
+import com.jueze.ibeauty.bean.ManualBean;
+import com.jueze.utils.ClipBoardUtil;
+import com.jueze.utils.ShareUtil;
+import com.jueze.utils.ToastUtil;
 
 public class BasicManualNoteActivity extends BaseActivity {
 
@@ -53,8 +51,8 @@ public class BasicManualNoteActivity extends BaseActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch(item.getItemId()){
 			case R.id.manual_copy:
-				ClipBoardUtil.write(mTextView.getText());
-				ToastUtil.show("已写入剪切板");
+				ClipBoardUtil.write(this,mTextView.getText());
+				ToastUtil.show(this,"已写入剪切板");
 				break;
 			case R.id.manual_share:
 				ShareUtil.shareText(this, mTextView.getText().toString());

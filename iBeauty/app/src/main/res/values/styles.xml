@@ -22,8 +22,4 @@
     <style name="bottomSheetStyleWrapper" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@android:color/transparent</item>
     </style>
-
-	<style name="AppTheme.Launcher">
-		<item name="android:windowBackground">@color/colorPrimary</item>
-	</style>
 </resources>

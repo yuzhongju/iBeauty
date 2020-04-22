@@ -1,5 +1,4 @@
-package com.jueze.ibeauty.util;
-
+package com.jueze.utils;
 
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -9,7 +8,6 @@ import android.view.View;
 
 public class ShapeUtil
 {
-
     public static void set(Drawable dw, String color){
         try{
             dw.setColorFilter(Color.parseColor(color), PorterDuff.Mode.SRC_ATOP);
@@ -25,7 +23,6 @@ public class ShapeUtil
             gd.setShape(GradientDrawable.RECTANGLE);
             gd.setCornerRadii(new float[]{c1, c1, c2, c2, c3, c3, c4, c4});
             gd.setColor(Color.parseColor(color));
-            //gd.setStroke(0, Color.parseColor("#ffffff"));
             view.setBackgroundDrawable(gd);          
         }
         catch(Exception e){}
@@ -39,8 +36,7 @@ public class ShapeUtil
             gd.setCornerRadii(new float[]{c1, c1, c2, c2, c3, c3, c4, c4});
             gd.setColor(Color.parseColor(color));
             gd.setStroke(stroke, Color.parseColor(strokeColor));
-            view.setBackgroundDrawable(gd);
-            
+            view.setBackgroundDrawable(gd);  
         }
         catch(Exception e){}
     }

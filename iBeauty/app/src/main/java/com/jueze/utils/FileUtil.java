@@ -1,7 +1,6 @@
-package com.jueze.ibeauty.util;
+package com.jueze.utils;
 import android.content.Context;
 import android.os.Environment;
-import com.jueze.ibeauty.MyApplication;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -9,17 +8,38 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 public class FileUtil {
-
-
-    private static final Context mContext = MyApplication.getContext();  //全局context
+	public static boolean isExists(String filePathName){
+		return new File(filePathName).exists();
+	}
+	public static boolean isFile(String filePathName){
+		return new File(filePathName).isFile();
+	}
+	public static boolean copyFromAssets(Context context, String from, String to){
+		InputStream is=null;
+		BufferedOutputStream bos=null;
+		try{
+			if(!createDir(new File(to).getParent())) return false;
+			is=context.getAssets().open(from);
+			bos=new BufferedOutputStream(new FileOutputStream(to));
+			byte[] buffer=new byte[1024];
+			int len;
+			while((len=is.read(buffer,0,buffer.length))!=-1){
+				if(len>0) bos.write(buffer,0,len);
+			}
+			bos.flush();
+			is.close();
+			bos.close();
+			return true;
+		}catch(Exception e){}
+		return false;
+	}
+	
     /**复制单个文件
      *@param from 原文件完整路径
      *@param to 目标文件完整路径
-     *@return boolean
+     *@return 
      */
     public static boolean copyFile(String from, String to) {
         File fromFile = new File(from);
@@ -28,7 +48,7 @@ public class FileUtil {
         BufferedInputStream bis = null;
         BufferedOutputStream bos = null;
         try {
-            if (!createDir(toFile.getParent())) return false;
+            if(!createDir(toFile.getParent())) return false;
             bis = new BufferedInputStream(new FileInputStream(fromFile));
             bos = new BufferedOutputStream(new FileOutputStream(toFile));
             byte[] buffer = new byte[1024];
@@ -39,9 +59,9 @@ public class FileUtil {
             bos.flush();
             bis.close();
             bos.close();
-            return true;
+			return true;
         } catch (Exception e) {}
-        return false;
+		return false;
     }
 
 
@@ -135,10 +155,10 @@ public class FileUtil {
      *@param fileName 目标文件相对路径
      @return str
      */
-    public static String readTxtFromAssets(String fileName) {
+    public static String readFromAssets(Context context,String fileName) {
         String str = null;
         try {
-            InputStream input = mContext.getAssets().open(fileName);
+            InputStream input = context.getAssets().open(fileName);
             byte[] buffer = new byte[input.available()];
             input.read(buffer);
             str = new String(buffer, "utf-8");
@@ -152,10 +172,10 @@ public class FileUtil {
      *@param resId 目标文件资源id
      *@retuen str
      */
-    public static String readTxtFromRaw(int resId) {
+    public static String readFromRaw(Context context,int resId) {
         String str = null;
         try {
-            InputStream input = mContext.getResources().openRawResource(resId);
+            InputStream input = context.getResources().openRawResource(resId);
             byte[] buffer = new byte[input.available()];
             input.read(buffer);
             str = new String(buffer, "utf-8");
@@ -169,7 +189,7 @@ public class FileUtil {
      *@param filePathName 目标文件完整路径
      *@return str
      */
-    public static String readTxtFromApp(String filePathName) {
+    public static String readFromApp(String filePathName) {
         String str = null;
         try {
             File file = new File(filePathName);
@@ -186,7 +206,7 @@ public class FileUtil {
      *@param filePathName 目标文件完整路径
      *@param fileContent 写入内容
      */
-    public static void writeTxtToApp(String filePathName, String fileContent) {
+    public static void writeToApp(String filePathName, String fileContent) {
         try {
             File file = new File(filePathName);
             createDir(file.getParent());
@@ -201,7 +221,7 @@ public class FileUtil {
      *@param filePathName 目标文件完整路径
      *@return str
      */
-    public static String readTxtFromSD(String filePathName) {
+    public static String readFromSD(String filePathName) {
         String str = null;
         try {
             File file = new File(filePathName);
@@ -218,7 +238,7 @@ public class FileUtil {
      *@param filePathName 目标文件完整路径
      *@param fileContent 写入内容
      */
-    public static void writeTxtToSD(String filePathName, String fileContent) {
+    public static void writeToSD(String filePathName, String fileContent) {
         try {
             File file = new File(filePathName);
             createDir(file.getParent());

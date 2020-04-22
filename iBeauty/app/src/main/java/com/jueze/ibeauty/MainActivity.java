@@ -3,7 +3,6 @@ package com.jueze.ibeauty;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -23,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
@@ -37,20 +37,15 @@ import com.jueze.ibeauty.bean.DaywordBean;
 import com.jueze.ibeauty.bean.FunBean;
 import com.jueze.ibeauty.dialog.MyProgressDialog;
 import com.jueze.ibeauty.network.MyHttp;
-import com.jueze.ibeauty.util.DisplayUtil;
-import com.jueze.ibeauty.util.FileUtil;
-import com.jueze.ibeauty.util.NetworkUtil;
-import com.jueze.ibeauty.util.PermissionUtil;
-import com.jueze.ibeauty.util.ScreenUtil;
-import com.jueze.ibeauty.util.ShapeUtil;
-import com.jueze.ibeauty.util.ToastUtil;
+import com.jueze.utils.FileUtil;
+import com.jueze.utils.NetworkUtil;
+import com.jueze.utils.PermissionUtil;
+import com.jueze.utils.ScreenUtil;
+import com.jueze.utils.ToastUtil;
 import de.hdodenhof.circleimageview.CircleImageView;
 import java.util.ArrayList;
 import java.util.List;
 import org.json.JSONObject;
-import android.widget.RelativeLayout;
-import com.jueze.ibeauty.util.LogUtil;
-import com.jueze.ibeauty.util.AppUtil;
 
 public class MainActivity extends BaseActivity {
 
@@ -111,7 +106,7 @@ public class MainActivity extends BaseActivity {
 		mContext = this;
 		sh = new SharedHelper();
 
-		if(NetworkUtil.state()==0){
+		if(NetworkUtil.state(mContext)==0){
 			dwParent.setVisibility(View.GONE);
 		}else{
 			dwParent.setVisibility(View.VISIBLE);
@@ -134,10 +129,8 @@ public class MainActivity extends BaseActivity {
                         case R.id.nav_open_source:
 							mContext.startActivity(new Intent(mContext,OpenSourceActivity.class));
                             break;
-						case R.id.nav_update:
-							
-							break;
                     }
+					mDrawerLayout.closeDrawer(Gravity.START);
                     return true;
                 }
 			});
@@ -200,7 +193,7 @@ public class MainActivity extends BaseActivity {
 		final AlertDialog dialog = alertDialog.create();
 		dialog.show();
 		//设置弹窗宽度
-		dialog.getWindow().setLayout((ScreenUtil.getWidth()*2)/3, LinearLayout.LayoutParams.WRAP_CONTENT);
+		dialog.getWindow().setLayout((ScreenUtil.getWidth(mContext)*2)/3, LinearLayout.LayoutParams.WRAP_CONTENT);
 		
 		notTipBtn.setOnClickListener(new View.OnClickListener(){
 
@@ -215,10 +208,10 @@ public class MainActivity extends BaseActivity {
 				@Override
 				public void onClick(View v) {
 					final String qqNum = qqInput.getText().toString();
-					if(NetworkUtil.state()==0){
-						ToastUtil.show("无网络连接");
+					if(NetworkUtil.state(mContext)==0){
+						ToastUtil.show(mContext,"无网络连接");
 					}else if(TextUtils.isEmpty(qqNum)){
-						ToastUtil.show("输入不能为空");
+						ToastUtil.show(mContext,"输入不能为空");
 					}else if(TextUtils.isDigitsOnly(qqNum)){
 						final MyProgressDialog pd = new MyProgressDialog(mContext);
 						pd.show();
@@ -242,21 +235,21 @@ public class MainActivity extends BaseActivity {
 															sh.save(qq,name,imgurl);
 															handleHeader();
 															dialog.dismiss();
-															ToastUtil.show("设置头像成功");
+															ToastUtil.show(mContext,"设置头像成功");
 															mDrawerLayout.openDrawer(Gravity.START);
 														}else{
-															ToastUtil.show("设置失败，请重新尝试");
+															ToastUtil.show(mContext,"设置失败，请重新尝试");
 														}
 													}catch(Exception e){}
 												}else{
-													ToastUtil.show("网络超时或未知错误");
+													ToastUtil.show(mContext,"网络超时或未知错误");
 												}
 											}
 										});
 								}
 							}).start();
 					}else{
-						ToastUtil.show("未知错误");
+						ToastUtil.show(mContext,"未知错误");
 					}
 				}
 			});
@@ -268,7 +261,7 @@ public class MainActivity extends BaseActivity {
 
 				@Override
 				public void run() {
-					String jsonData = FileUtil.readTxtFromAssets("function.json");
+					String jsonData = FileUtil.readFromAssets(mContext,"function.json");
 					Gson gson = new Gson();
 					JsonObject jsonObject = new JsonParser().parse(jsonData).getAsJsonObject();
 					JsonArray jsonArray = jsonObject.getAsJsonArray("data");
@@ -297,7 +290,7 @@ public class MainActivity extends BaseActivity {
     private void handleImageScale() {
         //设置图像宽高
         float scale = 938 / 580f;
-        int width = ScreenUtil.getWidth();
+        int width = ScreenUtil.getWidth(mContext);
         int height = (int)(width / scale);
             
         ViewGroup.LayoutParams lp = mDwBg.getLayoutParams();
@@ -343,7 +336,7 @@ public class MainActivity extends BaseActivity {
 	protected void onResume() {
 		super.onResume();
 
-		if(NetworkUtil.state()==0){
+		if(NetworkUtil.state(mContext)==0){
 			dwParent.setVisibility(View.GONE);
 		}else{
 			dwParent.setVisibility(View.VISIBLE);

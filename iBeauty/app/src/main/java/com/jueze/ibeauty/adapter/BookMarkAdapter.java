@@ -6,17 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.jueze.ibeauty.BrowserActivity;
 import com.jueze.ibeauty.R;
 import com.jueze.ibeauty.bean.BookMarkBean;
-import com.jueze.ibeauty.util.ShapeUtil;
 import java.util.List;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import com.jueze.ibeauty.util.ClipBoardUtil;
-import com.jueze.ibeauty.util.ToastUtil;
-import android.content.Intent;
-import android.net.Uri;
-import com.jueze.ibeauty.BrowserActivity;
 
 public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHolder> {
 

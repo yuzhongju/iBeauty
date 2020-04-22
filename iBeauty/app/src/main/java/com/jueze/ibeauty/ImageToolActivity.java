@@ -25,12 +25,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
-import com.jueze.ibeauty.util.FileUriUtils;
-import com.jueze.ibeauty.util.FileUtil;
-import com.jueze.ibeauty.util.ImageUtil;
-import com.jueze.ibeauty.util.ScreenUtil;
-import com.jueze.ibeauty.util.ShapeUtil;
-import com.jueze.ibeauty.util.ToastUtil;
+import com.jueze.utils.FileUriUtils;
+import com.jueze.utils.FileUtil;
+import com.jueze.utils.ImageUtil;
+import com.jueze.utils.ScreenUtil;
+import com.jueze.utils.ShapeUtil;
+import com.jueze.utils.ToastUtil;
 import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -122,8 +122,8 @@ public class ImageToolActivity extends BaseActivity implements View.OnClickListe
 	@Override
 	public void initData() {
 		this.mContext = ImageToolActivity.this;
-		screenWidth = ScreenUtil.getWidth();
-		screenHeight = ScreenUtil.getHeight();
+		screenWidth = ScreenUtil.getWidth(this);
+		screenHeight = ScreenUtil.getHeight(this);
 	}
 
 	@Override
@@ -195,28 +195,28 @@ public class ImageToolActivity extends BaseActivity implements View.OnClickListe
 										String hexColor = et.getText().toString();
 										Matcher m = Pattern.compile("#([a-fA-F0-9]{8}|[a-fA-F0-9]{6})").matcher(hexColor);
 										if (TextUtils.isEmpty(hexColor)) {
-											ToastUtil.show("输入不能为空");
+											ToastUtil.show(mContext,"输入不能为空");
 										} else if (m.matches()) {
 											changeColorBsd.dismiss();
 											changedBitmap = ImageUtil.resetColor(getCurrentBitmap(), hexColor);
 										} else {
-											ToastUtil.show("输入格式错误");
+											ToastUtil.show(mContext,"输入格式错误");
 										}
 									}
 									imageView.setImageBitmap(changedBitmap);
 								}
 							});
 					} else {
-						ToastUtil.show("图片太大了");
+						ToastUtil.show(mContext,"图片太大了");
 					}
 				} else {
-					ToastUtil.show("请选择一张图片");
+					ToastUtil.show(mContext,"请选择一张图片");
 				}
 				break;
 			case R.id.fab_change_size:
 				fam.close(true);
 				if (!hasLoaded) {
-					ToastUtil.show("请选择一张图片");
+					ToastUtil.show(mContext,"请选择一张图片");
 				} else {
 					changeSizeView = View.inflate(this, R.layout.dialog_change_size, null);
 					ShapeUtil.set(changeSizeView, 15, 15, 0, 0, "#ffffff");
@@ -235,7 +235,7 @@ public class ImageToolActivity extends BaseActivity implements View.OnClickListe
 								String wstr = widthET.getText().toString();
 								String hstr = heightET.getText().toString();
 								if (TextUtils.isEmpty(wstr) || TextUtils.isEmpty(hstr)) {
-									ToastUtil.show("输入不能为空");
+									ToastUtil.show(mContext,"输入不能为空");
 								} else {
 									int nw=Integer.valueOf(wstr);
 									int nh=Integer.valueOf(hstr);
@@ -243,7 +243,7 @@ public class ImageToolActivity extends BaseActivity implements View.OnClickListe
 										imageView.setImageBitmap(ImageUtil.scaleImage(getCurrentBitmap(), nw, nh));
 										changeSizeBsd.dismiss();
 									} else {
-										ToastUtil.show("这么大，想累死我吗");
+										ToastUtil.show(mContext,"这么大，想累死我吗");
 									}
 								}
 							}
@@ -253,14 +253,14 @@ public class ImageToolActivity extends BaseActivity implements View.OnClickListe
 			case R.id.fab_save_image:
 				fam.close(true);
 				if (!hasLoaded) {
-					ToastUtil.show("请选择一张图片");
+					ToastUtil.show(mContext,"请选择一张图片");
 				} else {
 					String path=Attributes.appImagePath;
 					String name = System.currentTimeMillis() + realPath.substring(realPath.lastIndexOf("."));
 					String pathName = path + name;
 					FileUtil.createDir(path);
 					ImageUtil.saveBitmap(getCurrentBitmap(), pathName);
-					ToastUtil.show("已保存");
+					ToastUtil.show(mContext,"已保存");
 				}
 				break;
 			default:
@@ -333,7 +333,7 @@ public class ImageToolActivity extends BaseActivity implements View.OnClickListe
 						.show();
 
 				} else {
-					ToastUtil.show("请选择一张图片");
+					ToastUtil.show(mContext,"请选择一张图片");
 				}
 
 				break;
@@ -347,7 +347,7 @@ public class ImageToolActivity extends BaseActivity implements View.OnClickListe
 							}
 						}).start();
 				} else {
-					ToastUtil.show("请选择一张图片");
+					ToastUtil.show(mContext,"请选择一张图片");
 				}
 				break;
 			case R.id.rotate_right_90:
@@ -360,7 +360,7 @@ public class ImageToolActivity extends BaseActivity implements View.OnClickListe
 							}
 						}).start();
 				} else {
-					ToastUtil.show("请选择一张图片");
+					ToastUtil.show(mContext,"请选择一张图片");
 				}
 				break;
 			case R.id.rotate_180:
@@ -373,7 +373,7 @@ public class ImageToolActivity extends BaseActivity implements View.OnClickListe
 							}
 						}).start();
 				} else {
-					ToastUtil.show("请选择一张图片");
+					ToastUtil.show(mContext,"请选择一张图片");
 				}
 				break;
 			case R.id.flip_horizontal:
@@ -386,7 +386,7 @@ public class ImageToolActivity extends BaseActivity implements View.OnClickListe
 							}
 						}).start();
 				} else {
-					ToastUtil.show("请选择一张图片");
+					ToastUtil.show(mContext,"请选择一张图片");
 				}
 				break;
 			case R.id.flip_vertical:
@@ -399,7 +399,7 @@ public class ImageToolActivity extends BaseActivity implements View.OnClickListe
 							}
 						}).start();
 				} else {
-					ToastUtil.show("请选择一张图片");
+					ToastUtil.show(mContext,"请选择一张图片");
 				}
 				break;
 			default:
@@ -423,7 +423,7 @@ public class ImageToolActivity extends BaseActivity implements View.OnClickListe
 					} catch (Exception e) {}
 					if (TextUtils.isEmpty(realPath)) {
 						hasLoaded = false;
-						ToastUtil.show("请重新选择一个管理器");
+						ToastUtil.show(mContext,"请重新选择一个管理器");
 					} else {
 						hasLoaded = true;
 						Glide.with(this).load(new File(realPath)).into(imageView);

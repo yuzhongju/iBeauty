@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,15 +19,9 @@ import com.jueze.ibeauty.bean.BookMarkBean;
 import com.jueze.ibeauty.dialog.MyBottomSheetDialog;
 import com.jueze.ibeauty.dialog.MyProgressDialog;
 import com.jueze.ibeauty.network.OkHttpUtil;
-import java.io.File;
-import java.io.IOException;
-import okhttp3.Call;
+import com.jueze.utils.NetworkUtil;
+import com.jueze.utils.ToastUtil;
 import okhttp3.Response;
-import android.text.TextUtils;
-import com.jueze.ibeauty.util.NetworkUtil;
-import com.jueze.ibeauty.util.ToastUtil;
-import android.os.Handler;
-import android.os.Message;
 
 public class BookMarkActivity extends BaseActivity {
 
@@ -63,7 +58,7 @@ public class BookMarkActivity extends BaseActivity {
 	}
 
     private void load(){
-		if(NetworkUtil.state()!=0){
+		if(NetworkUtil.state(this)!=0){
 			if(adapter != null) adapter.removeAll();
 			mPd = new MyProgressDialog(this);
 			mPd.show();
@@ -85,7 +80,7 @@ public class BookMarkActivity extends BaseActivity {
 					}
 				}).start();
 		}else{
-			ToastUtil.show("无网络连接");
+			ToastUtil.show(this,"无网络连接");
 		}
     }
     

@@ -1,4 +1,4 @@
-package com.jueze.ibeauty.util;
+package com.jueze.utils;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -11,7 +11,7 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 
 public class FileUriUtils {
-	
+
 	public static String getByIntent(Context context, Intent intent)throws Exception {
 		return getByUri(context, intent.getData());
 	}
@@ -35,23 +35,6 @@ public class FileUriUtils {
 					String id = docId.split(":")[1];
 					Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://media/external/file"), Long.valueOf(id));
 					realPath = getRealPath(context, contentUri, null);
-					/*
-					 String type = docId.split(":")[0];
-					 String id = docId.split(":")[1];
-					 Uri contentUri = null;
-					 String selection = "_id=" + id;
-					 if (type.equals("image")) {
-					 contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;	
-					 } else if (type.equals("audio")) {
-					 contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-					 } else if (type.equals("video")) {
-					 contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-					 }
-					 if (contentUri != null && selection != null) {
-					 //realPath = getRealPath(context, contentUri, selection);
-					 realPath=getRealPath(context,contentUri,null);
-					 }
-					 */
 				} else if (isExternalStorageDocuments(uri)) {
 					return getRootPath() + "/" + docId.split(":")[1];
 				}

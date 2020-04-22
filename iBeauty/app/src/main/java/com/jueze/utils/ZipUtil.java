@@ -1,4 +1,4 @@
-package com.jueze.ibeauty.util;
+package com.jueze.utils;
 
 import android.os.Build;
 import java.io.File;

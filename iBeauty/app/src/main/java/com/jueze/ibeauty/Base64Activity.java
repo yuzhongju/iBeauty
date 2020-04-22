@@ -6,9 +6,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import com.jaeger.library.StatusBarUtil;
-import com.jueze.ibeauty.util.ClipBoardUtil;
-import com.jueze.ibeauty.util.ShapeUtil;
-import com.jueze.ibeauty.util.ToastUtil;
+import com.jueze.utils.ClipBoardUtil;
+import com.jueze.utils.ShapeUtil;
+import com.jueze.utils.ToastUtil;
 
 public class Base64Activity extends BaseActivity implements View.OnClickListener {
 
@@ -50,10 +50,7 @@ public class Base64Activity extends BaseActivity implements View.OnClickListener
 	@Override
 	public void initEvent() {
 	}
-
-
 	
-
     @Override
     public void setStatusBar() {
         super.setStatusBar();
@@ -78,7 +75,7 @@ public class Base64Activity extends BaseActivity implements View.OnClickListener
             case R.id.encrypt:
                 original = mOrginal.getText().toString();
                 if(original.equals("")){
-                    ToastUtil.show("输入不能为空");
+                    ToastUtil.show(this,"输入不能为空");
                 }else{
                     result = Base64.encodeToString(original.getBytes(), Base64.DEFAULT);
                     mResult.setText(result.trim());
@@ -87,7 +84,7 @@ public class Base64Activity extends BaseActivity implements View.OnClickListener
             case R.id.decode:
                 original = mOrginal.getText().toString();
                 if(original.equals("")){
-                    ToastUtil.show("输入不能为空");
+                    ToastUtil.show(this,"输入不能为空");
                 }else{
                     result = new String(Base64.decode(original.getBytes(), Base64.DEFAULT));
                     mResult.setText(result.trim());
@@ -95,10 +92,10 @@ public class Base64Activity extends BaseActivity implements View.OnClickListener
                 break;
             case R.id.copy:
                 if(mResult.getText().toString().equals("")){
-                    ToastUtil.show("没有内容可复制");
+                    ToastUtil.show(this,"没有内容可复制");
                 }else{
-                    ClipBoardUtil.write(mResult.getText());
-                    ToastUtil.show("已写入剪切板");
+                    ClipBoardUtil.write(this,mResult.getText());
+                    ToastUtil.show(this,"已写入剪切板");
                 }
                 break;                                     
             case R.id.clear:

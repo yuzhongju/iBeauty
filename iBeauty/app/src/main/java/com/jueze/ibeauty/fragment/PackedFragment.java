@@ -2,21 +2,20 @@ package com.jueze.ibeauty.fragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.jueze.ibeauty.R;
 import com.jueze.ibeauty.adapter.PackedAdapter;
 import com.jueze.ibeauty.bean.PackSourceBean;
+import com.jueze.utils.LogUtil;
 import java.io.File;
-import java.util.List;
-import android.support.v7.widget.StaggeredGridLayoutManager;
-import com.jueze.ibeauty.util.LogUtil;
+import java.text.Collator;
 import java.util.ArrayList;
-import com.jueze.ibeauty.util.ToastUtil;
 import java.util.Collections;
 import java.util.Comparator;
-import java.text.Collator;
+import java.util.List;
 import java.util.Locale;
 
 public class PackedFragment extends Fragment {
@@ -70,7 +69,6 @@ public class PackedFragment extends Fragment {
         File file = new File(filePath);
         try {
             for (File f : file.listFiles()) {
-                LogUtil.d(f.getPath());
                 String name = f.getName();
                 String size = decimal2(f.length());
                 mDataList.add(new PackSourceBean(name, size, f.getPath()));

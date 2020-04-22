@@ -16,8 +16,8 @@ public class MyHttp {
             URL url = new URL(u);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
-            conn.setConnectTimeout(15000);
-            conn.setReadTimeout(15000);
+            conn.setConnectTimeout(5000);
+            conn.setReadTimeout(5000);
             InputStream is = conn.getInputStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             StringBuilder sb = new StringBuilder();
@@ -40,8 +40,8 @@ public class MyHttp {
             URL url = new URL(u);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
-            conn.setConnectTimeout(15000);
-            conn.setReadTimeout(15000);
+            conn.setConnectTimeout(5000);
+            conn.setReadTimeout(5000);
             InputStream is = conn.getInputStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(is, bm));
             StringBuilder sb = new StringBuilder();
@@ -65,8 +65,8 @@ public class MyHttp {
             URL url = new URL(u);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
-            conn.setConnectTimeout(15000);
-            conn.setReadTimeout(15000);
+            conn.setConnectTimeout(5000);
+            conn.setReadTimeout(5000);
             OutputStream os = conn.getOutputStream();
             DataOutputStream dos = new DataOutputStream(os);
             dos.writeBytes(data);
@@ -92,8 +92,8 @@ public class MyHttp {
             URL url = new URL(u);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
-            conn.setConnectTimeout(15000);
-            conn.setReadTimeout(15000);
+            conn.setConnectTimeout(5000);
+            conn.setReadTimeout(5000);
             OutputStream os = conn.getOutputStream();
             DataOutputStream dos = new DataOutputStream(os);
             dos.writeBytes(data);

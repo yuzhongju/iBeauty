@@ -7,7 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.jueze.ibeauty.R;
-import com.jueze.ibeauty.util.ShapeUtil; //此处导入具体看自己的shape类位置
+import com.jueze.utils.ShapeUtil; //此处导入具体看自己的shape类位置
 
 public class MyBottomSheetDialog {
 

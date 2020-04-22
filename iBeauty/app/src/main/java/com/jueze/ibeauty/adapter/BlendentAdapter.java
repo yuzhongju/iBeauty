@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.jueze.ibeauty.R;
 import com.jueze.ibeauty.bean.BlendentBean;
 import com.jueze.ibeauty.bean.ColorsBean;
-import com.jueze.ibeauty.util.ShapeUtil;
+import com.jueze.utils.ShapeUtil;
 import java.util.ArrayList;
 
 public class BlendentAdapter extends RecyclerView.Adapter<BlendentAdapter.ViewHolder> {

@@ -10,12 +10,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.jueze.ibeauty.R;
 import com.jueze.ibeauty.bean.PostDataBean;
 import com.jueze.ibeauty.dialog.MyProgressDialog;
 import com.jueze.ibeauty.network.OkHttpUtil;
-import com.jueze.ibeauty.util.NetworkUtil;
-import com.jueze.ibeauty.util.ShapeUtil;
-import com.jueze.ibeauty.util.ToastUtil;
+import com.jueze.utils.NetworkUtil;
+import com.jueze.utils.ShapeUtil;
+import com.jueze.utils.ToastUtil;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,13 +32,12 @@ public class RainyunAppActivity extends BaseActivity {
     private OkHttpUtil http;
     private String score = "";
     private Context mContext;
-    
+    private boolean isSigned=false;
     private LinearLayout mParent;
     private TextView mScore;
     private Button mSignin;
     private Toolbar mToolbar;
     private MyProgressDialog mPd;
-	private boolean isSignined=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,11 +52,11 @@ public class RainyunAppActivity extends BaseActivity {
 
                 @Override
                 public void onClick(View p1) {
-                    if(NetworkUtil.state() == 0){
-                        ToastUtil.show("无网络连接");
-                    }else{
-                        signin();
-                    }
+                    if(NetworkUtil.state(p1.getContext()) == 0){
+                        ToastUtil.show(p1.getContext(),"无网络连接");
+                    }else if(!isSigned){
+						signin();
+					}
                 }
         });
     }
@@ -127,6 +127,17 @@ public class RainyunAppActivity extends BaseActivity {
                     String token = null;
                     try {
                         String body = response.body().string();
+						Matcher mm=Pattern.compile("<td colspan=\"3\">(.*?)</td>").matcher(body);
+						if(mm.find()){
+							String a=mm.group(1).trim();
+							if(a.contains("没有")){
+								mSignin.setText("已签到");
+								isSigned=true;
+							}else{
+								mSignin.setText("签到");
+								isSigned=false;
+							}
+						}
                         Matcher m = Pattern.compile("primary\">(.*?)<").matcher(body);
                         if(m.find()){
                             score = m.group(1).trim();
@@ -144,7 +155,6 @@ public class RainyunAppActivity extends BaseActivity {
     
     
     private void signin(){
-		
         mPd = new MyProgressDialog(mContext);
         mPd.setMessage("签到中...");
         mPd.show();
@@ -172,10 +182,10 @@ public class RainyunAppActivity extends BaseActivity {
                     try {
                         String body = response.body().string();
                         if(body.equals("1")){
-                            ToastUtil.show("签到成功");
+                            ToastUtil.show(RainyunAppActivity.this,"签到成功");
                             firstLoad();
                         }else{
-                            ToastUtil.show("签到失败");
+                            ToastUtil.show(RainyunAppActivity.this,"签到失败");
                         }
                     } catch (IOException e) {}
                 }

@@ -34,8 +34,8 @@ public class OkHttpUtil {
 	//初始化okhttpClient
     private OkHttpClient initClient() {
         client = new OkHttpClient.Builder()
-			.connectTimeout(10, TimeUnit.SECONDS)
-			.readTimeout(10, TimeUnit.SECONDS)
+			.connectTimeout(5, TimeUnit.SECONDS)
+			.readTimeout(5, TimeUnit.SECONDS)
             .cookieJar(cookieJar)
             .build();
         return client;
@@ -44,8 +44,8 @@ public class OkHttpUtil {
 	//初始化okhttpClient,忽略ssl
 	private OkHttpClient initClientIgnoreSSL() {
         client = new OkHttpClient.Builder()
-			.connectTimeout(10, TimeUnit.SECONDS)
-			.readTimeout(10, TimeUnit.SECONDS)
+			.connectTimeout(5, TimeUnit.SECONDS)
+			.readTimeout(5, TimeUnit.SECONDS)
             .cookieJar(cookieJar)
 			.sslSocketFactory(SSLSocketClient.getSSLSocketFactory())
 			.hostnameVerifier(SSLSocketClient.getHostnameVerifier())

@@ -1,4 +1,5 @@
 package com.jueze.ibeauty;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -7,20 +8,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import com.jueze.ibeauty.adapter.BlendentAdapter;
 import com.jueze.ibeauty.bean.BlendentBean;
-import com.jueze.ibeauty.util.FileUtil;
+import com.jueze.utils.ClipBoardUtil;
+import com.jueze.utils.FileUtil;
+import com.jueze.utils.ShapeUtil;
+import com.jueze.utils.ToastUtil;
 import java.util.ArrayList;
-import android.widget.SeekBar;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.RelativeLayout;
-import android.graphics.Color;
-import android.support.v7.widget.CardView;
-import com.jueze.ibeauty.util.ShapeUtil;
-import com.jueze.ibeauty.util.ClipBoardUtil;
-import com.jueze.ibeauty.util.ToastUtil;
-import android.view.MotionEvent;
 
 public class MdBlendentActivity extends BaseActivity implements SeekBar.OnSeekBarChangeListener, View.OnClickListener {
 
@@ -67,7 +65,7 @@ public class MdBlendentActivity extends BaseActivity implements SeekBar.OnSeekBa
 
     private void handleDoc() {
         blendentList = new ArrayList<>();
-        String nr = FileUtil.readTxtFromAssets("md");
+        String nr = FileUtil.readFromAssets(this,"md");
         String[] docList = nr.split("\n");
         for (String doc : docList) {
             String name = doc.substring(0, doc.indexOf("["));
@@ -218,8 +216,8 @@ public class MdBlendentActivity extends BaseActivity implements SeekBar.OnSeekBa
 				dialog.dismiss();
 				break;
 			case R.id.hex_string:
-				ClipBoardUtil.write(hexTextView.getText());
-				ToastUtil.show("已写入剪切板");
+				ClipBoardUtil.write(this,hexTextView.getText());
+				ToastUtil.show(this,"已写入剪切板");
 				break;
 			default:
 		}

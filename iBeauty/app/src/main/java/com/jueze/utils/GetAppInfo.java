@@ -1,4 +1,4 @@
-package com.jueze.ibeauty.util;
+package com.jueze.utils;
 
 
 import android.content.Context;
@@ -8,6 +8,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.json.JSONObject;
+import android.os.Build;
 
 public class GetAppInfo {
 
@@ -69,7 +70,7 @@ public class GetAppInfo {
             lastUpdateTime = pm.getPackageInfo(packageName,0).lastUpdateTime;
 
             targetSdkVersion = pm.getApplicationInfo(packageName,0).targetSdkVersion;
-            minSdkVersion = SystemUtil.isM()?pm.getApplicationInfo(packageName,0).minSdkVersion:null;
+            minSdkVersion = Build.VERSION.SDK_INT>=Build.VERSION_CODES.M?pm.getApplicationInfo(packageName,0).minSdkVersion:null;
             dataDir = pm.getApplicationInfo(packageName,0).dataDir;
             sourceDir = pm.getApplicationInfo(packageName,0).sourceDir;
             uid = pm.getApplicationInfo(packageName,0).uid;

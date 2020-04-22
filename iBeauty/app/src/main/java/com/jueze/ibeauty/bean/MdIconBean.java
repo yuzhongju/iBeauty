@@ -1,30 +1,28 @@
 package com.jueze.ibeauty.bean;
 
-public class MdIconBean {
-    private String iconName;
-    private String iconPath;
-    private String bgColor;
-    private String nameColor;
+import java.io.File;
 
-    public MdIconBean(String iconName, String iconPath, String bgColor, String nameColor){
-        this.iconName = iconName;
-        this.iconPath = iconPath;
-        this.bgColor = bgColor;
-        this.nameColor = nameColor;
-    }
+public class MdIconBean {
     
-    public String getIconName(){
-        return this.iconName;
+	private File file;
+	
+    public MdIconBean(File file){
+        this.file=file;
     }
-    
-    public String getIconPath(){
-        return this.iconPath;
-    }
-    public String getBgColor(){
-        return this.bgColor;
-    }
-    
-    public String getNameColor(){
-        return this.nameColor;
-    }
+	
+	public String getIconPath(){
+		return file.toString();
+	}
+	
+	public String getIconName(){
+		return file.getName();
+	}
+	
+	public String getSuffix(){
+		return getIconName().substring(getIconName().lastIndexOf("."));
+	}
+	
+	public String replace(String v){
+		return getIconName().replace(getSuffix(),"_"+v+getSuffix());
+	}
 }

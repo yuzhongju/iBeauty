@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import com.jueze.ibeauty.R;
 import com.jueze.ibeauty.adapter.IappProjectAdapter;
 import com.jueze.ibeauty.bean.IappProjectBean;
-import com.jueze.ibeauty.util.FileUtil;
+import com.jueze.utils.FileUtil;
 import java.io.File;
 import java.text.Collator;
 import java.util.ArrayList;
@@ -21,7 +21,6 @@ import java.util.Locale;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-import com.jueze.ibeauty.util.ToastUtil;
 
 public class ProjectFragment extends Fragment {
 
@@ -77,7 +76,7 @@ public class ProjectFragment extends Fragment {
 
             for (File f : fileList) {
                 String manifestPath = f + "/AndroidManifest.xml";
-                String manifestTxt = FileUtil.readTxtFromSD(manifestPath);
+                String manifestTxt = FileUtil.readFromSD(manifestPath);
 
                 Document doc = Jsoup.parse(manifestTxt);
                 Elements etitle = doc.getElementsByTag("title");

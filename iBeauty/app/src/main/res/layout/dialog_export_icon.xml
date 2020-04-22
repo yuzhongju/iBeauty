@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	android:paddingTop="16dp"
+	android:focusable="true"
+	android:focusableInTouchMode="true"
+	android:paddingLeft="24dp"
+	android:paddingRight="24dp">
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="图标名称"
+		android:textColor="@color/colorAccent"
+		android:textSize="12sp"/>
+
+	<EditText
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:textSize="13sp"
+		android:singleLine="true"
+		android:id="@+id/icon_name"/>
+
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:textSize="10sp"
+		android:gravity="center_vertical"
+		android:textColor="#FF808080"
+		android:id="@+id/icon_path_name"/>
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="图标颜色"
+		android:textColor="@color/colorAccent"
+		android:layout_marginTop="8dp"
+		android:textSize="12sp"/>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="#000000"
+		android:layout_marginTop="8dp"
+		android:padding="1dp">
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="#ff000000"
+			android:textAllCaps="true"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:gravity="center"
+			android:padding="4dp"
+			android:background="#FF000000"
+			android:textColor="#FFFFFFFF"
+			android:textSize="13sp"
+			android:id="@+id/icon_color"/>
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:orientation="horizontal"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="8dp">
+
+		<CheckBox
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1.0"
+			android:text="白色"
+			android:id="@+id/icon_white"/>
+
+		<CheckBox
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1.0"
+			android:text="黑色"
+			android:id="@+id/icon_black"/>
+
+		<CheckBox
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1.0"
+			android:text="灰色"
+			android:id="@+id/icon_gray"/>
+
+	</LinearLayout>
+
+</LinearLayout>
+

@@ -1,9 +1,8 @@
-package com.jueze.ibeauty.util;
+package com.jueze.utils;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.app.Activity;
 
 public class ShareUtil
 {

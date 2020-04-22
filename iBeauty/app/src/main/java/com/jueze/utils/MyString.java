@@ -1,9 +1,10 @@
-package com.jueze.ibeauty.util;
+package com.jueze.utils;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import android.text.SpannableStringBuilder;
 
 public class MyString {
     public static String qc(String str, String regex){
@@ -30,14 +31,14 @@ public class MyString {
         return res;
     }
 
-	public static SpannableString highlightStr(int color, String str, String key) {
-		SpannableString ss = new SpannableString(str);
-		Matcher m = Pattern.compile(key).matcher(ss);
+	public static SpannableStringBuilder highlightStr(int color, String content, String key) {
+		SpannableStringBuilder ssb = new SpannableStringBuilder(content);
+		Matcher m = Pattern.compile(key).matcher(ssb);
 		while (m.find()) {
 			int start = m.start();
 			int end = m.end();
-			ss.setSpan(new ForegroundColorSpan(color), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			ssb.setSpan(new ForegroundColorSpan(color), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		}
-		return ss;
+		return ssb;
 	}
 }

@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import com.jueze.ibeauty.R;
 import com.jueze.ibeauty.adapter.ManualAdapter;
 import com.jueze.ibeauty.bean.ManualBean;
-import com.jueze.ibeauty.util.FileUtil;
+import com.jueze.utils.FileUtil;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +49,7 @@ public class ManualFragment extends BaseFragment {
 	
 
     private void handleDoc(int z){
-        String nr = FileUtil.readTxtFromSD(fileList.get(z));
+        String nr = FileUtil.readFromSD(fileList.get(z));
 		if(TextUtils.isEmpty(nr)) return;
         nr = nr.substring(nr.indexOf("【")+1);
         String[] docList = nr.split("【");
