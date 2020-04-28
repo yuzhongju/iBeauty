@@ -46,6 +46,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import java.util.ArrayList;
 import java.util.List;
 import org.json.JSONObject;
+import android.support.v7.widget.GridLayoutManager;
 
 public class MainActivity extends BaseActivity {
 
@@ -280,7 +281,7 @@ public class MainActivity extends BaseActivity {
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
 			if(msg.what==0){
-				mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
+				mRecyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this,2));
 				adapter = new IndexAdapter(funList);
 				mRecyclerView.setAdapter(adapter);
 			}

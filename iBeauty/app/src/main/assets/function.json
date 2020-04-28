@@ -7,7 +7,7 @@
 		{"name":"获取网页源码", "intro":"支持GET, POST", "py":"hqwyym"},
 		{"name":"网络书签", "intro":"常用网址，快速访问，采用码云作为后台", "py":"wdsq"},
 		{"name":"百度网盘提取码", "intro":"查询百度网盘提取码", "py":"bdwptqm"},
-		{"name":"Base64加密", "intro":"", "py":"base64"},
+		{"name":"BASE64加密", "intro":"", "py":"base64"},
 		{"name":"短链接", "intro":"包括新浪，腾讯", "py":"shorturl"},
 		{"name":"实名信息", "intro":"QQ实名信息认证", "py":"smxx"},
 		{"name":"雨云主机", "intro":"一家较好的主机商，详见官网，这里只提供签到", "py":"yyzj"},

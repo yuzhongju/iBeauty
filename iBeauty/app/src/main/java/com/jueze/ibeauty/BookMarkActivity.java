@@ -22,6 +22,7 @@ import com.jueze.ibeauty.network.OkHttpUtil;
 import com.jueze.utils.NetworkUtil;
 import com.jueze.utils.ToastUtil;
 import okhttp3.Response;
+import android.support.v7.widget.GridLayoutManager;
 
 public class BookMarkActivity extends BaseActivity {
 
@@ -93,8 +94,8 @@ public class BookMarkActivity extends BaseActivity {
                     Gson gson = new Gson();
                     try{
                         BookMarkBean bookmarkBean = gson.fromJson(data, new TypeToken<BookMarkBean>(){}.getType());
-                        StaggeredGridLayoutManager lm = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
-                        mRv.setLayoutManager(lm);
+                        //StaggeredGridLayoutManager lm = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
+                        mRv.setLayoutManager(new GridLayoutManager(BookMarkActivity.this,2));
                         adapter = new BookMarkAdapter(bookmarkBean.getBookMark());
                         mRv.setAdapter(adapter);
                     }catch(Exception e){}
